@@ -1,0 +1,6 @@
+{
+  "format": "npm",
+  "namespace": "my-package",
+  "name": "my-package",
+  "originConfiguration": "example-value"
+}

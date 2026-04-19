@@ -1,0 +1,5 @@
+{
+  "description": "Example CodeArtifact resource",
+  "upstreams": "example-value",
+  "tags": "example-value"
+}

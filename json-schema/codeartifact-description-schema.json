@@ -1,0 +1,9 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/amazon-codeartifact/refs/heads/main/json-schema/codeartifact-description-schema.json",
+  "title": "Description",
+  "description": "Description schema from Amazon CodeArtifact API",
+  "type": "string",
+  "pattern": "\\P{C}*",
+  "maxLength": 1000
+}

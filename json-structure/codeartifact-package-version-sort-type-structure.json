@@ -1,0 +1,10 @@
+{
+  "$schema": "https://json-structure.org/meta/core/v0/#",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/amazon-codeartifact/refs/heads/main/json-structure/codeartifact-package-version-sort-type-structure.json",
+  "name": "PackageVersionSortType",
+  "description": "PackageVersionSortType schema from Amazon CodeArtifact API",
+  "type": "string",
+  "enum": [
+    "PUBLISHED_TIME"
+  ]
+}

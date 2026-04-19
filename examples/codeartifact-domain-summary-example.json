@@ -1,0 +1,8 @@
+{
+  "name": "my-package",
+  "owner": "123456789012",
+  "arn": "arn:aws:codeartifact:us-east-1:123456789012:domain/my-domain",
+  "status": "Active",
+  "createdTime": "example-value",
+  "encryptionKey": "example-value"
+}

@@ -1,0 +1,15 @@
+{
+  "$schema": "https://json-structure.org/meta/core/v0/#",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/amazon-codeartifact/refs/heads/main/json-structure/codeartifact-package-version-error-code-structure.json",
+  "name": "PackageVersionErrorCode",
+  "description": "PackageVersionErrorCode schema from Amazon CodeArtifact API",
+  "type": "string",
+  "enum": [
+    "ALREADY_EXISTS",
+    "MISMATCHED_REVISION",
+    "MISMATCHED_STATUS",
+    "NOT_ALLOWED",
+    "NOT_FOUND",
+    "SKIPPED"
+  ]
+}

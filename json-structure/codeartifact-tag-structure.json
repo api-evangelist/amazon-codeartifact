@@ -1,0 +1,33 @@
+{
+  "$schema": "https://json-structure.org/meta/core/v0/#",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/amazon-codeartifact/refs/heads/main/json-structure/codeartifact-tag-structure.json",
+  "name": "Tag",
+  "description": "A tag is a key-value pair that can be used to manage, search for, or filter resources in CodeArtifact.",
+  "type": "object",
+  "properties": {
+    "key": {
+      "allOf": [
+        {
+          "$ref": "#/components/schemas/TagKey"
+        },
+        {
+          "description": "The tag key."
+        }
+      ]
+    },
+    "value": {
+      "allOf": [
+        {
+          "$ref": "#/components/schemas/TagValue"
+        },
+        {
+          "description": "The tag value."
+        }
+      ]
+    }
+  },
+  "required": [
+    "key",
+    "value"
+  ]
+}

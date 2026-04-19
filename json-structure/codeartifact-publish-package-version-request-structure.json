@@ -1,0 +1,22 @@
+{
+  "$schema": "https://json-structure.org/meta/core/v0/#",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/amazon-codeartifact/refs/heads/main/json-structure/codeartifact-publish-package-version-request-structure.json",
+  "name": "PublishPackageVersionRequest",
+  "description": "PublishPackageVersionRequest schema from Amazon CodeArtifact API",
+  "type": "object",
+  "properties": {
+    "assetContent": {
+      "allOf": [
+        {
+          "$ref": "#/components/schemas/Asset"
+        },
+        {
+          "description": "The content of the asset to publish."
+        }
+      ]
+    }
+  },
+  "required": [
+    "assetContent"
+  ]
+}

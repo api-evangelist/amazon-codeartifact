@@ -1,0 +1,184 @@
+naftiko: 1.0.0-alpha1
+info:
+  label: Amazon CodeArtifact Package Management
+  description: Unified workflow for DevOps teams to manage artifact repositories, publish packages, control access, and govern software supply chains using Amazon CodeArtifact.
+  tags:
+  - Amazon
+  - AWS
+  - Package Management
+  - DevOps
+  - Artifact Repository
+  - Software Supply Chain
+  created: '2026-04-19'
+  modified: '2026-04-19'
+binds:
+- namespace: env
+  keys:
+    AWS_ACCESS_KEY_ID: AWS_ACCESS_KEY_ID
+    AWS_SECRET_ACCESS_KEY: AWS_SECRET_ACCESS_KEY
+    AWS_REGION: AWS_REGION
+capability:
+  consumes:
+  - import: codeartifact
+    location: ./shared/codeartifact.yaml
+  exposes:
+  - type: rest
+    port: 8080
+    namespace: package-management-api
+    description: Unified REST API for managing CodeArtifact packages and repositories.
+    resources:
+    - path: /v1/domains
+      name: domains
+      description: Manage CodeArtifact domains
+    - path: /v1/repositories
+      name: repositories
+      description: Manage CodeArtifact repositories
+    - path: /v1/packages
+      name: packages
+      description: Manage packages and package versions
+    - path: /v1/tokens
+      name: tokens
+      description: Get authorization tokens for package managers
+  - type: mcp
+    port: 9090
+    namespace: package-management-mcp
+    transport: http
+    description: MCP server for AI-assisted package repository management.
+    tools:
+    - name: list-domains
+      description: List all CodeArtifact domains in the account
+      hints:
+        readOnly: true
+        openWorld: true
+      call: codeartifact.listDomains
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: list-repositories
+      description: List repositories in a domain
+      hints:
+        readOnly: true
+        openWorld: true
+      call: codeartifact.listRepositoriesInDomain
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: list-packages
+      description: List packages in a repository
+      hints:
+        readOnly: true
+        openWorld: true
+      call: codeartifact.listPackages
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: list-package-versions
+      description: List versions of a package in a repository
+      hints:
+        readOnly: true
+        openWorld: true
+      call: codeartifact.listPackageVersions
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: describe-domain
+      description: Get details about a CodeArtifact domain
+      hints:
+        readOnly: true
+        openWorld: true
+      call: codeartifact.describeDomain
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: describe-repository
+      description: Get details about a CodeArtifact repository
+      hints:
+        readOnly: true
+        openWorld: true
+      call: codeartifact.describeRepository
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: describe-package
+      description: Get details about a package in a repository
+      hints:
+        readOnly: true
+        openWorld: true
+      call: codeartifact.describePackage
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: get-authorization-token
+      description: Generate a temporary authorization token for accessing CodeArtifact repositories
+      hints:
+        readOnly: false
+        openWorld: false
+      call: codeartifact.getAuthorizationToken
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: create-domain
+      description: Create a new CodeArtifact domain
+      hints:
+        readOnly: false
+        openWorld: false
+      call: codeartifact.createDomain
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: create-repository
+      description: Create a new CodeArtifact repository within a domain
+      hints:
+        readOnly: false
+        openWorld: false
+      call: codeartifact.createRepository
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: copy-package-versions
+      description: Copy package versions between repositories in the same domain
+      hints:
+        readOnly: false
+        openWorld: false
+      call: codeartifact.copyPackageVersions
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: associate-external-connection
+      description: Connect a repository to a public package registry like npmjs or PyPI
+      hints:
+        readOnly: false
+        openWorld: false
+      call: codeartifact.associateExternalConnection
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: publish-package-version
+      description: Publish a new package version to a repository
+      hints:
+        readOnly: false
+        destructive: false
+        openWorld: false
+      call: codeartifact.publishPackageVersion
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: delete-package-versions
+      description: Delete specific package versions from a repository
+      hints:
+        readOnly: false
+        destructive: true
+        idempotent: true
+      call: codeartifact.deletePackageVersions
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: get-repository-endpoint
+      description: Get the package-format-specific endpoint URL for a repository
+      hints:
+        readOnly: true
+        openWorld: true
+      call: codeartifact.getRepositoryEndpoint
+      outputParameters:
+      - type: object
+        mapping: $.

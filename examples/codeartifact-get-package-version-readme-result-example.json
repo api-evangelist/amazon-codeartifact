@@ -1,0 +1,8 @@
+{
+  "format": "npm",
+  "namespace": "my-package",
+  "package": "example-value",
+  "version": "1.0.0",
+  "versionRevision": "1.0.0",
+  "readme": "example-value"
+}

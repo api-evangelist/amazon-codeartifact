@@ -1,0 +1,8 @@
+{
+  "$schema": "https://json-structure.org/meta/core/v0/#",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/amazon-codeartifact/refs/heads/main/json-structure/codeartifact-list-package-version-assets-request-structure.json",
+  "name": "ListPackageVersionAssetsRequest",
+  "description": "ListPackageVersionAssetsRequest schema from Amazon CodeArtifact API",
+  "type": "object",
+  "properties": {}
+}

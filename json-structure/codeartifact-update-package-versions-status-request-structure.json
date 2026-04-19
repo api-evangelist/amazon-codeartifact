@@ -1,0 +1,53 @@
+{
+  "$schema": "https://json-structure.org/meta/core/v0/#",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/amazon-codeartifact/refs/heads/main/json-structure/codeartifact-update-package-versions-status-request-structure.json",
+  "name": "UpdatePackageVersionsStatusRequest",
+  "description": "UpdatePackageVersionsStatusRequest schema from Amazon CodeArtifact API",
+  "type": "object",
+  "properties": {
+    "versions": {
+      "allOf": [
+        {
+          "$ref": "#/components/schemas/PackageVersionList"
+        },
+        {
+          "description": " An array of strings that specify the versions of the package with the statuses to update. "
+        }
+      ]
+    },
+    "versionRevisions": {
+      "allOf": [
+        {
+          "$ref": "#/components/schemas/PackageVersionRevisionMap"
+        },
+        {
+          "description": " A map of package versions and package version revisions. The map <code>key</code> is the package version (for example, <code>3.5.2</code>), and the map <code>value</code> is the package version revision. "
+        }
+      ]
+    },
+    "expectedStatus": {
+      "allOf": [
+        {
+          "$ref": "#/components/schemas/PackageVersionStatus"
+        },
+        {
+          "description": " The package version\u2019s expected status before it is updated. If <code>expectedStatus</code> is provided, the package version's status is updated only if its status at the time <code>UpdatePackageVersionsStatus</code> is called matches <code>expectedStatus</code>. "
+        }
+      ]
+    },
+    "targetStatus": {
+      "allOf": [
+        {
+          "$ref": "#/components/schemas/PackageVersionStatus"
+        },
+        {
+          "description": " The status you want to change the package version status to. "
+        }
+      ]
+    }
+  },
+  "required": [
+    "versions",
+    "targetStatus"
+  ]
+}

@@ -1,0 +1,29 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/amazon-codeartifact/refs/heads/main/json-schema/codeartifact-list-domains-request-schema.json",
+  "title": "ListDomainsRequest",
+  "description": "ListDomainsRequest schema from Amazon CodeArtifact API",
+  "type": "object",
+  "properties": {
+    "maxResults": {
+      "allOf": [
+        {
+          "$ref": "#/components/schemas/ListDomainsMaxResults"
+        },
+        {
+          "description": " The maximum number of results to return per page. "
+        }
+      ]
+    },
+    "nextToken": {
+      "allOf": [
+        {
+          "$ref": "#/components/schemas/PaginationToken"
+        },
+        {
+          "description": " The token for the next set of results. Use the value returned in the previous response in the next request to retrieve the next set of results. "
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,10 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/amazon-codeartifact/refs/heads/main/json-schema/codeartifact-package-version-error-map-schema.json",
+  "title": "PackageVersionErrorMap",
+  "description": "PackageVersionErrorMap schema from Amazon CodeArtifact API",
+  "type": "object",
+  "additionalProperties": {
+    "$ref": "#/components/schemas/PackageVersionError"
+  }
+}

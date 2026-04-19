@@ -1,0 +1,11 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/amazon-codeartifact/refs/heads/main/json-schema/codeartifact-domain-status-schema.json",
+  "title": "DomainStatus",
+  "description": "DomainStatus schema from Amazon CodeArtifact API",
+  "type": "string",
+  "enum": [
+    "Active",
+    "Deleted"
+  ]
+}

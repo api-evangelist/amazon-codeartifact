@@ -1,0 +1,10 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/amazon-codeartifact/refs/heads/main/json-schema/codeartifact-policy-revision-schema.json",
+  "title": "PolicyRevision",
+  "description": "PolicyRevision schema from Amazon CodeArtifact API",
+  "type": "string",
+  "pattern": "\\S+",
+  "minLength": 1,
+  "maxLength": 100
+}

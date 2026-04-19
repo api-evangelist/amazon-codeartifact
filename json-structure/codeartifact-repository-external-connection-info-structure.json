@@ -1,0 +1,39 @@
+{
+  "$schema": "https://json-structure.org/meta/core/v0/#",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/amazon-codeartifact/refs/heads/main/json-structure/codeartifact-repository-external-connection-info-structure.json",
+  "name": "RepositoryExternalConnectionInfo",
+  "description": " Contains information about the external connection of a repository. ",
+  "type": "object",
+  "properties": {
+    "externalConnectionName": {
+      "allOf": [
+        {
+          "$ref": "#/components/schemas/ExternalConnectionName"
+        },
+        {
+          "description": " The name of the external connection associated with a repository. "
+        }
+      ]
+    },
+    "packageFormat": {
+      "allOf": [
+        {
+          "$ref": "#/components/schemas/PackageFormat"
+        },
+        {
+          "description": "<p> The package format associated with a repository's external connection. The valid package formats are: </p> <ul> <li> <p> <code>npm</code>: A Node Package Manager (npm) package. </p> </li> <li> <p> <code>pypi</code>: A Python Package Index (PyPI) package. </p> </li> <li> <p> <code>maven</code>: A Maven package that contains compiled code in a distributable format, such as a JAR file. </p> </li> <li> <p> <code>nuget</code>: A NuGet package. </p> </li> </ul>"
+        }
+      ]
+    },
+    "status": {
+      "allOf": [
+        {
+          "$ref": "#/components/schemas/ExternalConnectionStatus"
+        },
+        {
+          "description": " The status of the external connection of a repository. There is one valid value, <code>Available</code>. "
+        }
+      ]
+    }
+  }
+}

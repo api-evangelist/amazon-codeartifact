@@ -1,0 +1,9 @@
+{
+  "$schema": "https://json-structure.org/meta/core/v0/#",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/amazon-codeartifact/refs/heads/main/json-structure/codeartifact-list-packages-max-results-structure.json",
+  "name": "ListPackagesMaxResults",
+  "description": "ListPackagesMaxResults schema from Amazon CodeArtifact API",
+  "type": "int32",
+  "minimum": 1,
+  "maximum": 1000
+}

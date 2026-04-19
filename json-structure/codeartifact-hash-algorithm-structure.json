@@ -1,0 +1,13 @@
+{
+  "$schema": "https://json-structure.org/meta/core/v0/#",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/amazon-codeartifact/refs/heads/main/json-structure/codeartifact-hash-algorithm-structure.json",
+  "name": "HashAlgorithm",
+  "description": "HashAlgorithm schema from Amazon CodeArtifact API",
+  "type": "string",
+  "enum": [
+    "MD5",
+    "SHA-1",
+    "SHA-256",
+    "SHA-512"
+  ]
+}

@@ -1,0 +1,59 @@
+{
+  "$schema": "https://json-structure.org/meta/core/v0/#",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/amazon-codeartifact/refs/heads/main/json-structure/codeartifact-list-package-versions-result-structure.json",
+  "name": "ListPackageVersionsResult",
+  "description": "ListPackageVersionsResult schema from Amazon CodeArtifact API",
+  "type": "object",
+  "properties": {
+    "defaultDisplayVersion": {
+      "allOf": [
+        {
+          "$ref": "#/components/schemas/PackageVersion"
+        },
+        {
+          "description": "<p> The default package version to display. This depends on the package format: </p> <ul> <li> <p> For Maven and PyPI packages, it's the most recently published package version. </p> </li> <li> <p> For npm packages, it's the version referenced by the <code>latest</code> tag. If the <code>latest</code> tag is not set, it's the most recently published package version. </p> </li> </ul>"
+        }
+      ]
+    },
+    "namespace": {
+      "allOf": [
+        {
+          "$ref": "#/components/schemas/PackageNamespace"
+        },
+        {
+          "description": "<p>The namespace of the package that contains the requested package versions. The package component that specifies its namespace depends on its type. For example:</p> <ul> <li> <p> The namespace of a Maven package is its <code>groupId</code>. </p> </li> <li> <p> The namespace of an npm package is its <code>scope</code>. </p> </li> <li> <p> Python and NuGet packages do not contain a corresponding component, packages of those formats do not have a namespace. </p> </li> </ul>"
+        }
+      ]
+    },
+    "package": {
+      "allOf": [
+        {
+          "$ref": "#/components/schemas/PackageName"
+        },
+        {
+          "description": " The name of the package. "
+        }
+      ]
+    },
+    "versions": {
+      "allOf": [
+        {
+          "$ref": "#/components/schemas/PackageVersionSummaryList"
+        },
+        {
+          "description": " The returned list of <a href=\"https://docs.aws.amazon.com/codeartifact/latest/APIReference/API_PackageVersionSummary.html\">PackageVersionSummary</a> objects. "
+        }
+      ]
+    },
+    "nextToken": {
+      "allOf": [
+        {
+          "$ref": "#/components/schemas/PaginationToken"
+        },
+        {
+          "description": " If there are additional results, this is the token for the next set of results. "
+        }
+      ]
+    }
+  }
+}

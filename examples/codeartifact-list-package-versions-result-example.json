@@ -1,0 +1,8 @@
+{
+  "defaultDisplayVersion": "1.0.0",
+  "format": "npm",
+  "namespace": "my-package",
+  "package": "example-value",
+  "versions": "1.0.0",
+  "nextToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.example"
+}

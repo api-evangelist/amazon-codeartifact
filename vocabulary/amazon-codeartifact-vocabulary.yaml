@@ -1,0 +1,381 @@
+vocabulary: 1.0.0
+info:
+  provider: Amazon CodeArtifact
+  description: Complete taxonomy of Amazon CodeArtifact APIs covering artifact repository management, package operations, domain governance, and DevOps workflow capabilities.
+  created: '2026-04-19'
+  modified: '2026-04-19'
+operational:
+  apis:
+  - name: Amazon CodeArtifact API
+    namespace: codeartifact
+    version: '2018-09-22'
+    baseUrl: http://codeartifact.{region}.amazonaws.com
+    status: active
+  resources:
+  - name: repository
+    apis:
+    - Amazon CodeArtifact API
+    actions: &id001
+    - AssociateExternalConnection
+    - DisassociateExternalConnection
+    - CreateRepository
+    - DeleteRepository
+    - DescribeRepository
+    - UpdateRepository
+    - DeleteRepositoryPermissionsPolicy
+    - GetRepositoryEndpoint
+    - GetRepositoryPermissionsPolicy
+    - PutRepositoryPermissionsPolicy
+  - name: package
+    apis:
+    - Amazon CodeArtifact API
+    actions: &id002
+    - CopyPackageVersions
+    - DeletePackage
+    - DescribePackage
+    - PutPackageOriginConfiguration
+    - DeletePackageVersions
+    - DescribePackageVersion
+    - DisposePackageVersions
+    - GetPackageVersionAsset
+    - GetPackageVersionReadme
+    - ListPackageVersionAssets
+    - ListPackageVersionDependencies
+    - ListPackageVersions
+    - PublishPackageVersion
+    - UpdatePackageVersionsStatus
+  - name: domain
+    apis:
+    - Amazon CodeArtifact API
+    actions: &id003
+    - CreateDomain
+    - DeleteDomain
+    - DescribeDomain
+    - DeleteDomainPermissionsPolicy
+    - GetDomainPermissionsPolicy
+    - ListRepositoriesInDomain
+    - PutDomainPermissionsPolicy
+  - name: authorization-token
+    apis:
+    - Amazon CodeArtifact API
+    actions: &id004
+    - GetAuthorizationToken
+  - name: domains
+    apis:
+    - Amazon CodeArtifact API
+    actions: &id005
+    - ListDomains
+  - name: packages
+    apis:
+    - Amazon CodeArtifact API
+    actions: &id006
+    - ListPackages
+  - name: repositories
+    apis:
+    - Amazon CodeArtifact API
+    actions: &id007
+    - ListRepositories
+  - name: tags
+    apis:
+    - Amazon CodeArtifact API
+    actions: &id008
+    - ListTagsForResource
+  - name: tag
+    apis:
+    - Amazon CodeArtifact API
+    actions: &id009
+    - TagResource
+  - name: untag
+    apis:
+    - Amazon CodeArtifact API
+    actions: &id010
+    - UntagResource
+  actions:
+  - name: post
+    httpMethods:
+    - POST
+    pattern: write
+    operations:
+    - AssociateExternalConnection
+    - PutPackageOriginConfiguration
+    - DeletePackageVersions
+    - DisposePackageVersions
+    - GetAuthorizationToken
+    - ListDomains
+    - ListPackageVersionAssets
+    - ListPackageVersionDependencies
+    - ListPackageVersions
+    - ListPackages
+    - ListRepositories
+    - ListRepositoriesInDomain
+    - ListTagsForResource
+    - TagResource
+    - UntagResource
+  - name: delete
+    httpMethods:
+    - DELETE
+    pattern: destructive
+    operations:
+    - DisassociateExternalConnection
+    - DeleteDomain
+    - DeleteRepository
+    - DeleteDomainPermissionsPolicy
+    - DeletePackage
+    - DeleteRepositoryPermissionsPolicy
+  - name: copy
+    httpMethods:
+    - POST
+    pattern: write
+    operations:
+    - CopyPackageVersions
+  - name: create
+    httpMethods:
+    - POST
+    pattern: write
+    operations:
+    - CreateDomain
+    - CreateRepository
+  - name: get
+    httpMethods:
+    - GET
+    pattern: read
+    operations:
+    - DescribeDomain
+    - DescribeRepository
+    - GetDomainPermissionsPolicy
+    - DescribePackage
+    - DescribePackageVersion
+    - GetPackageVersionAsset
+    - GetPackageVersionReadme
+    - GetRepositoryEndpoint
+    - GetRepositoryPermissionsPolicy
+  - name: update
+    httpMethods:
+    - PUT
+    pattern: write
+    operations:
+    - UpdateRepository
+    - PutRepositoryPermissionsPolicy
+    - PutDomainPermissionsPolicy
+    - UpdatePackageVersionsStatus
+  - name: publish
+    httpMethods:
+    - POST
+    pattern: write
+    operations:
+    - PublishPackageVersion
+  schemas:
+    core:
+    - name: PackageVersion
+      description: ''
+    - name: PackageVersionRevision
+      description: ''
+    - name: Tag
+      description: A tag is a key-value pair that can be used to manage, search for, or filter resources in CodeArtifact.
+    - name: UpstreamRepository
+      description: ' Information about an upstream repository. A list of <code>UpstreamRepository</code> objects is an input parameter to <a href="https://docs.aws.amazon.com/codeartifact/latest/APIReference/API_CreateRepository.html">CreateRepository</a>
+        and <a href="https://docs.aws.amazon.com/codeartifact/latest/APIReference/API_UpdateRepository.html">UpdateRepository</a>. '
+    - name: AllowPublish
+      description: ''
+    - name: AllowUpstream
+      description: ''
+    - name: TagKey
+      description: ''
+    - name: AccountId
+      description: ''
+    - name: Arn
+      description: ''
+    - name: Asset
+      description: ''
+    - name: HashValue
+      description: ''
+    - name: AssetHashes
+      description: ''
+    - name: AssetName
+      description: ''
+    - name: LongOptional
+      description: ''
+    - name: AssetSummary
+      description: ' Contains details about a package version asset. '
+    - name: AssetSummaryList
+      description: ''
+    - name: DomainName
+      description: ''
+    - name: RepositoryName
+      description: ''
+    - name: ExternalConnectionName
+      description: ''
+    - name: RepositoryDescription
+      description: ' The details of a repository stored in CodeArtifact. A CodeArtifact repository contains a set of package versions, each of which maps to a set of assets. Repositories are polyglot—a
+        single repository can contain packages of any supported type. Each repository exposes endpoints for fetching and publishing packages using tools like the <code>npm</code> CLI, the Maven CLI (<code>mvn</code>),
+        and <code>pip</code>. You can create up to 100 repositories per Amazon Web Services account. '
+  parameters:
+    identifiers:
+    - domain
+    - repository
+    - format
+    - namespace
+    - package
+    - packageVersion
+    pagination:
+    - nextToken
+    - maxResults
+    filters:
+    - format
+    - namespace
+    - packagePrefix
+    - publish
+    - upstream
+  enums:
+    packageFormats:
+    - cargo
+    - generic
+    - maven
+    - npm
+    - nuget
+    - pypi
+    - ruby
+    - swift
+    packageVersionStatuses:
+    - Published
+    - Unfinished
+    - Unlisted
+    - Archived
+    - Disposed
+    - Deleted
+    externalConnections:
+    - public:npmjs
+    - public:pypi
+    - public:maven-central
+    - public:nuget
+    - public:rubygems-org
+    - public:crates-io
+  authentication:
+    schemes:
+    - AWS Signature Version 4
+    tokenExpiry: 12 hours maximum
+    iamIntegration: true
+capability:
+  workflows:
+  - name: Package Management
+    file: capabilities/amazon-codeartifact-package-management.yaml
+    description: Unified workflow for managing artifact repositories, packages, and software supply chain governance.
+    apisComined:
+    - Amazon CodeArtifact API
+    toolCount: 15
+    personas:
+    - DevOps Engineer
+    - Platform Engineer
+    - Software Developer
+    domains:
+    - Package Management
+    - Artifact Repository
+    - Software Supply Chain
+  personas:
+  - id: devops-engineer
+    name: DevOps Engineer
+    description: Manages repository infrastructure, external connections, and domain policies.
+    workflows:
+    - Package Management
+  - id: platform-engineer
+    name: Platform Engineer
+    description: Sets up domains, repositories, and governance controls across teams.
+    workflows:
+    - Package Management
+  - id: software-developer
+    name: Software Developer
+    description: Publishes and consumes packages from CodeArtifact repositories.
+    workflows:
+    - Package Management
+  domains:
+  - name: Package Management
+    description: Managing software package lifecycle including publishing, versioning, and deprecation.
+  - name: Artifact Repository
+    description: Storage and retrieval of software artifacts and their metadata.
+  - name: Software Supply Chain
+    description: Governance and security of external package dependencies and internal packages.
+  namespaces:
+  - type: consumed
+    name: codeartifact
+    port:
+  - type: rest
+    name: package-management-api
+    port: 8080
+  - type: mcp
+    name: package-management-mcp
+    port: 9090
+  binds:
+  - AWS_ACCESS_KEY_ID
+  - AWS_SECRET_ACCESS_KEY
+  - AWS_REGION
+crossReference:
+- resource: repository
+  operations: *id001
+  workflows:
+  - Package Management
+  personas:
+  - DevOps Engineer
+  - Software Developer
+- resource: package
+  operations: *id002
+  workflows:
+  - Package Management
+  personas:
+  - DevOps Engineer
+  - Software Developer
+- resource: domain
+  operations: *id003
+  workflows:
+  - Package Management
+  personas:
+  - DevOps Engineer
+  - Software Developer
+- resource: authorization-token
+  operations: *id004
+  workflows:
+  - Package Management
+  personas:
+  - DevOps Engineer
+  - Software Developer
+- resource: domains
+  operations: *id005
+  workflows:
+  - Package Management
+  personas:
+  - DevOps Engineer
+  - Software Developer
+- resource: packages
+  operations: *id006
+  workflows:
+  - Package Management
+  personas:
+  - DevOps Engineer
+  - Software Developer
+- resource: repositories
+  operations: *id007
+  workflows:
+  - Package Management
+  personas:
+  - DevOps Engineer
+  - Software Developer
+- resource: tags
+  operations: *id008
+  workflows:
+  - Package Management
+  personas:
+  - DevOps Engineer
+  - Software Developer
+- resource: tag
+  operations: *id009
+  workflows:
+  - Package Management
+  personas:
+  - DevOps Engineer
+  - Software Developer
+- resource: untag
+  operations: *id010
+  workflows:
+  - Package Management
+  personas:
+  - DevOps Engineer
+  - Software Developer

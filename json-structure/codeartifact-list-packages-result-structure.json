@@ -1,0 +1,29 @@
+{
+  "$schema": "https://json-structure.org/meta/core/v0/#",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/amazon-codeartifact/refs/heads/main/json-structure/codeartifact-list-packages-result-structure.json",
+  "name": "ListPackagesResult",
+  "description": "ListPackagesResult schema from Amazon CodeArtifact API",
+  "type": "object",
+  "properties": {
+    "packages": {
+      "allOf": [
+        {
+          "$ref": "#/components/schemas/PackageSummaryList"
+        },
+        {
+          "description": " The list of returned <a href=\"https://docs.aws.amazon.com/codeartifact/latest/APIReference/API_PackageSummary.html\">PackageSummary</a> objects. "
+        }
+      ]
+    },
+    "nextToken": {
+      "allOf": [
+        {
+          "$ref": "#/components/schemas/PaginationToken"
+        },
+        {
+          "description": " If there are additional results, this is the token for the next set of results. "
+        }
+      ]
+    }
+  }
+}

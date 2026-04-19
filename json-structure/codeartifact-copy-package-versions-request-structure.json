@@ -1,0 +1,49 @@
+{
+  "$schema": "https://json-structure.org/meta/core/v0/#",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/amazon-codeartifact/refs/heads/main/json-structure/codeartifact-copy-package-versions-request-structure.json",
+  "name": "CopyPackageVersionsRequest",
+  "description": "CopyPackageVersionsRequest schema from Amazon CodeArtifact API",
+  "type": "object",
+  "properties": {
+    "versions": {
+      "allOf": [
+        {
+          "$ref": "#/components/schemas/PackageVersionList"
+        },
+        {
+          "description": "<p> The versions of the package to be copied. </p> <note> <p> You must specify <code>versions</code> or <code>versionRevisions</code>. You cannot specify both. </p> </note>"
+        }
+      ]
+    },
+    "versionRevisions": {
+      "allOf": [
+        {
+          "$ref": "#/components/schemas/PackageVersionRevisionMap"
+        },
+        {
+          "description": "<p> A list of key-value pairs. The keys are package versions and the values are package version revisions. A <code>CopyPackageVersion</code> operation succeeds if the specified versions in the source repository match the specified package version revision. </p> <note> <p> You must specify <code>versions</code> or <code>versionRevisions</code>. You cannot specify both. </p> </note>"
+        }
+      ]
+    },
+    "allowOverwrite": {
+      "allOf": [
+        {
+          "$ref": "#/components/schemas/BooleanOptional"
+        },
+        {
+          "description": " Set to true to overwrite a package version that already exists in the destination repository. If set to false and the package version already exists in the destination repository, the package version is returned in the <code>failedVersions</code> field of the response with an <code>ALREADY_EXISTS</code> error code. "
+        }
+      ]
+    },
+    "includeFromUpstream": {
+      "allOf": [
+        {
+          "$ref": "#/components/schemas/BooleanOptional"
+        },
+        {
+          "description": " Set to true to copy packages from repositories that are upstream from the source repository to the destination repository. The default setting is false. For more information, see <a href=\"https://docs.aws.amazon.com/codeartifact/latest/ug/repos-upstream.html\">Working with upstream repositories</a>. "
+        }
+      ]
+    }
+  }
+}

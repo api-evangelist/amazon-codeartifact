@@ -1,0 +1,9 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/amazon-codeartifact/refs/heads/main/json-schema/codeartifact-list-repositories-max-results-schema.json",
+  "title": "ListRepositoriesMaxResults",
+  "description": "ListRepositoriesMaxResults schema from Amazon CodeArtifact API",
+  "type": "integer",
+  "minimum": 1,
+  "maximum": 1000
+}

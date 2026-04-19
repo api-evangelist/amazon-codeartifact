@@ -1,0 +1,39 @@
+{
+  "$schema": "https://json-structure.org/meta/core/v0/#",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/amazon-codeartifact/refs/heads/main/json-structure/codeartifact-create-repository-request-structure.json",
+  "name": "CreateRepositoryRequest",
+  "description": "CreateRepositoryRequest schema from Amazon CodeArtifact API",
+  "type": "object",
+  "properties": {
+    "description": {
+      "allOf": [
+        {
+          "$ref": "#/components/schemas/Description"
+        },
+        {
+          "description": " A description of the created repository. "
+        }
+      ]
+    },
+    "upstreams": {
+      "allOf": [
+        {
+          "$ref": "#/components/schemas/UpstreamRepositoryList"
+        },
+        {
+          "description": " A list of upstream repositories to associate with the repository. The order of the upstream repositories in the list determines their priority order when CodeArtifact looks for a requested package version. For more information, see <a href=\"https://docs.aws.amazon.com/codeartifact/latest/ug/repos-upstream.html\">Working with upstream repositories</a>. "
+        }
+      ]
+    },
+    "tags": {
+      "allOf": [
+        {
+          "$ref": "#/components/schemas/TagList"
+        },
+        {
+          "description": "One or more tag key-value pairs for the repository."
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,22 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/amazon-codeartifact/refs/heads/main/json-schema/codeartifact-upstream-repository-schema.json",
+  "title": "UpstreamRepository",
+  "description": " Information about an upstream repository. A list of <code>UpstreamRepository</code> objects is an input parameter to <a href=\"https://docs.aws.amazon.com/codeartifact/latest/APIReference/API_CreateRepository.html\">CreateRepository</a> and <a href=\"https://docs.aws.amazon.com/codeartifact/latest/APIReference/API_UpdateRepository.html\">UpdateRepository</a>. ",
+  "type": "object",
+  "properties": {
+    "repositoryName": {
+      "allOf": [
+        {
+          "$ref": "#/components/schemas/RepositoryName"
+        },
+        {
+          "description": " The name of an upstream repository. "
+        }
+      ]
+    }
+  },
+  "required": [
+    "repositoryName"
+  ]
+}

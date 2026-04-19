@@ -1,0 +1,22 @@
+{
+  "$schema": "https://json-structure.org/meta/core/v0/#",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/amazon-codeartifact/refs/heads/main/json-structure/codeartifact-describe-package-result-structure.json",
+  "name": "DescribePackageResult",
+  "description": "DescribePackageResult schema from Amazon CodeArtifact API",
+  "type": "object",
+  "properties": {
+    "package": {
+      "allOf": [
+        {
+          "$ref": "#/components/schemas/PackageDescription"
+        },
+        {
+          "description": "A <a href=\"https://docs.aws.amazon.com/codeartifact/latest/APIReference/API_PackageDescription.html\">PackageDescription</a> object that contains information about the requested package."
+        }
+      ]
+    }
+  },
+  "required": [
+    "package"
+  ]
+}

@@ -1,0 +1,15 @@
+{
+  "$schema": "https://json-structure.org/meta/core/v0/#",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/amazon-codeartifact/refs/heads/main/json-structure/codeartifact-package-version-status-structure.json",
+  "name": "PackageVersionStatus",
+  "description": "PackageVersionStatus schema from Amazon CodeArtifact API",
+  "type": "string",
+  "enum": [
+    "Published",
+    "Unfinished",
+    "Unlisted",
+    "Archived",
+    "Disposed",
+    "Deleted"
+  ]
+}

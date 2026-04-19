@@ -1,0 +1,19 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/amazon-codeartifact/refs/heads/main/json-schema/codeartifact-disassociate-external-connection-result-schema.json",
+  "title": "DisassociateExternalConnectionResult",
+  "description": "DisassociateExternalConnectionResult schema from Amazon CodeArtifact API",
+  "type": "object",
+  "properties": {
+    "repository": {
+      "allOf": [
+        {
+          "$ref": "#/components/schemas/RepositoryDescription"
+        },
+        {
+          "description": " The repository associated with the removed external connection. "
+        }
+      ]
+    }
+  }
+}

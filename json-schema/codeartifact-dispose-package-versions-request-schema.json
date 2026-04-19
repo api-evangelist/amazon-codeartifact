@@ -1,0 +1,42 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/amazon-codeartifact/refs/heads/main/json-schema/codeartifact-dispose-package-versions-request-schema.json",
+  "title": "DisposePackageVersionsRequest",
+  "description": "DisposePackageVersionsRequest schema from Amazon CodeArtifact API",
+  "type": "object",
+  "properties": {
+    "versions": {
+      "allOf": [
+        {
+          "$ref": "#/components/schemas/PackageVersionList"
+        },
+        {
+          "description": " The versions of the package you want to dispose. "
+        }
+      ]
+    },
+    "versionRevisions": {
+      "allOf": [
+        {
+          "$ref": "#/components/schemas/PackageVersionRevisionMap"
+        },
+        {
+          "description": " The revisions of the package versions you want to dispose. "
+        }
+      ]
+    },
+    "expectedStatus": {
+      "allOf": [
+        {
+          "$ref": "#/components/schemas/PackageVersionStatus"
+        },
+        {
+          "description": " The expected status of the package version to dispose. "
+        }
+      ]
+    }
+  },
+  "required": [
+    "versions"
+  ]
+}

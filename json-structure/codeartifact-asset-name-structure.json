@@ -1,0 +1,10 @@
+{
+  "$schema": "https://json-structure.org/meta/core/v0/#",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/amazon-codeartifact/refs/heads/main/json-structure/codeartifact-asset-name-structure.json",
+  "name": "AssetName",
+  "description": "AssetName schema from Amazon CodeArtifact API",
+  "type": "string",
+  "pattern": "\\P{C}+",
+  "minLength": 1,
+  "maxLength": 255
+}

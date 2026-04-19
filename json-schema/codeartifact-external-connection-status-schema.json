@@ -1,0 +1,10 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/amazon-codeartifact/refs/heads/main/json-schema/codeartifact-external-connection-status-schema.json",
+  "title": "ExternalConnectionStatus",
+  "description": "ExternalConnectionStatus schema from Amazon CodeArtifact API",
+  "type": "string",
+  "enum": [
+    "Available"
+  ]
+}

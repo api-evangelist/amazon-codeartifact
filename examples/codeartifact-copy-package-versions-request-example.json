@@ -1,0 +1,6 @@
+{
+  "versions": "1.0.0",
+  "versionRevisions": "1.0.0",
+  "allowOverwrite": "example-value",
+  "includeFromUpstream": "example-value"
+}

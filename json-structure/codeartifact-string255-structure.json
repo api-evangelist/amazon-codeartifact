@@ -1,0 +1,9 @@
+{
+  "$schema": "https://json-structure.org/meta/core/v0/#",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/amazon-codeartifact/refs/heads/main/json-structure/codeartifact-string255-structure.json",
+  "name": "String255",
+  "description": "String255 schema from Amazon CodeArtifact API",
+  "type": "string",
+  "minLength": 1,
+  "maxLength": 255
+}

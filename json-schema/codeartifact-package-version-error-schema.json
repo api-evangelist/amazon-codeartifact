@@ -1,0 +1,29 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/amazon-codeartifact/refs/heads/main/json-schema/codeartifact-package-version-error-schema.json",
+  "title": "PackageVersionError",
+  "description": "l An error associated with package. ",
+  "type": "object",
+  "properties": {
+    "errorCode": {
+      "allOf": [
+        {
+          "$ref": "#/components/schemas/PackageVersionErrorCode"
+        },
+        {
+          "description": "<p> The error code associated with the error. Valid error codes are: </p> <ul> <li> <p> <code>ALREADY_EXISTS</code> </p> </li> <li> <p> <code>MISMATCHED_REVISION</code> </p> </li> <li> <p> <code>MISMATCHED_STATUS</code> </p> </li> <li> <p> <code>NOT_ALLOWED</code> </p> </li> <li> <p> <code>NOT_FOUND</code> </p> </li> <li> <p> <code>SKIPPED</code> </p> </li> </ul>"
+        }
+      ]
+    },
+    "errorMessage": {
+      "allOf": [
+        {
+          "$ref": "#/components/schemas/ErrorMessage"
+        },
+        {
+          "description": " The error message associated with the error. "
+        }
+      ]
+    }
+  }
+}

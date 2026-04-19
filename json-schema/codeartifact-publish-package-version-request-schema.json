@@ -1,0 +1,22 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/amazon-codeartifact/refs/heads/main/json-schema/codeartifact-publish-package-version-request-schema.json",
+  "title": "PublishPackageVersionRequest",
+  "description": "PublishPackageVersionRequest schema from Amazon CodeArtifact API",
+  "type": "object",
+  "properties": {
+    "assetContent": {
+      "allOf": [
+        {
+          "$ref": "#/components/schemas/Asset"
+        },
+        {
+          "description": "The content of the asset to publish."
+        }
+      ]
+    }
+  },
+  "required": [
+    "assetContent"
+  ]
+}

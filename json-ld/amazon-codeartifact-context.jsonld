@@ -1,0 +1,419 @@
+{
+  "@context": {
+    "@version": 1.1,
+    "amz": "https://codeartifact.amazonaws.com/schema/",
+    "schema": "https://schema.org/",
+    "dcterms": "http://purl.org/dc/terms/",
+    "xsd": "http://www.w3.org/2001/XMLSchema#",
+    "UpdateRepositoryResult": "amz:UpdateRepositoryResult",
+    "RepositoryExternalConnectionInfo": "amz:RepositoryExternalConnectionInfo",
+    "AssetSummary": "amz:AssetSummary",
+    "Tag": "amz:Tag",
+    "PackageOriginConfiguration": "amz:PackageOriginConfiguration",
+    "ListPackageVersionAssetsResult": "amz:ListPackageVersionAssetsResult",
+    "DescribeDomainRequest": "amz:DescribeDomainRequest",
+    "DeleteRepositoryPermissionsPolicyResult": "amz:DeleteRepositoryPermissionsPolicyResult",
+    "DescribePackageResult": "amz:DescribePackageResult",
+    "ListPackageVersionDependenciesResult": "amz:ListPackageVersionDependenciesResult",
+    "UpdatePackageVersionsStatusResult": "amz:UpdatePackageVersionsStatusResult",
+    "TagResourceRequest": "amz:TagResourceRequest",
+    "DeleteRepositoryResult": "amz:DeleteRepositoryResult",
+    "DeletePackageVersionsRequest": "amz:DeletePackageVersionsRequest",
+    "DescribePackageVersionRequest": "amz:DescribePackageVersionRequest",
+    "GetAuthorizationTokenResult": "amz:GetAuthorizationTokenResult",
+    "PackageVersionError": "amz:PackageVersionError",
+    "DeleteRepositoryRequest": "amz:DeleteRepositoryRequest",
+    "GetPackageVersionAssetResult": "amz:GetPackageVersionAssetResult",
+    "PutRepositoryPermissionsPolicyResult": "amz:PutRepositoryPermissionsPolicyResult",
+    "GetDomainPermissionsPolicyResult": "amz:GetDomainPermissionsPolicyResult",
+    "RepositoryDescription": "amz:RepositoryDescription",
+    "DomainSummary": "amz:DomainSummary",
+    "RepositorySummary": "amz:RepositorySummary",
+    "DomainEntryPoint": "amz:DomainEntryPoint",
+    "GetPackageVersionReadmeResult": "amz:GetPackageVersionReadmeResult",
+    "UntagResourceRequest": "amz:UntagResourceRequest",
+    "ResourcePolicy": "amz:ResourcePolicy",
+    "DomainDescription": "amz:DomainDescription",
+    "PackageVersionDescription": "amz:PackageVersionDescription",
+    "UpdateRepositoryRequest": "amz:UpdateRepositoryRequest",
+    "SuccessfulPackageVersionInfoMap": "amz:SuccessfulPackageVersionInfoMap",
+    "DeletePackageVersionsResult": "amz:DeletePackageVersionsResult",
+    "AssetHashes": "amz:AssetHashes",
+    "ListRepositoriesInDomainResult": "amz:ListRepositoriesInDomainResult",
+    "DescribePackageRequest": "amz:DescribePackageRequest",
+    "UpdatePackageVersionsStatusRequest": "amz:UpdatePackageVersionsStatusRequest",
+    "ListRepositoriesResult": "amz:ListRepositoriesResult",
+    "PublishPackageVersionRequest": "amz:PublishPackageVersionRequest",
+    "DeleteRepositoryPermissionsPolicyRequest": "amz:DeleteRepositoryPermissionsPolicyRequest",
+    "CreateRepositoryRequest": "amz:CreateRepositoryRequest",
+    "DeletePackageRequest": "amz:DeletePackageRequest",
+    "ListPackagesRequest": "amz:ListPackagesRequest",
+    "ListRepositoriesInDomainRequest": "amz:ListRepositoriesInDomainRequest",
+    "PackageOriginRestrictions": "amz:PackageOriginRestrictions",
+    "SuccessfulPackageVersionInfo": "amz:SuccessfulPackageVersionInfo",
+    "DescribeDomainResult": "amz:DescribeDomainResult",
+    "DisposePackageVersionsResult": "amz:DisposePackageVersionsResult",
+    "LicenseInfo": "amz:LicenseInfo",
+    "GetAuthorizationTokenRequest": "amz:GetAuthorizationTokenRequest",
+    "GetDomainPermissionsPolicyRequest": "amz:GetDomainPermissionsPolicyRequest",
+    "AssociateExternalConnectionRequest": "amz:AssociateExternalConnectionRequest",
+    "PackageVersionRevisionMap": "amz:PackageVersionRevisionMap",
+    "DeleteDomainPermissionsPolicyRequest": "amz:DeleteDomainPermissionsPolicyRequest",
+    "ListPackageVersionDependenciesRequest": "amz:ListPackageVersionDependenciesRequest",
+    "CreateRepositoryResult": "amz:CreateRepositoryResult",
+    "GetPackageVersionReadmeRequest": "amz:GetPackageVersionReadmeRequest",
+    "DisassociateExternalConnectionResult": "amz:DisassociateExternalConnectionResult",
+    "UpstreamRepositoryInfo": "amz:UpstreamRepositoryInfo",
+    "DisposePackageVersionsRequest": "amz:DisposePackageVersionsRequest",
+    "PackageVersionErrorMap": "amz:PackageVersionErrorMap",
+    "GetRepositoryEndpointResult": "amz:GetRepositoryEndpointResult",
+    "PublishPackageVersionResult": "amz:PublishPackageVersionResult",
+    "DescribeRepositoryResult": "amz:DescribeRepositoryResult",
+    "UpstreamRepository": "amz:UpstreamRepository",
+    "CreateDomainRequest": "amz:CreateDomainRequest",
+    "ListDomainsResult": "amz:ListDomainsResult",
+    "AssociateExternalConnectionResult": "amz:AssociateExternalConnectionResult",
+    "GetRepositoryPermissionsPolicyResult": "amz:GetRepositoryPermissionsPolicyResult",
+    "PackageDescription": "amz:PackageDescription",
+    "DescribePackageVersionResult": "amz:DescribePackageVersionResult",
+    "DeleteDomainResult": "amz:DeleteDomainResult",
+    "ListPackageVersionsResult": "amz:ListPackageVersionsResult",
+    "ListPackageVersionsRequest": "amz:ListPackageVersionsRequest",
+    "GetRepositoryPermissionsPolicyRequest": "amz:GetRepositoryPermissionsPolicyRequest",
+    "UntagResourceResult": "amz:UntagResourceResult",
+    "PutDomainPermissionsPolicyResult": "amz:PutDomainPermissionsPolicyResult",
+    "ListRepositoriesRequest": "amz:ListRepositoriesRequest",
+    "PutRepositoryPermissionsPolicyRequest": "amz:PutRepositoryPermissionsPolicyRequest",
+    "PutDomainPermissionsPolicyRequest": "amz:PutDomainPermissionsPolicyRequest",
+    "DeletePackageResult": "amz:DeletePackageResult",
+    "CopyPackageVersionsResult": "amz:CopyPackageVersionsResult",
+    "PackageDependency": "amz:PackageDependency",
+    "DeleteDomainPermissionsPolicyResult": "amz:DeleteDomainPermissionsPolicyResult",
+    "PackageSummary": "amz:PackageSummary",
+    "DeleteDomainRequest": "amz:DeleteDomainRequest",
+    "PutPackageOriginConfigurationResult": "amz:PutPackageOriginConfigurationResult",
+    "ListPackageVersionAssetsRequest": "amz:ListPackageVersionAssetsRequest",
+    "PutPackageOriginConfigurationRequest": "amz:PutPackageOriginConfigurationRequest",
+    "GetPackageVersionAssetRequest": "amz:GetPackageVersionAssetRequest",
+    "DisassociateExternalConnectionRequest": "amz:DisassociateExternalConnectionRequest",
+    "ListTagsForResourceRequest": "amz:ListTagsForResourceRequest",
+    "CreateDomainResult": "amz:CreateDomainResult",
+    "ListDomainsRequest": "amz:ListDomainsRequest",
+    "PackageVersionOrigin": "amz:PackageVersionOrigin",
+    "ListTagsForResourceResult": "amz:ListTagsForResourceResult",
+    "PackageVersionSummary": "amz:PackageVersionSummary",
+    "DescribeRepositoryRequest": "amz:DescribeRepositoryRequest",
+    "GetRepositoryEndpointRequest": "amz:GetRepositoryEndpointRequest",
+    "ListPackagesResult": "amz:ListPackagesResult",
+    "TagResourceResult": "amz:TagResourceResult",
+    "CopyPackageVersionsRequest": "amz:CopyPackageVersionsRequest",
+    "repository": {
+      "@id": "amz:repository",
+      "@type": "xsd:string"
+    },
+    "externalConnectionName": {
+      "@id": "amz:externalConnectionName",
+      "@type": "xsd:string"
+    },
+    "packageFormat": {
+      "@id": "amz:packageFormat",
+      "@type": "xsd:string"
+    },
+    "status": {
+      "@id": "amz:status",
+      "@type": "xsd:string"
+    },
+    "name": "schema:name",
+    "size": {
+      "@id": "amz:size",
+      "@type": "xsd:string"
+    },
+    "hashes": {
+      "@id": "amz:hashes",
+      "@type": "xsd:string"
+    },
+    "key": {
+      "@id": "amz:key",
+      "@type": "xsd:string"
+    },
+    "value": {
+      "@id": "amz:value",
+      "@type": "xsd:string"
+    },
+    "restrictions": {
+      "@id": "amz:restrictions",
+      "@type": "xsd:string"
+    },
+    "format": {
+      "@id": "amz:format",
+      "@type": "xsd:string"
+    },
+    "namespace": {
+      "@id": "amz:namespace",
+      "@type": "xsd:string"
+    },
+    "package": {
+      "@id": "amz:package",
+      "@type": "xsd:string"
+    },
+    "version": "schema:version",
+    "versionRevision": {
+      "@id": "amz:versionRevision",
+      "@type": "xsd:string"
+    },
+    "nextToken": {
+      "@id": "amz:nextToken",
+      "@type": "xsd:string"
+    },
+    "assets": {
+      "@id": "amz:assets",
+      "@type": "xsd:string"
+    },
+    "policy": {
+      "@id": "amz:policy",
+      "@type": "xsd:string"
+    },
+    "dependencies": {
+      "@id": "amz:dependencies",
+      "@type": "xsd:string"
+    },
+    "successfulVersions": {
+      "@id": "amz:successfulVersions",
+      "@type": "xsd:string"
+    },
+    "failedVersions": {
+      "@id": "amz:failedVersions",
+      "@type": "xsd:string"
+    },
+    "tags": {
+      "@id": "amz:tags",
+      "@type": "xsd:string"
+    },
+    "versions": {
+      "@id": "amz:versions",
+      "@type": "xsd:string"
+    },
+    "expectedStatus": {
+      "@id": "amz:expectedStatus",
+      "@type": "xsd:string"
+    },
+    "authorizationToken": {
+      "@id": "amz:authorizationToken",
+      "@type": "xsd:string"
+    },
+    "expiration": {
+      "@id": "amz:expiration",
+      "@type": "xsd:string"
+    },
+    "errorCode": {
+      "@id": "amz:errorCode",
+      "@type": "xsd:string"
+    },
+    "errorMessage": {
+      "@id": "amz:errorMessage",
+      "@type": "xsd:string"
+    },
+    "asset": {
+      "@id": "amz:asset",
+      "@type": "xsd:string"
+    },
+    "administratorAccount": {
+      "@id": "amz:administratorAccount",
+      "@type": "xsd:string"
+    },
+    "domainName": {
+      "@id": "amz:domainName",
+      "@type": "xsd:string"
+    },
+    "domainOwner": {
+      "@id": "amz:domainOwner",
+      "@type": "xsd:string"
+    },
+    "arn": {
+      "@id": "amz:arn",
+      "@type": "xsd:string"
+    },
+    "description": "schema:description",
+    "upstreams": {
+      "@id": "amz:upstreams",
+      "@type": "xsd:string"
+    },
+    "externalConnections": {
+      "@id": "amz:externalConnections",
+      "@type": "xsd:string"
+    },
+    "createdTime": {
+      "@id": "amz:createdTime",
+      "@type": "xsd:string"
+    },
+    "owner": {
+      "@id": "amz:owner",
+      "@type": "xsd:string"
+    },
+    "encryptionKey": {
+      "@id": "amz:encryptionKey",
+      "@type": "xsd:string"
+    },
+    "repositoryName": {
+      "@id": "amz:repositoryName",
+      "@type": "xsd:string"
+    },
+    "readme": {
+      "@id": "amz:readme",
+      "@type": "xsd:string"
+    },
+    "tagKeys": {
+      "@id": "amz:tagKeys",
+      "@type": "xsd:string"
+    },
+    "resourceArn": {
+      "@id": "amz:resourceArn",
+      "@type": "xsd:string"
+    },
+    "revision": {
+      "@id": "amz:revision",
+      "@type": "xsd:string"
+    },
+    "document": {
+      "@id": "amz:document",
+      "@type": "xsd:string"
+    },
+    "repositoryCount": {
+      "@id": "amz:repositoryCount",
+      "@type": "xsd:string"
+    },
+    "assetSizeBytes": {
+      "@id": "amz:assetSizeBytes",
+      "@type": "xsd:string"
+    },
+    "s3BucketArn": {
+      "@id": "amz:s3BucketArn",
+      "@type": "xsd:string"
+    },
+    "packageName": {
+      "@id": "amz:packageName",
+      "@type": "xsd:string"
+    },
+    "displayName": {
+      "@id": "amz:displayName",
+      "@type": "xsd:string"
+    },
+    "summary": {
+      "@id": "amz:summary",
+      "@type": "xsd:string"
+    },
+    "homePage": {
+      "@id": "amz:homePage",
+      "@type": "xsd:string"
+    },
+    "sourceCodeRepository": {
+      "@id": "amz:sourceCodeRepository",
+      "@type": "xsd:string"
+    },
+    "publishedTime": {
+      "@id": "amz:publishedTime",
+      "@type": "xsd:string"
+    },
+    "licenses": {
+      "@id": "amz:licenses",
+      "@type": "xsd:string"
+    },
+    "origin": {
+      "@id": "amz:origin",
+      "@type": "xsd:string"
+    },
+    "repositories": {
+      "@id": "amz:repositories",
+      "@type": "xsd:string"
+    },
+    "versionRevisions": {
+      "@id": "amz:versionRevisions",
+      "@type": "xsd:string"
+    },
+    "targetStatus": {
+      "@id": "amz:targetStatus",
+      "@type": "xsd:string"
+    },
+    "assetContent": {
+      "@id": "amz:assetContent",
+      "@type": "xsd:string"
+    },
+    "publish": {
+      "@id": "amz:publish",
+      "@type": "xsd:string"
+    },
+    "upstream": {
+      "@id": "amz:upstream",
+      "@type": "xsd:string"
+    },
+    "domain": {
+      "@id": "amz:domain",
+      "@type": "xsd:string"
+    },
+    "url": "schema:url",
+    "repositoryEndpoint": {
+      "@id": "amz:repositoryEndpoint",
+      "@type": "xsd:string"
+    },
+    "domains": {
+      "@id": "amz:domains",
+      "@type": "xsd:string"
+    },
+    "originConfiguration": {
+      "@id": "amz:originConfiguration",
+      "@type": "xsd:string"
+    },
+    "packageVersion": {
+      "@id": "amz:packageVersion",
+      "@type": "xsd:string"
+    },
+    "defaultDisplayVersion": {
+      "@id": "amz:defaultDisplayVersion",
+      "@type": "xsd:string"
+    },
+    "policyRevision": {
+      "@id": "amz:policyRevision",
+      "@type": "xsd:string"
+    },
+    "policyDocument": {
+      "@id": "amz:policyDocument",
+      "@type": "xsd:string"
+    },
+    "deletedPackage": {
+      "@id": "amz:deletedPackage",
+      "@type": "xsd:string"
+    },
+    "dependencyType": {
+      "@id": "amz:dependencyType",
+      "@type": "xsd:string"
+    },
+    "versionRequirement": {
+      "@id": "amz:versionRequirement",
+      "@type": "xsd:string"
+    },
+    "maxResults": {
+      "@id": "amz:maxResults",
+      "@type": "xsd:string"
+    },
+    "domainEntryPoint": {
+      "@id": "amz:domainEntryPoint",
+      "@type": "xsd:string"
+    },
+    "originType": {
+      "@id": "amz:originType",
+      "@type": "xsd:string"
+    },
+    "packages": {
+      "@id": "amz:packages",
+      "@type": "xsd:string"
+    },
+    "allowOverwrite": {
+      "@id": "amz:allowOverwrite",
+      "@type": "xsd:string"
+    },
+    "includeFromUpstream": {
+      "@id": "amz:includeFromUpstream",
+      "@type": "xsd:string"
+    }
+  }
+}

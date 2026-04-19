@@ -1,0 +1,29 @@
+{
+  "$schema": "https://json-structure.org/meta/core/v0/#",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/amazon-codeartifact/refs/heads/main/json-structure/codeartifact-get-authorization-token-result-structure.json",
+  "name": "GetAuthorizationTokenResult",
+  "description": "GetAuthorizationTokenResult schema from Amazon CodeArtifact API",
+  "type": "object",
+  "properties": {
+    "authorizationToken": {
+      "allOf": [
+        {
+          "$ref": "#/components/schemas/String"
+        },
+        {
+          "description": " The returned authentication token. "
+        }
+      ]
+    },
+    "expiration": {
+      "allOf": [
+        {
+          "$ref": "#/components/schemas/Timestamp"
+        },
+        {
+          "description": " A timestamp that specifies the date and time the authorization token expires. "
+        }
+      ]
+    }
+  }
+}

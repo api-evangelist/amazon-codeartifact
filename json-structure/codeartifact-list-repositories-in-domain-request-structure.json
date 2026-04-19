@@ -1,0 +1,8 @@
+{
+  "$schema": "https://json-structure.org/meta/core/v0/#",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/amazon-codeartifact/refs/heads/main/json-structure/codeartifact-list-repositories-in-domain-request-structure.json",
+  "name": "ListRepositoriesInDomainRequest",
+  "description": "ListRepositoriesInDomainRequest schema from Amazon CodeArtifact API",
+  "type": "object",
+  "properties": {}
+}

@@ -1,0 +1,207 @@
+extends: "spectral:oas"
+
+rules:
+
+  # INFO / METADATA
+  info-title-format:
+    description: API title should identify CodeArtifact service
+    severity: warn
+    given: "$.info.title"
+    then:
+      function: pattern
+      functionOptions:
+        match: "^CodeArtifact"
+
+  info-description-required:
+    description: API must have a description
+    severity: error
+    given: "$.info"
+    then:
+      field: description
+      function: truthy
+
+  info-version-required:
+    description: API must have a version
+    severity: error
+    given: "$.info"
+    then:
+      field: version
+      function: truthy
+
+  # OPENAPI VERSION
+  openapi-version:
+    description: Must use OpenAPI 3.0.x
+    severity: warn
+    given: "$.openapi"
+    then:
+      function: pattern
+      functionOptions:
+        match: '^3\.0\.'
+
+  # SERVERS
+  servers-defined:
+    description: Servers must be defined
+    severity: error
+    given: "$"
+    then:
+      field: servers
+      function: truthy
+
+  servers-https:
+    description: All server URLs must use HTTPS
+    severity: error
+    given: "$.servers[*].url"
+    then:
+      function: pattern
+      functionOptions:
+        match: "^https://"
+
+  # OPERATIONS
+  operation-summary-required:
+    description: Every operation must have a summary
+    severity: error
+    given: "$.paths[*][get,post,put,delete,patch,head,options]"
+    then:
+      field: summary
+      function: truthy
+
+  operation-summary-amazon-prefix:
+    description: Operation summaries should start with Amazon CodeArtifact
+    severity: warn
+    given: "$.paths[*][get,post,put,delete,patch].summary"
+    then:
+      function: pattern
+      functionOptions:
+        match: "^Amazon CodeArtifact"
+
+  operation-description-required:
+    description: Every operation must have a description
+    severity: warn
+    given: "$.paths[*][get,post,put,delete,patch,head,options]"
+    then:
+      field: description
+      function: truthy
+
+  operation-operationId-required:
+    description: Every operation must have an operationId
+    severity: error
+    given: "$.paths[*][get,post,put,delete,patch,head,options]"
+    then:
+      field: operationId
+      function: truthy
+
+  operation-operationId-camelcase:
+    description: operationId should use camelCase
+    severity: warn
+    given: "$.paths[*][get,post,put,delete,patch].operationId"
+    then:
+      function: pattern
+      functionOptions:
+        match: "^[a-z][a-zA-Z0-9]*$"
+
+  operation-tags-required:
+    description: Every operation must have tags
+    severity: warn
+    given: "$.paths[*][get,post,put,delete,patch]"
+    then:
+      field: tags
+      function: truthy
+
+  # PARAMETERS
+  parameter-description-required:
+    description: Every parameter must have a description
+    severity: warn
+    given: "$.paths[*][*].parameters[*]"
+    then:
+      field: description
+      function: truthy
+
+  parameter-schema-required:
+    description: Every parameter must have a schema
+    severity: error
+    given: "$.paths[*][*].parameters[*]"
+    then:
+      field: schema
+      function: truthy
+
+  # RESPONSES
+  response-success-required:
+    description: Every operation must define at least one 2xx response
+    severity: error
+    given: "$.paths[*][get,post,put,delete,patch]"
+    then:
+      field: responses
+      function: schema
+      functionOptions:
+        schema:
+          type: object
+          minProperties: 1
+
+  response-description-required:
+    description: Every response must have a description
+    severity: error
+    given: "$.paths[*][*].responses[*]"
+    then:
+      field: description
+      function: truthy
+
+  # SCHEMAS
+  schema-property-description:
+    description: Schema properties should have descriptions
+    severity: info
+    given: "$.components.schemas[*].properties[*]"
+    then:
+      field: description
+      function: truthy
+
+  schema-type-required:
+    description: Schema components should have a type defined
+    severity: warn
+    given: "$.components.schemas[*]"
+    then:
+      field: type
+      function: truthy
+
+  # SECURITY
+  security-schemes-defined:
+    description: Security schemes must be defined in components
+    severity: error
+    given: "$.components"
+    then:
+      field: securitySchemes
+      function: truthy
+
+  # HTTP METHOD CONVENTIONS
+  get-no-request-body:
+    description: GET operations must not have a request body
+    severity: error
+    given: "$.paths[*].get"
+    then:
+      field: requestBody
+      function: falsy
+
+  delete-no-request-body:
+    description: DELETE operations should not have a request body
+    severity: warn
+    given: "$.paths[*].delete"
+    then:
+      field: requestBody
+      function: falsy
+
+  # GENERAL QUALITY
+  no-empty-descriptions:
+    description: Descriptions must not be empty strings
+    severity: warn
+    given: "$..description"
+    then:
+      function: pattern
+      functionOptions:
+        match: ".+"
+
+  operation-examples-encouraged:
+    description: Operations should include examples for Microcks compatibility
+    severity: info
+    given: "$.paths[*][get,post,put,delete,patch]"
+    then:
+      field: x-microcks-operation
+      function: truthy

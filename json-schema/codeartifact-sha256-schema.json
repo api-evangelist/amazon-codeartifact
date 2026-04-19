@@ -1,0 +1,10 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/amazon-codeartifact/refs/heads/main/json-schema/codeartifact-sha256-schema.json",
+  "title": "SHA256",
+  "description": "SHA256 schema from Amazon CodeArtifact API",
+  "type": "string",
+  "pattern": "[0-9a-f]+",
+  "minLength": 64,
+  "maxLength": 64
+}

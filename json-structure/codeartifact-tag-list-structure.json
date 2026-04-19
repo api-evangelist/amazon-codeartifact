@@ -1,0 +1,12 @@
+{
+  "$schema": "https://json-structure.org/meta/core/v0/#",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/amazon-codeartifact/refs/heads/main/json-structure/codeartifact-tag-list-structure.json",
+  "name": "TagList",
+  "description": "TagList schema from Amazon CodeArtifact API",
+  "type": "array",
+  "items": {
+    "$ref": "#/components/schemas/Tag"
+  },
+  "minItems": 0,
+  "maxItems": 200
+}

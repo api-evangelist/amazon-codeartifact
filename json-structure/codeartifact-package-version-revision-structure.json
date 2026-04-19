@@ -1,0 +1,10 @@
+{
+  "$schema": "https://json-structure.org/meta/core/v0/#",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/amazon-codeartifact/refs/heads/main/json-structure/codeartifact-package-version-revision-structure.json",
+  "name": "PackageVersionRevision",
+  "description": "PackageVersionRevision schema from Amazon CodeArtifact API",
+  "type": "string",
+  "pattern": "\\S+",
+  "minLength": 1,
+  "maxLength": 50
+}

@@ -1,0 +1,19 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/amazon-codeartifact/refs/heads/main/json-schema/codeartifact-upstream-repository-info-schema.json",
+  "title": "UpstreamRepositoryInfo",
+  "description": " Information about an upstream repository. ",
+  "type": "object",
+  "properties": {
+    "repositoryName": {
+      "allOf": [
+        {
+          "$ref": "#/components/schemas/RepositoryName"
+        },
+        {
+          "description": " The name of an upstream repository. "
+        }
+      ]
+    }
+  }
+}

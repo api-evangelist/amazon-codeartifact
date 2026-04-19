@@ -1,0 +1,22 @@
+{
+  "$schema": "https://json-structure.org/meta/core/v0/#",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/amazon-codeartifact/refs/heads/main/json-structure/codeartifact-untag-resource-request-structure.json",
+  "name": "UntagResourceRequest",
+  "description": "UntagResourceRequest schema from Amazon CodeArtifact API",
+  "type": "object",
+  "properties": {
+    "tagKeys": {
+      "allOf": [
+        {
+          "$ref": "#/components/schemas/TagKeyList"
+        },
+        {
+          "description": "The tag key for each tag that you want to remove from the resource."
+        }
+      ]
+    }
+  },
+  "required": [
+    "tagKeys"
+  ]
+}

@@ -1,0 +1,12 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/amazon-codeartifact/refs/heads/main/json-schema/codeartifact-describe-domain-result-schema.json",
+  "title": "DescribeDomainResult",
+  "description": "DescribeDomainResult schema from Amazon CodeArtifact API",
+  "type": "object",
+  "properties": {
+    "domain": {
+      "$ref": "#/components/schemas/DomainDescription"
+    }
+  }
+}

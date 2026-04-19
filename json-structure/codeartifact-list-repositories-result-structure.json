@@ -1,0 +1,29 @@
+{
+  "$schema": "https://json-structure.org/meta/core/v0/#",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/amazon-codeartifact/refs/heads/main/json-structure/codeartifact-list-repositories-result-structure.json",
+  "name": "ListRepositoriesResult",
+  "description": "ListRepositoriesResult schema from Amazon CodeArtifact API",
+  "type": "object",
+  "properties": {
+    "repositories": {
+      "allOf": [
+        {
+          "$ref": "#/components/schemas/RepositorySummaryList"
+        },
+        {
+          "description": " The returned list of <a href=\"https://docs.aws.amazon.com/codeartifact/latest/APIReference/API_RepositorySummary.html\">RepositorySummary</a> objects. "
+        }
+      ]
+    },
+    "nextToken": {
+      "allOf": [
+        {
+          "$ref": "#/components/schemas/PaginationToken"
+        },
+        {
+          "description": " If there are additional results, this is the token for the next set of results. "
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,10 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/amazon-codeartifact/refs/heads/main/json-schema/codeartifact-successful-package-version-info-map-schema.json",
+  "title": "SuccessfulPackageVersionInfoMap",
+  "description": "SuccessfulPackageVersionInfoMap schema from Amazon CodeArtifact API",
+  "type": "object",
+  "additionalProperties": {
+    "$ref": "#/components/schemas/SuccessfulPackageVersionInfo"
+  }
+}

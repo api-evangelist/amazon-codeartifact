@@ -1,0 +1,8 @@
+{
+  "$schema": "https://json-structure.org/meta/core/v0/#",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/amazon-codeartifact/refs/heads/main/json-structure/codeartifact-delete-repository-permissions-policy-request-structure.json",
+  "name": "DeleteRepositoryPermissionsPolicyRequest",
+  "description": "DeleteRepositoryPermissionsPolicyRequest schema from Amazon CodeArtifact API",
+  "type": "object",
+  "properties": {}
+}

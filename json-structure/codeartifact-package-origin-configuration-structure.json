@@ -1,0 +1,19 @@
+{
+  "$schema": "https://json-structure.org/meta/core/v0/#",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/amazon-codeartifact/refs/heads/main/json-structure/codeartifact-package-origin-configuration-structure.json",
+  "name": "PackageOriginConfiguration",
+  "description": "Details about the package origin configuration of a package.",
+  "type": "object",
+  "properties": {
+    "restrictions": {
+      "allOf": [
+        {
+          "$ref": "#/components/schemas/PackageOriginRestrictions"
+        },
+        {
+          "description": "A <code>PackageOriginRestrictions</code> object that contains information about the upstream and publish package origin configuration for the package."
+        }
+      ]
+    }
+  }
+}

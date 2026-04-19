@@ -1,0 +1,53 @@
+{
+  "$schema": "https://json-structure.org/meta/core/v0/#",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/amazon-codeartifact/refs/heads/main/json-structure/codeartifact-package-version-summary-structure.json",
+  "name": "PackageVersionSummary",
+  "description": " Details about a package version, including its status, version, and revision. The <a href=\"https://docs.aws.amazon.com/codeartifact/latest/APIReference/API_ListPackageVersions.html\">ListPackageVersions</a> operation returns a list of <code>PackageVersionSummary</code> objects. ",
+  "type": "object",
+  "properties": {
+    "version": {
+      "allOf": [
+        {
+          "$ref": "#/components/schemas/PackageVersion"
+        },
+        {
+          "description": " Information about a package version. "
+        }
+      ]
+    },
+    "revision": {
+      "allOf": [
+        {
+          "$ref": "#/components/schemas/PackageVersionRevision"
+        },
+        {
+          "description": " The revision associated with a package version. "
+        }
+      ]
+    },
+    "status": {
+      "allOf": [
+        {
+          "$ref": "#/components/schemas/PackageVersionStatus"
+        },
+        {
+          "description": " A string that contains the status of the package version. It can be one of the following: "
+        }
+      ]
+    },
+    "origin": {
+      "allOf": [
+        {
+          "$ref": "#/components/schemas/PackageVersionOrigin"
+        },
+        {
+          "description": "A <a href=\"https://docs.aws.amazon.com/codeartifact/latest/APIReference/API_PackageVersionOrigin.html\">PackageVersionOrigin</a> object that contains information about how the package version was added to the repository."
+        }
+      ]
+    }
+  },
+  "required": [
+    "version",
+    "status"
+  ]
+}

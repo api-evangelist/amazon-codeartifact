@@ -1,0 +1,53 @@
+{
+  "$schema": "https://json-structure.org/meta/core/v0/#",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/amazon-codeartifact/refs/heads/main/json-structure/codeartifact-put-domain-permissions-policy-request-structure.json",
+  "name": "PutDomainPermissionsPolicyRequest",
+  "description": "PutDomainPermissionsPolicyRequest schema from Amazon CodeArtifact API",
+  "type": "object",
+  "properties": {
+    "domain": {
+      "allOf": [
+        {
+          "$ref": "#/components/schemas/DomainName"
+        },
+        {
+          "description": " The name of the domain on which to set the resource policy. "
+        }
+      ]
+    },
+    "domainOwner": {
+      "allOf": [
+        {
+          "$ref": "#/components/schemas/AccountId"
+        },
+        {
+          "description": " The 12-digit account number of the Amazon Web Services account that owns the domain. It does not include dashes or spaces. "
+        }
+      ]
+    },
+    "policyRevision": {
+      "allOf": [
+        {
+          "$ref": "#/components/schemas/PolicyRevision"
+        },
+        {
+          "description": " The current revision of the resource policy to be set. This revision is used for optimistic locking, which prevents others from overwriting your changes to the domain's resource policy. "
+        }
+      ]
+    },
+    "policyDocument": {
+      "allOf": [
+        {
+          "$ref": "#/components/schemas/PolicyDocument"
+        },
+        {
+          "description": " A valid displayable JSON Aspen policy string to be set as the access control resource policy on the provided domain. "
+        }
+      ]
+    }
+  },
+  "required": [
+    "domain",
+    "policyDocument"
+  ]
+}

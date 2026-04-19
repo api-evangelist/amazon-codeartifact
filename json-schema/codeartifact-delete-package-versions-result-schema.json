@@ -1,0 +1,29 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/amazon-codeartifact/refs/heads/main/json-schema/codeartifact-delete-package-versions-result-schema.json",
+  "title": "DeletePackageVersionsResult",
+  "description": "DeletePackageVersionsResult schema from Amazon CodeArtifact API",
+  "type": "object",
+  "properties": {
+    "successfulVersions": {
+      "allOf": [
+        {
+          "$ref": "#/components/schemas/SuccessfulPackageVersionInfoMap"
+        },
+        {
+          "description": " A list of the package versions that were successfully deleted. The status of every successful version will be <code>Deleted</code>. "
+        }
+      ]
+    },
+    "failedVersions": {
+      "allOf": [
+        {
+          "$ref": "#/components/schemas/PackageVersionErrorMap"
+        },
+        {
+          "description": "<p> A <code>PackageVersionError</code> object that contains a map of errors codes for the deleted package that failed. The possible error codes are: </p> <ul> <li> <p> <code>ALREADY_EXISTS</code> </p> </li> <li> <p> <code>MISMATCHED_REVISION</code> </p> </li> <li> <p> <code>MISMATCHED_STATUS</code> </p> </li> <li> <p> <code>NOT_ALLOWED</code> </p> </li> <li> <p> <code>NOT_FOUND</code> </p> </li> <li> <p> <code>SKIPPED</code> </p> </li> </ul>"
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,2092 @@
+naftiko: 1.0.0-alpha1
+info:
+  label: Amazon CodeArtifact
+  description: Managed artifact repository service for storing, publishing, and sharing software packages across teams.
+  tags:
+  - Amazon
+  - AWS
+  - Artifact Repository
+  - Package Management
+  - DevOps
+  created: '2026-04-19'
+  modified: '2026-04-19'
+binds:
+- namespace: env
+  keys:
+    AWS_ACCESS_KEY_ID: AWS_ACCESS_KEY_ID
+    AWS_SECRET_ACCESS_KEY: AWS_SECRET_ACCESS_KEY
+    AWS_REGION: AWS_REGION
+capability:
+  consumes:
+  - type: http
+    namespace: codeartifact
+    baseUri: http://codeartifact.us-east-1.amazonaws.com
+    description: Amazon CodeArtifact REST API for managing artifact repositories, packages, and domains.
+    authentication:
+      type: apikey
+      key: Authorization
+      value: '{{AWS_AUTH_TOKEN}}'
+      placement: header
+    resources:
+    - name: repository
+      path: /v1/repository
+      description: Operations for managing repository resources in CodeArtifact.
+      operations:
+      - name: associateExternalConnection
+        method: POST
+        description: Amazon CodeArtifact Associate External Connection
+        inputParameters:
+        - name: domain
+          in: query
+          type: string
+          required: true
+          description: The name of the domain that contains the repository.
+        - name: domain-owner
+          in: query
+          type: string
+          required: false
+          description: ' The 12-digit account number of the Amazon Web Services account that owns the domain. It does not include dashes or spaces. '
+        - name: repository
+          in: query
+          type: string
+          required: true
+          description: ' The name of the repository to which the external connection is added. '
+        - name: external-connection
+          in: query
+          type: string
+          required: true
+          description: '<p> The name of the external connection to add to the repository. The following values are supported: </p> <ul> <li> <p> <code>public:npmjs</code> - for the npm public repository.
+            </p> </li> <li> <p> <code>public:nuget-org</code> - for the NuGet Gallery. </p> </li> <li> <p> <code>public:pypi</code> - for the Python Package Index. </p> </li> <li> <p> <code>public:maven-central</code>
+            - for Maven Central. </p> </li> <li> <p> <code>public:maven-googleandroid</code> - for the Google Android repository. </p> </li> <li> <p> <code>public:maven-gradleplugins</code> - for the Gradle
+            plugins repository. </p> </li> <li> <p> <code>public:maven-commonsware</code> - for the CommonsWare Android repository. </p> </li> <li> <p> <code>public:maven-clojars</code> - for the Clojars
+            repository. </p> </li> </ul>'
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: disassociateExternalConnection
+        method: DELETE
+        description: Amazon CodeArtifact Disassociate External Connection
+        inputParameters:
+        - name: domain
+          in: query
+          type: string
+          required: true
+          description: 'The name of the domain that contains the repository from which to remove the external repository. '
+        - name: domain-owner
+          in: query
+          type: string
+          required: false
+          description: ' The 12-digit account number of the Amazon Web Services account that owns the domain. It does not include dashes or spaces. '
+        - name: repository
+          in: query
+          type: string
+          required: true
+          description: 'The name of the repository from which the external connection will be removed. '
+        - name: external-connection
+          in: query
+          type: string
+          required: true
+          description: 'The name of the external connection to be removed from the repository. '
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: createRepository
+        method: POST
+        description: Amazon CodeArtifact Create Repository
+        inputParameters:
+        - name: domain
+          in: query
+          type: string
+          required: true
+          description: ' The name of the domain that contains the created repository. '
+        - name: domain-owner
+          in: query
+          type: string
+          required: false
+          description: ' The 12-digit account number of the Amazon Web Services account that owns the domain. It does not include dashes or spaces. '
+        - name: repository
+          in: query
+          type: string
+          required: true
+          description: ' The name of the repository to create. '
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        body:
+          type: json
+          data: {}
+      - name: deleteRepository
+        method: DELETE
+        description: Amazon CodeArtifact Delete Repository
+        inputParameters:
+        - name: domain
+          in: query
+          type: string
+          required: true
+          description: ' The name of the domain that contains the repository to delete. '
+        - name: domain-owner
+          in: query
+          type: string
+          required: false
+          description: ' The 12-digit account number of the Amazon Web Services account that owns the domain. It does not include dashes or spaces. '
+        - name: repository
+          in: query
+          type: string
+          required: true
+          description: ' The name of the repository to delete. '
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: describeRepository
+        method: GET
+        description: Amazon CodeArtifact Describe Repository
+        inputParameters:
+        - name: domain
+          in: query
+          type: string
+          required: true
+          description: ' The name of the domain that contains the repository to describe. '
+        - name: domain-owner
+          in: query
+          type: string
+          required: false
+          description: ' The 12-digit account number of the Amazon Web Services account that owns the domain. It does not include dashes or spaces. '
+        - name: repository
+          in: query
+          type: string
+          required: true
+          description: ' A string that specifies the name of the requested repository. '
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: updateRepository
+        method: PUT
+        description: Amazon CodeArtifact Update Repository
+        inputParameters:
+        - name: domain
+          in: query
+          type: string
+          required: true
+          description: ' The name of the domain associated with the repository to update. '
+        - name: domain-owner
+          in: query
+          type: string
+          required: false
+          description: ' The 12-digit account number of the Amazon Web Services account that owns the domain. It does not include dashes or spaces. '
+        - name: repository
+          in: query
+          type: string
+          required: true
+          description: ' The name of the repository to update. '
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        body:
+          type: json
+          data: {}
+      - name: deleteRepositoryPermissionsPolicy
+        method: DELETE
+        description: Amazon CodeArtifact Delete Repository Permissions Policy
+        inputParameters:
+        - name: domain
+          in: query
+          type: string
+          required: true
+          description: ' The name of the domain that contains the repository associated with the resource policy to be deleted. '
+        - name: domain-owner
+          in: query
+          type: string
+          required: false
+          description: ' The 12-digit account number of the Amazon Web Services account that owns the domain. It does not include dashes or spaces. '
+        - name: repository
+          in: query
+          type: string
+          required: true
+          description: ' The name of the repository that is associated with the resource policy to be deleted '
+        - name: policy-revision
+          in: query
+          type: string
+          required: false
+          description: " The revision of the repository's resource policy to be deleted. This revision is used for optimistic locking, which prevents others from accidentally overwriting your changes to
+            the repository's resource policy. "
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: getRepositoryEndpoint
+        method: GET
+        description: Amazon CodeArtifact Get Repository Endpoint
+        inputParameters:
+        - name: domain
+          in: query
+          type: string
+          required: true
+          description: ' The name of the domain that contains the repository. '
+        - name: domain-owner
+          in: query
+          type: string
+          required: false
+          description: ' The 12-digit account number of the Amazon Web Services account that owns the domain that contains the repository. It does not include dashes or spaces. '
+        - name: repository
+          in: query
+          type: string
+          required: true
+          description: ' The name of the repository. '
+        - name: format
+          in: query
+          type: string
+          required: true
+          description: ' Returns which endpoint of a repository to return. A repository has one endpoint for each package format. '
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: getRepositoryPermissionsPolicy
+        method: GET
+        description: Amazon CodeArtifact Get Repository Permissions Policy
+        inputParameters:
+        - name: domain
+          in: query
+          type: string
+          required: true
+          description: ' The name of the domain containing the repository whose associated resource policy is to be retrieved. '
+        - name: domain-owner
+          in: query
+          type: string
+          required: false
+          description: ' The 12-digit account number of the Amazon Web Services account that owns the domain. It does not include dashes or spaces. '
+        - name: repository
+          in: query
+          type: string
+          required: true
+          description: ' The name of the repository whose associated resource policy is to be retrieved. '
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: putRepositoryPermissionsPolicy
+        method: PUT
+        description: Amazon CodeArtifact Put Repository Permissions Policy
+        inputParameters:
+        - name: domain
+          in: query
+          type: string
+          required: true
+          description: ' The name of the domain containing the repository to set the resource policy on. '
+        - name: domain-owner
+          in: query
+          type: string
+          required: false
+          description: ' The 12-digit account number of the Amazon Web Services account that owns the domain. It does not include dashes or spaces. '
+        - name: repository
+          in: query
+          type: string
+          required: true
+          description: ' The name of the repository to set the resource policy on. '
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        body:
+          type: json
+          data: {}
+    - name: package
+      path: /v1/package
+      description: Operations for managing package resources in CodeArtifact.
+      operations:
+      - name: copyPackageVersions
+        method: POST
+        description: Amazon CodeArtifact Copy Package Versions
+        inputParameters:
+        - name: domain
+          in: query
+          type: string
+          required: true
+          description: ' The name of the domain that contains the source and destination repositories. '
+        - name: domain-owner
+          in: query
+          type: string
+          required: false
+          description: ' The 12-digit account number of the Amazon Web Services account that owns the domain. It does not include dashes or spaces. '
+        - name: source-repository
+          in: query
+          type: string
+          required: true
+          description: ' The name of the repository that contains the package versions to be copied. '
+        - name: destination-repository
+          in: query
+          type: string
+          required: true
+          description: ' The name of the repository into which package versions are copied. '
+        - name: format
+          in: query
+          type: string
+          required: true
+          description: ' The format of the package versions to be copied. '
+        - name: namespace
+          in: query
+          type: string
+          required: false
+          description: <p>The namespace of the package versions to be copied. The package version component that specifies its namespace depends on its type. For example:</p> <ul> <li> <p> The 
+            namespace of a Maven package version is its <code>groupId</code>. The namespace is required when copying Maven package versions. </p> </li> <li> <p> The namespace of an npm package version
+            is its <code>scope</code>. </p> </li> <li> <p> Python and NuGet package versions do not contain a corresponding component, package versions of those formats do not have a namespace. </p> 
+            </li> <li> <p> The namespace of a generic package is its <code>namespace</code>. </p> </li> </ul>
+        - name: package
+          in: query
+          type: string
+          required: true
+          description: ' The name of the package that contains the versions to be copied. '
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        body:
+          type: json
+          data: {}
+      - name: deletePackage
+        method: DELETE
+        description: Amazon CodeArtifact Delete Package
+        inputParameters:
+        - name: domain
+          in: query
+          type: string
+          required: true
+          description: The name of the domain that contains the package to delete.
+        - name: domain-owner
+          in: query
+          type: string
+          required: false
+          description: ' The 12-digit account number of the Amazon Web Services account that owns the domain. It does not include dashes or spaces. '
+        - name: repository
+          in: query
+          type: string
+          required: true
+          description: The name of the repository that contains the package to delete.
+        - name: format
+          in: query
+          type: string
+          required: true
+          description: The format of the requested package to delete.
+        - name: namespace
+          in: query
+          type: string
+          required: false
+          description: <p>The namespace of the package to delete. The package component that specifies its namespace depends on its type. For example:</p> <ul> <li> <p> The namespace of a Maven 
+            package is its <code>groupId</code>. The namespace is required when deleting Maven package versions. </p> </li> <li> <p> The namespace of an npm package is its <code>scope</code>.</p> 
+            </li> <li> <p> Python and NuGet packages do not contain corresponding components, packages of those formats do not have a namespace. </p> </li> <li> <p> The namespace of a generic package 
+            is its <code>namespace</code>. </p> </li> </ul>
+        - name: package
+          in: query
+          type: string
+          required: true
+          description: The name of the package to delete.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: describePackage
+        method: GET
+        description: Amazon CodeArtifact Describe Package
+        inputParameters:
+        - name: domain
+          in: query
+          type: string
+          required: true
+          description: The name of the domain that contains the repository that contains the package.
+        - name: domain-owner
+          in: query
+          type: string
+          required: false
+          description: ' The 12-digit account number of the Amazon Web Services account that owns the domain. It does not include dashes or spaces. '
+        - name: repository
+          in: query
+          type: string
+          required: true
+          description: 'The name of the repository that contains the requested package. '
+        - name: format
+          in: query
+          type: string
+          required: true
+          description: A format that specifies the type of the requested package.
+        - name: namespace
+          in: query
+          type: string
+          required: false
+          description: <p>The namespace of the requested package. The package component that specifies its namespace depends on its type. For example:</p> <ul> <li> <p> The namespace of a Maven 
+            package is its <code>groupId</code>. The namespace is required when requesting Maven packages. </p> </li> <li> <p> The namespace of an npm package is its <code>scope</code>. </p> </li> 
+            <li> <p> Python and NuGet packages do not contain a corresponding component, packages of those formats do not have a namespace. </p> </li> <li> <p> The namespace of a generic package is 
+            its <code>namespace</code>. </p> </li> </ul>
+        - name: package
+          in: query
+          type: string
+          required: true
+          description: The name of the requested package.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: putPackageOriginConfiguration
+        method: POST
+        description: Amazon CodeArtifact Put Package Origin Configuration
+        inputParameters:
+        - name: domain
+          in: query
+          type: string
+          required: true
+          description: The name of the domain that contains the repository that contains the package.
+        - name: domain-owner
+          in: query
+          type: string
+          required: false
+          description: ' The 12-digit account number of the Amazon Web Services account that owns the domain. It does not include dashes or spaces. '
+        - name: repository
+          in: query
+          type: string
+          required: true
+          description: The name of the repository that contains the package.
+        - name: format
+          in: query
+          type: string
+          required: true
+          description: A format that specifies the type of the package to be updated.
+        - name: namespace
+          in: query
+          type: string
+          required: false
+          description: <p>The namespace of the package to be updated. The package component that specifies its namespace depends on its type. For example:</p> <ul> <li> <p> The namespace of a Maven 
+            package is its <code>groupId</code>. </p> </li> <li> <p> The namespace of an npm package is its <code>scope</code>. </p> </li> <li> <p> Python and NuGet packages do not contain a 
+            corresponding component, packages of those formats do not have a namespace. </p> </li> <li> <p> The namespace of a generic package is its <code>namespace</code>. </p> </li> </ul>
+        - name: package
+          in: query
+          type: string
+          required: true
+          description: The name of the package to be updated.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        body:
+          type: json
+          data: {}
+      - name: deletePackageVersions
+        method: POST
+        description: Amazon CodeArtifact Delete Package Versions
+        inputParameters:
+        - name: domain
+          in: query
+          type: string
+          required: true
+          description: ' The name of the domain that contains the package to delete. '
+        - name: domain-owner
+          in: query
+          type: string
+          required: false
+          description: ' The 12-digit account number of the Amazon Web Services account that owns the domain. It does not include dashes or spaces. '
+        - name: repository
+          in: query
+          type: string
+          required: true
+          description: ' The name of the repository that contains the package versions to delete. '
+        - name: format
+          in: query
+          type: string
+          required: true
+          description: ' The format of the package versions to delete. '
+        - name: namespace
+          in: query
+          type: string
+          required: false
+          description: <p>The namespace of the package versions to be deleted. The package version component that specifies its namespace depends on its type. For example:</p> <ul> <li> <p> The 
+            namespace of a Maven package version is its <code>groupId</code>. The namespace is required when deleting Maven package versions. </p> </li> <li> <p> The namespace of an npm package 
+            version is its <code>scope</code>. </p> </li> <li> <p> Python and NuGet package versions do not contain a corresponding component, package versions of those formats do not have a 
+            namespace. </p> </li> <li> <p> The namespace of a generic package is its <code>namespace</code>. </p> </li> </ul>
+        - name: package
+          in: query
+          type: string
+          required: true
+          description: ' The name of the package with the versions to delete. '
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        body:
+          type: json
+          data: {}
+      - name: describePackageVersion
+        method: GET
+        description: Amazon CodeArtifact Describe Package Version
+        inputParameters:
+        - name: domain
+          in: query
+          type: string
+          required: true
+          description: ' The name of the domain that contains the repository that contains the package version. '
+        - name: domain-owner
+          in: query
+          type: string
+          required: false
+          description: ' The 12-digit account number of the Amazon Web Services account that owns the domain. It does not include dashes or spaces. '
+        - name: repository
+          in: query
+          type: string
+          required: true
+          description: ' The name of the repository that contains the package version. '
+        - name: format
+          in: query
+          type: string
+          required: true
+          description: ' A format that specifies the type of the requested package version. '
+        - name: namespace
+          in: query
+          type: string
+          required: false
+          description: <p>The namespace of the requested package version. The package version component that specifies its namespace depends on its type. For example:</p> <ul> <li> <p> The namespace 
+            of a Maven package version is its <code>groupId</code>. </p> </li> <li> <p> The namespace of an npm package version is its <code>scope</code>. </p> </li> <li> <p> Python and NuGet package 
+            versions do not contain a corresponding component, package versions of those formats do not have a namespace. </p> </li> <li> <p> The namespace of a generic package is its 
+            <code>namespace</code>. </p> </li> </ul>
+        - name: package
+          in: query
+          type: string
+          required: true
+          description: ' The name of the requested package version. '
+        - name: version
+          in: query
+          type: string
+          required: true
+          description: ' A string that contains the package version (for example, <code>3.5.2</code>). '
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: disposePackageVersions
+        method: POST
+        description: Amazon CodeArtifact Dispose Package Versions
+        inputParameters:
+        - name: domain
+          in: query
+          type: string
+          required: true
+          description: ' The name of the domain that contains the repository you want to dispose. '
+        - name: domain-owner
+          in: query
+          type: string
+          required: false
+          description: ' The 12-digit account number of the Amazon Web Services account that owns the domain. It does not include dashes or spaces. '
+        - name: repository
+          in: query
+          type: string
+          required: true
+          description: ' The name of the repository that contains the package versions you want to dispose. '
+        - name: format
+          in: query
+          type: string
+          required: true
+          description: ' A format that specifies the type of package versions you want to dispose. '
+        - name: namespace
+          in: query
+          type: string
+          required: false
+          description: <p>The namespace of the package versions to be disposed. The package version component that specifies its namespace depends on its type. For example:</p> <ul> <li> <p> The 
+            namespace of a Maven package version is its <code>groupId</code>. </p> </li> <li> <p> The namespace of an npm package version is its <code>scope</code>. </p> </li> <li> <p> Python and 
+            NuGet package versions do not contain a corresponding component, package versions of those formats do not have a namespace. </p> </li> <li> <p> The namespace of a generic package is its 
+            <code>namespace</code>. </p> </li> </ul>
+        - name: package
+          in: query
+          type: string
+          required: true
+          description: ' The name of the package with the versions you want to dispose. '
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        body:
+          type: json
+          data: {}
+      - name: getPackageVersionAsset
+        method: GET
+        description: Amazon CodeArtifact Get Package Version Asset
+        inputParameters:
+        - name: domain
+          in: query
+          type: string
+          required: true
+          description: ' The name of the domain that contains the repository that contains the package version with the requested asset. '
+        - name: domain-owner
+          in: query
+          type: string
+          required: false
+          description: ' The 12-digit account number of the Amazon Web Services account that owns the domain. It does not include dashes or spaces. '
+        - name: repository
+          in: query
+          type: string
+          required: true
+          description: ' The repository that contains the package version with the requested asset. '
+        - name: format
+          in: query
+          type: string
+          required: true
+          description: ' A format that specifies the type of the package version with the requested asset file. '
+        - name: namespace
+          in: query
+          type: string
+          required: false
+          description: <p>The namespace of the package version with the requested asset file. The package version component that specifies its namespace depends on its type. For example:</p> <ul> <li>
+            <p> The namespace of a Maven package version is its <code>groupId</code>. </p> </li> <li> <p> The namespace of an npm package version is its <code>scope</code>. </p> </li> <li> <p> Python 
+            and NuGet package versions do not contain a corresponding component, package versions of those formats do not have a namespace. </p> </li> <li> <p> The namespace of a generic package is 
+            its <code>namespace</code>. </p> </li> </ul>
+        - name: package
+          in: query
+          type: string
+          required: true
+          description: ' The name of the package that contains the requested asset. '
+        - name: version
+          in: query
+          type: string
+          required: true
+          description: ' A string that contains the package version (for example, <code>3.5.2</code>). '
+        - name: asset
+          in: query
+          type: string
+          required: true
+          description: ' The name of the requested asset. '
+        - name: revision
+          in: query
+          type: string
+          required: false
+          description: ' The name of the package version revision that contains the requested asset. '
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: getPackageVersionReadme
+        method: GET
+        description: Amazon CodeArtifact Get Package Version Readme
+        inputParameters:
+        - name: domain
+          in: query
+          type: string
+          required: true
+          description: ' The name of the domain that contains the repository that contains the package version with the requested readme file. '
+        - name: domain-owner
+          in: query
+          type: string
+          required: false
+          description: ' The 12-digit account number of the Amazon Web Services account that owns the domain. It does not include dashes or spaces. '
+        - name: repository
+          in: query
+          type: string
+          required: true
+          description: ' The repository that contains the package with the requested readme file. '
+        - name: format
+          in: query
+          type: string
+          required: true
+          description: ' A format that specifies the type of the package version with the requested readme file. '
+        - name: namespace
+          in: query
+          type: string
+          required: false
+          description: <p>The namespace of the package version with the requested readme file. The package version component that specifies its namespace depends on its type. For example:</p> <ul> 
+            <li> <p> The namespace of an npm package version is its <code>scope</code>. </p> </li> <li> <p> Python and NuGet package versions do not contain a corresponding component, package versions
+            of those formats do not have a namespace. </p> </li> </ul>
+        - name: package
+          in: query
+          type: string
+          required: true
+          description: ' The name of the package version that contains the requested readme file. '
+        - name: version
+          in: query
+          type: string
+          required: true
+          description: ' A string that contains the package version (for example, <code>3.5.2</code>). '
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: listPackageVersionAssets
+        method: POST
+        description: Amazon CodeArtifact List Package Version Assets
+        inputParameters:
+        - name: domain
+          in: query
+          type: string
+          required: true
+          description: ' The name of the domain that contains the repository associated with the package version assets. '
+        - name: domain-owner
+          in: query
+          type: string
+          required: false
+          description: ' The 12-digit account number of the Amazon Web Services account that owns the domain. It does not include dashes or spaces. '
+        - name: repository
+          in: query
+          type: string
+          required: true
+          description: ' The name of the repository that contains the package that contains the requested package version assets. '
+        - name: format
+          in: query
+          type: string
+          required: true
+          description: ' The format of the package that contains the requested package version assets. '
+        - name: namespace
+          in: query
+          type: string
+          required: false
+          description: <p>The namespace of the package version that contains the requested package version assets. The package version component that specifies its namespace depends on its type. For 
+            example:</p> <ul> <li> <p> The namespace of a Maven package version is its <code>groupId</code>. </p> </li> <li> <p> The namespace of an npm package version is its <code>scope</code>. </p>
+            </li> <li> <p> Python and NuGet package versions do not contain a corresponding component, package versions of those formats do not have a namespace. </p> </li> <li> <p> The namespace of a
+            generic package is its <code>namespace</code>. </p> </li> </ul>
+        - name: package
+          in: query
+          type: string
+          required: true
+          description: ' The name of the package that contains the requested package version assets. '
+        - name: version
+          in: query
+          type: string
+          required: true
+          description: ' A string that contains the package version (for example, <code>3.5.2</code>). '
+        - name: max-results
+          in: query
+          type: integer
+          required: false
+          description: ' The maximum number of results to return per page. '
+        - name: next-token
+          in: query
+          type: string
+          required: false
+          description: ' The token for the next set of results. Use the value returned in the previous response in the next request to retrieve the next set of results. '
+        - name: maxResults
+          in: query
+          type: string
+          required: false
+          description: Pagination limit
+        - name: nextToken
+          in: query
+          type: string
+          required: false
+          description: Pagination token
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: listPackageVersionDependencies
+        method: POST
+        description: Amazon CodeArtifact List Package Version Dependencies
+        inputParameters:
+        - name: domain
+          in: query
+          type: string
+          required: true
+          description: ' The name of the domain that contains the repository that contains the requested package version dependencies. '
+        - name: domain-owner
+          in: query
+          type: string
+          required: false
+          description: ' The 12-digit account number of the Amazon Web Services account that owns the domain. It does not include dashes or spaces. '
+        - name: repository
+          in: query
+          type: string
+          required: true
+          description: ' The name of the repository that contains the requested package version. '
+        - name: format
+          in: query
+          type: string
+          required: true
+          description: ' The format of the package with the requested dependencies. '
+        - name: namespace
+          in: query
+          type: string
+          required: false
+          description: <p>The namespace of the package version with the requested dependencies. The package version component that specifies its namespace depends on its type. For example:</p> <ul> 
+            <li> <p> The namespace of a Maven package version is its <code>groupId</code>. </p> </li> <li> <p> The namespace of an npm package version is its <code>scope</code>. </p> </li> <li> <p> 
+            Python and NuGet package versions do not contain a corresponding component, package versions of those formats do not have a namespace. </p> </li> <li> <p> The namespace of a generic 
+            package is its <code>namespace</code>. </p> </li> </ul>
+        - name: package
+          in: query
+          type: string
+          required: true
+          description: " The name of the package versions' package. "
+        - name: version
+          in: query
+          type: string
+          required: true
+          description: ' A string that contains the package version (for example, <code>3.5.2</code>). '
+        - name: next-token
+          in: query
+          type: string
+          required: false
+          description: ' The token for the next set of results. Use the value returned in the previous response in the next request to retrieve the next set of results. '
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: listPackageVersions
+        method: POST
+        description: Amazon CodeArtifact List Package Versions
+        inputParameters:
+        - name: domain
+          in: query
+          type: string
+          required: true
+          description: ' The name of the domain that contains the repository that contains the requested package versions. '
+        - name: domain-owner
+          in: query
+          type: string
+          required: false
+          description: ' The 12-digit account number of the Amazon Web Services account that owns the domain. It does not include dashes or spaces. '
+        - name: repository
+          in: query
+          type: string
+          required: true
+          description: ' The name of the repository that contains the requested package versions. '
+        - name: format
+          in: query
+          type: string
+          required: true
+          description: ' The format of the package versions you want to list. '
+        - name: namespace
+          in: query
+          type: string
+          required: false
+          description: <p>The namespace of the package that contains the requested package versions. The package component that specifies its namespace depends on its type. For example:</p> <ul> <li> 
+            <p> The namespace of a Maven package is its <code>groupId</code>. </p> </li> <li> <p> The namespace of an npm package is its <code>scope</code>. </p> </li> <li> <p> Python and NuGet 
+            packages do not contain a corresponding component, packages of those formats do not have a namespace. </p> </li> <li> <p> The namespace of a generic package is its <code>namespace</code>. 
+            </p> </li> </ul>
+        - name: package
+          in: query
+          type: string
+          required: true
+          description: ' The name of the package for which you want to request package versions. '
+        - name: status
+          in: query
+          type: string
+          required: false
+          description: ' A string that filters the requested package versions by status. '
+        - name: sortBy
+          in: query
+          type: string
+          required: false
+          description: ' How to sort the requested list of package versions. '
+        - name: max-results
+          in: query
+          type: integer
+          required: false
+          description: ' The maximum number of results to return per page. '
+        - name: next-token
+          in: query
+          type: string
+          required: false
+          description: ' The token for the next set of results. Use the value returned in the previous response in the next request to retrieve the next set of results. '
+        - name: originType
+          in: query
+          type: string
+          required: false
+          description: The <code>originType</code> used to filter package versions. Only package versions with the provided <code>originType</code> will be returned.
+        - name: maxResults
+          in: query
+          type: string
+          required: false
+          description: Pagination limit
+        - name: nextToken
+          in: query
+          type: string
+          required: false
+          description: Pagination token
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: publishPackageVersion
+        method: POST
+        description: Amazon CodeArtifact Publish Package Version
+        inputParameters:
+        - name: domain
+          in: query
+          type: string
+          required: true
+          description: The name of the domain that contains the repository that contains the package version to publish.
+        - name: domain-owner
+          in: query
+          type: string
+          required: false
+          description: The 12-digit account number of the AWS account that owns the domain. It does not include dashes or spaces.
+        - name: repository
+          in: query
+          type: string
+          required: true
+          description: The name of the repository that the package version will be published to.
+        - name: format
+          in: query
+          type: string
+          required: true
+          description: <p>A format that specifies the type of the package version with the requested asset file.</p> <p>The only supported value is <code>generic</code>.</p>
+        - name: namespace
+          in: query
+          type: string
+          required: false
+          description: The namespace of the package version to publish.
+        - name: package
+          in: query
+          type: string
+          required: true
+          description: The name of the package version to publish.
+        - name: version
+          in: query
+          type: string
+          required: true
+          description: The package version to publish (for example, <code>3.5.2</code>).
+        - name: asset
+          in: query
+          type: string
+          required: true
+          description: 'The name of the asset to publish. Asset names can include Unicode letters and numbers, and the following special characters: <code>~ ! @ ^ &amp; ( ) - ` _ + [ ] { } ; , . `</code> '
+        - name: x-amz-content-sha256
+          in: header
+          type: string
+          required: true
+          description: <p>The SHA256 hash of the <code>assetContent</code> to publish. This value must be calculated by the caller and provided with the request (see <a 
+            href="https://docs.aws.amazon.com/codeartifact/latest/ug/using-generic.html#publishing-generic-packages">Publishing a generic package</a> in the <i>CodeArtifact User Guide</i>).</p> 
+            <p>This value is used as an integrity check to verify that the <code>assetContent</code> has not changed after it was originally sent.</p>
+        - name: unfinished
+          in: query
+          type: boolean
+          required: false
+          description: '<p>Specifies whether the package version should remain in the <code>unfinished</code> state. If omitted, the package version status will be set to <code>Published</code> (see <a
+            href="https://docs.aws.amazon.com/codeartifact/latest/ug/packages-overview.html#package-version-status">Package version status</a> in the <i>CodeArtifact User Guide</i>).</p> <p>Valid values:
+            <code>unfinished</code> </p>'
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        body:
+          type: json
+          data: {}
+      - name: updatePackageVersionsStatus
+        method: POST
+        description: Amazon CodeArtifact Update Package Versions Status
+        inputParameters:
+        - name: domain
+          in: query
+          type: string
+          required: true
+          description: ' The name of the domain that contains the repository that contains the package versions with a status to be updated. '
+        - name: domain-owner
+          in: query
+          type: string
+          required: false
+          description: ' The 12-digit account number of the Amazon Web Services account that owns the domain. It does not include dashes or spaces. '
+        - name: repository
+          in: query
+          type: string
+          required: true
+          description: ' The repository that contains the package versions with the status you want to update. '
+        - name: format
+          in: query
+          type: string
+          required: true
+          description: ' A format that specifies the type of the package with the statuses to update. '
+        - name: namespace
+          in: query
+          type: string
+          required: false
+          description: <p>The namespace of the package version to be updated. The package version component that specifies its namespace depends on its type. For example:</p> <ul> <li> <p> The 
+            namespace of a Maven package version is its <code>groupId</code>. </p> </li> <li> <p> The namespace of an npm package version is its <code>scope</code>. </p> </li> <li> <p> Python and 
+            NuGet package versions do not contain a corresponding component, package versions of those formats do not have a namespace. </p> </li> <li> <p> The namespace of a generic package is its 
+            <code>namespace</code>. </p> </li> </ul>
+        - name: package
+          in: query
+          type: string
+          required: true
+          description: ' The name of the package with the version statuses to update. '
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        body:
+          type: json
+          data: {}
+    - name: domain
+      path: /v1/domain
+      description: Operations for managing domain resources in CodeArtifact.
+      operations:
+      - name: createDomain
+        method: POST
+        description: Amazon CodeArtifact Create Domain
+        inputParameters:
+        - name: domain
+          in: query
+          type: string
+          required: true
+          description: ' The name of the domain to create. All domain names in an Amazon Web Services Region that are in the same Amazon Web Services account must be unique. The domain name is used as the
+            prefix in DNS hostnames. Do not use sensitive information in a domain name because it is publicly discoverable. '
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        body:
+          type: json
+          data: {}
+      - name: deleteDomain
+        method: DELETE
+        description: Amazon CodeArtifact Delete Domain
+        inputParameters:
+        - name: domain
+          in: query
+          type: string
+          required: true
+          description: ' The name of the domain to delete. '
+        - name: domain-owner
+          in: query
+          type: string
+          required: false
+          description: ' The 12-digit account number of the Amazon Web Services account that owns the domain. It does not include dashes or spaces. '
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: describeDomain
+        method: GET
+        description: Amazon CodeArtifact Describe Domain
+        inputParameters:
+        - name: domain
+          in: query
+          type: string
+          required: true
+          description: ' A string that specifies the name of the requested domain. '
+        - name: domain-owner
+          in: query
+          type: string
+          required: false
+          description: ' The 12-digit account number of the Amazon Web Services account that owns the domain. It does not include dashes or spaces. '
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: deleteDomainPermissionsPolicy
+        method: DELETE
+        description: Amazon CodeArtifact Delete Domain Permissions Policy
+        inputParameters:
+        - name: domain
+          in: query
+          type: string
+          required: true
+          description: ' The name of the domain associated with the resource policy to be deleted. '
+        - name: domain-owner
+          in: query
+          type: string
+          required: false
+          description: ' The 12-digit account number of the Amazon Web Services account that owns the domain. It does not include dashes or spaces. '
+        - name: policy-revision
+          in: query
+          type: string
+          required: false
+          description: " The current revision of the resource policy to be deleted. This revision is used for optimistic locking, which prevents others from overwriting your changes to the domain's resource
+            policy. "
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: getDomainPermissionsPolicy
+        method: GET
+        description: Amazon CodeArtifact Get Domain Permissions Policy
+        inputParameters:
+        - name: domain
+          in: query
+          type: string
+          required: true
+          description: ' The name of the domain to which the resource policy is attached. '
+        - name: domain-owner
+          in: query
+          type: string
+          required: false
+          description: ' The 12-digit account number of the Amazon Web Services account that owns the domain. It does not include dashes or spaces. '
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: listRepositoriesInDomain
+        method: POST
+        description: Amazon CodeArtifact List Repositories in Domain
+        inputParameters:
+        - name: domain
+          in: query
+          type: string
+          required: true
+          description: ' The name of the domain that contains the returned list of repositories. '
+        - name: domain-owner
+          in: query
+          type: string
+          required: false
+          description: ' The 12-digit account number of the Amazon Web Services account that owns the domain. It does not include dashes or spaces. '
+        - name: administrator-account
+          in: query
+          type: string
+          required: false
+          description: ' Filter the list of repositories to only include those that are managed by the Amazon Web Services account ID. '
+        - name: repository-prefix
+          in: query
+          type: string
+          required: false
+          description: ' A prefix used to filter returned repositories. Only repositories with names that start with <code>repositoryPrefix</code> are returned. '
+        - name: max-results
+          in: query
+          type: integer
+          required: false
+          description: ' The maximum number of results to return per page. '
+        - name: next-token
+          in: query
+          type: string
+          required: false
+          description: ' The token for the next set of results. Use the value returned in the previous response in the next request to retrieve the next set of results. '
+        - name: maxResults
+          in: query
+          type: string
+          required: false
+          description: Pagination limit
+        - name: nextToken
+          in: query
+          type: string
+          required: false
+          description: Pagination token
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: putDomainPermissionsPolicy
+        method: PUT
+        description: Amazon CodeArtifact Put Domain Permissions Policy
+        inputParameters: []
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        body:
+          type: json
+          data: {}
+    - name: authorization-token
+      path: /v1/authorization-token
+      description: Operations for managing authorization-token resources in CodeArtifact.
+      operations:
+      - name: getAuthorizationToken
+        method: POST
+        description: Amazon CodeArtifact Get Authorization Token
+        inputParameters:
+        - name: domain
+          in: query
+          type: string
+          required: true
+          description: ' The name of the domain that is in scope for the generated authorization token. '
+        - name: domain-owner
+          in: query
+          type: string
+          required: false
+          description: ' The 12-digit account number of the Amazon Web Services account that owns the domain. It does not include dashes or spaces. '
+        - name: duration
+          in: query
+          type: integer
+          required: false
+          description: The time, in seconds, that the generated authorization token is valid. Valid values are <code>0</code> and any number between <code>900</code> (15 minutes) and 
+            <code>43200</code> (12 hours). A value of <code>0</code> will set the expiration of the authorization token to the same expiration of the user's role's temporary credentials.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: domains
+      path: /v1/domains
+      description: Operations for managing domains resources in CodeArtifact.
+      operations:
+      - name: listDomains
+        method: POST
+        description: Amazon CodeArtifact List Domains
+        inputParameters:
+        - name: maxResults
+          in: query
+          type: string
+          required: false
+          description: Pagination limit
+        - name: nextToken
+          in: query
+          type: string
+          required: false
+          description: Pagination token
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        body:
+          type: json
+          data: {}
+    - name: packages
+      path: /v1/packages
+      description: Operations for managing packages resources in CodeArtifact.
+      operations:
+      - name: listPackages
+        method: POST
+        description: Amazon CodeArtifact List Packages
+        inputParameters:
+        - name: domain
+          in: query
+          type: string
+          required: true
+          description: ' The name of the domain that contains the repository that contains the requested packages. '
+        - name: domain-owner
+          in: query
+          type: string
+          required: false
+          description: ' The 12-digit account number of the Amazon Web Services account that owns the domain. It does not include dashes or spaces. '
+        - name: repository
+          in: query
+          type: string
+          required: true
+          description: ' The name of the repository that contains the requested packages. '
+        - name: format
+          in: query
+          type: string
+          required: false
+          description: The format used to filter requested packages. Only packages from the provided format will be returned.
+        - name: namespace
+          in: query
+          type: string
+          required: false
+          description: <p>The namespace prefix used to filter requested packages. Only packages with a namespace that starts with the provided string value are returned. Note that although this option
+            is called <code>--namespace</code> and not <code>--namespace-prefix</code>, it has prefix-matching behavior.</p> <p>Each package format uses namespace as follows:</p> <ul> <li> <p> The 
+            namespace of a Maven package is its <code>groupId</code>. </p> </li> <li> <p> The namespace of an npm package is its <code>scope</code>. </p> </li> <li> <p> Python and NuGet packages do 
+            not contain a corresponding component, packages of those formats do not have a namespace. </p> </li> <li> <p> The namespace of a generic package is its <code>namespace</code>. </p> </li> 
+            </ul>
+        - name: package-prefix
+          in: query
+          type: string
+          required: false
+          description: ' A prefix used to filter requested packages. Only packages with names that start with <code>packagePrefix</code> are returned. '
+        - name: max-results
+          in: query
+          type: integer
+          required: false
+          description: ' The maximum number of results to return per page. '
+        - name: next-token
+          in: query
+          type: string
+          required: false
+          description: ' The token for the next set of results. Use the value returned in the previous response in the next request to retrieve the next set of results. '
+        - name: publish
+          in: query
+          type: string
+          required: false
+          description: The value of the <code>Publish</code> package origin control restriction used to filter requested packages. Only packages with the provided restriction are returned. For more 
+            information, see <a href="https://docs.aws.amazon.com/codeartifact/latest/APIReference/API_PackageOriginRestrictions.html">PackageOriginRestrictions</a>.
+        - name: upstream
+          in: query
+          type: string
+          required: false
+          description: The value of the <code>Upstream</code> package origin control restriction used to filter requested packages. Only packages with the provided restriction are returned. For more 
+            information, see <a href="https://docs.aws.amazon.com/codeartifact/latest/APIReference/API_PackageOriginRestrictions.html">PackageOriginRestrictions</a>.
+        - name: maxResults
+          in: query
+          type: string
+          required: false
+          description: Pagination limit
+        - name: nextToken
+          in: query
+          type: string
+          required: false
+          description: Pagination token
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: repositories
+      path: /v1/repositories
+      description: Operations for managing repositories resources in CodeArtifact.
+      operations:
+      - name: listRepositories
+        method: POST
+        description: Amazon CodeArtifact List Repositories
+        inputParameters:
+        - name: repository-prefix
+          in: query
+          type: string
+          required: false
+          description: ' A prefix used to filter returned repositories. Only repositories with names that start with <code>repositoryPrefix</code> are returned.'
+        - name: max-results
+          in: query
+          type: integer
+          required: false
+          description: ' The maximum number of results to return per page. '
+        - name: next-token
+          in: query
+          type: string
+          required: false
+          description: ' The token for the next set of results. Use the value returned in the previous response in the next request to retrieve the next set of results. '
+        - name: maxResults
+          in: query
+          type: string
+          required: false
+          description: Pagination limit
+        - name: nextToken
+          in: query
+          type: string
+          required: false
+          description: Pagination token
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: tags
+      path: /v1/tags
+      description: Operations for managing tags resources in CodeArtifact.
+      operations:
+      - name: listTagsForResource
+        method: POST
+        description: Amazon CodeArtifact List Tags for Resource
+        inputParameters:
+        - name: resourceArn
+          in: query
+          type: string
+          required: true
+          description: The Amazon Resource Name (ARN) of the resource to get tags for.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: tag
+      path: /v1/tag
+      description: Operations for managing tag resources in CodeArtifact.
+      operations:
+      - name: tagResource
+        method: POST
+        description: Amazon CodeArtifact Tag Resource
+        inputParameters:
+        - name: resourceArn
+          in: query
+          type: string
+          required: true
+          description: The Amazon Resource Name (ARN) of the resource that you want to add or update tags for.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        body:
+          type: json
+          data: {}
+    - name: untag
+      path: /v1/untag
+      description: Operations for managing untag resources in CodeArtifact.
+      operations:
+      - name: untagResource
+        method: POST
+        description: Amazon CodeArtifact Untag Resource
+        inputParameters:
+        - name: resourceArn
+          in: query
+          type: string
+          required: true
+          description: The Amazon Resource Name (ARN) of the resource that you want to remove tags from.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        body:
+          type: json
+          data: {}
+  exposes:
+  - type: rest
+    port: 8100
+    namespace: codeartifact-rest
+    resources:
+    - path: /v1/repository
+      name: repository
+      description: REST endpoint for repository operations
+      operations:
+      - method: POST
+        name: associateExternalConnection
+        description: Amazon CodeArtifact Associate External Connection
+        call: codeartifact.associateExternalConnection
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: DELETE
+        name: disassociateExternalConnection
+        description: Amazon CodeArtifact Disassociate External Connection
+        call: codeartifact.disassociateExternalConnection
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: POST
+        name: createRepository
+        description: Amazon CodeArtifact Create Repository
+        call: codeartifact.createRepository
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: DELETE
+        name: deleteRepository
+        description: Amazon CodeArtifact Delete Repository
+        call: codeartifact.deleteRepository
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: GET
+        name: describeRepository
+        description: Amazon CodeArtifact Describe Repository
+        call: codeartifact.describeRepository
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: PUT
+        name: updateRepository
+        description: Amazon CodeArtifact Update Repository
+        call: codeartifact.updateRepository
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: DELETE
+        name: deleteRepositoryPermissionsPolicy
+        description: Amazon CodeArtifact Delete Repository Permissions Policy
+        call: codeartifact.deleteRepositoryPermissionsPolicy
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: GET
+        name: getRepositoryEndpoint
+        description: Amazon CodeArtifact Get Repository Endpoint
+        call: codeartifact.getRepositoryEndpoint
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: GET
+        name: getRepositoryPermissionsPolicy
+        description: Amazon CodeArtifact Get Repository Permissions Policy
+        call: codeartifact.getRepositoryPermissionsPolicy
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: PUT
+        name: putRepositoryPermissionsPolicy
+        description: Amazon CodeArtifact Put Repository Permissions Policy
+        call: codeartifact.putRepositoryPermissionsPolicy
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/package
+      name: package
+      description: REST endpoint for package operations
+      operations:
+      - method: POST
+        name: copyPackageVersions
+        description: Amazon CodeArtifact Copy Package Versions
+        call: codeartifact.copyPackageVersions
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: DELETE
+        name: deletePackage
+        description: Amazon CodeArtifact Delete Package
+        call: codeartifact.deletePackage
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: GET
+        name: describePackage
+        description: Amazon CodeArtifact Describe Package
+        call: codeartifact.describePackage
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: POST
+        name: putPackageOriginConfiguration
+        description: Amazon CodeArtifact Put Package Origin Configuration
+        call: codeartifact.putPackageOriginConfiguration
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: POST
+        name: deletePackageVersions
+        description: Amazon CodeArtifact Delete Package Versions
+        call: codeartifact.deletePackageVersions
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: GET
+        name: describePackageVersion
+        description: Amazon CodeArtifact Describe Package Version
+        call: codeartifact.describePackageVersion
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: POST
+        name: disposePackageVersions
+        description: Amazon CodeArtifact Dispose Package Versions
+        call: codeartifact.disposePackageVersions
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: GET
+        name: getPackageVersionAsset
+        description: Amazon CodeArtifact Get Package Version Asset
+        call: codeartifact.getPackageVersionAsset
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: GET
+        name: getPackageVersionReadme
+        description: Amazon CodeArtifact Get Package Version Readme
+        call: codeartifact.getPackageVersionReadme
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: POST
+        name: listPackageVersionAssets
+        description: Amazon CodeArtifact List Package Version Assets
+        call: codeartifact.listPackageVersionAssets
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: POST
+        name: listPackageVersionDependencies
+        description: Amazon CodeArtifact List Package Version Dependencies
+        call: codeartifact.listPackageVersionDependencies
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: POST
+        name: listPackageVersions
+        description: Amazon CodeArtifact List Package Versions
+        call: codeartifact.listPackageVersions
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: POST
+        name: publishPackageVersion
+        description: Amazon CodeArtifact Publish Package Version
+        call: codeartifact.publishPackageVersion
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: POST
+        name: updatePackageVersionsStatus
+        description: Amazon CodeArtifact Update Package Versions Status
+        call: codeartifact.updatePackageVersionsStatus
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/domain
+      name: domain
+      description: REST endpoint for domain operations
+      operations:
+      - method: POST
+        name: createDomain
+        description: Amazon CodeArtifact Create Domain
+        call: codeartifact.createDomain
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: DELETE
+        name: deleteDomain
+        description: Amazon CodeArtifact Delete Domain
+        call: codeartifact.deleteDomain
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: GET
+        name: describeDomain
+        description: Amazon CodeArtifact Describe Domain
+        call: codeartifact.describeDomain
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: DELETE
+        name: deleteDomainPermissionsPolicy
+        description: Amazon CodeArtifact Delete Domain Permissions Policy
+        call: codeartifact.deleteDomainPermissionsPolicy
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: GET
+        name: getDomainPermissionsPolicy
+        description: Amazon CodeArtifact Get Domain Permissions Policy
+        call: codeartifact.getDomainPermissionsPolicy
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: POST
+        name: listRepositoriesInDomain
+        description: Amazon CodeArtifact List Repositories in Domain
+        call: codeartifact.listRepositoriesInDomain
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: PUT
+        name: putDomainPermissionsPolicy
+        description: Amazon CodeArtifact Put Domain Permissions Policy
+        call: codeartifact.putDomainPermissionsPolicy
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/authorization-token
+      name: authorization-token
+      description: REST endpoint for authorization-token operations
+      operations:
+      - method: POST
+        name: getAuthorizationToken
+        description: Amazon CodeArtifact Get Authorization Token
+        call: codeartifact.getAuthorizationToken
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/domains
+      name: domains
+      description: REST endpoint for domains operations
+      operations:
+      - method: POST
+        name: listDomains
+        description: Amazon CodeArtifact List Domains
+        call: codeartifact.listDomains
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/packages
+      name: packages
+      description: REST endpoint for packages operations
+      operations:
+      - method: POST
+        name: listPackages
+        description: Amazon CodeArtifact List Packages
+        call: codeartifact.listPackages
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/repositories
+      name: repositories
+      description: REST endpoint for repositories operations
+      operations:
+      - method: POST
+        name: listRepositories
+        description: Amazon CodeArtifact List Repositories
+        call: codeartifact.listRepositories
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/tags
+      name: tags
+      description: REST endpoint for tags operations
+      operations:
+      - method: POST
+        name: listTagsForResource
+        description: Amazon CodeArtifact List Tags for Resource
+        call: codeartifact.listTagsForResource
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/tag
+      name: tag
+      description: REST endpoint for tag operations
+      operations:
+      - method: POST
+        name: tagResource
+        description: Amazon CodeArtifact Tag Resource
+        call: codeartifact.tagResource
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/untag
+      name: untag
+      description: REST endpoint for untag operations
+      operations:
+      - method: POST
+        name: untagResource
+        description: Amazon CodeArtifact Untag Resource
+        call: codeartifact.untagResource
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    port: 9100
+    namespace: codeartifact-mcp
+    transport: http
+    tools:
+    - name: codeartifact-associateExternalConnection
+      description: Amazon CodeArtifact Associate External Connection
+      hints:
+        readOnly: false
+        openWorld: true
+      call: codeartifact.associateExternalConnection
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: codeartifact-disassociateExternalConnection
+      description: Amazon CodeArtifact Disassociate External Connection
+      hints:
+        readOnly: false
+        openWorld: true
+      call: codeartifact.disassociateExternalConnection
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: codeartifact-createRepository
+      description: Amazon CodeArtifact Create Repository
+      hints:
+        readOnly: false
+        openWorld: true
+      call: codeartifact.createRepository
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: codeartifact-deleteRepository
+      description: Amazon CodeArtifact Delete Repository
+      hints:
+        readOnly: false
+        openWorld: true
+      call: codeartifact.deleteRepository
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: codeartifact-describeRepository
+      description: Amazon CodeArtifact Describe Repository
+      hints:
+        readOnly: true
+        openWorld: true
+      call: codeartifact.describeRepository
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: codeartifact-updateRepository
+      description: Amazon CodeArtifact Update Repository
+      hints:
+        readOnly: false
+        openWorld: true
+      call: codeartifact.updateRepository
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: codeartifact-deleteRepositoryPermissionsPolicy
+      description: Amazon CodeArtifact Delete Repository Permissions Policy
+      hints:
+        readOnly: false
+        openWorld: true
+      call: codeartifact.deleteRepositoryPermissionsPolicy
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: codeartifact-getRepositoryEndpoint
+      description: Amazon CodeArtifact Get Repository Endpoint
+      hints:
+        readOnly: true
+        openWorld: true
+      call: codeartifact.getRepositoryEndpoint
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: codeartifact-getRepositoryPermissionsPolicy
+      description: Amazon CodeArtifact Get Repository Permissions Policy
+      hints:
+        readOnly: true
+        openWorld: true
+      call: codeartifact.getRepositoryPermissionsPolicy
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: codeartifact-putRepositoryPermissionsPolicy
+      description: Amazon CodeArtifact Put Repository Permissions Policy
+      hints:
+        readOnly: false
+        openWorld: true
+      call: codeartifact.putRepositoryPermissionsPolicy
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: codeartifact-copyPackageVersions
+      description: Amazon CodeArtifact Copy Package Versions
+      hints:
+        readOnly: false
+        openWorld: true
+      call: codeartifact.copyPackageVersions
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: codeartifact-deletePackage
+      description: Amazon CodeArtifact Delete Package
+      hints:
+        readOnly: false
+        openWorld: true
+      call: codeartifact.deletePackage
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: codeartifact-describePackage
+      description: Amazon CodeArtifact Describe Package
+      hints:
+        readOnly: true
+        openWorld: true
+      call: codeartifact.describePackage
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: codeartifact-putPackageOriginConfiguration
+      description: Amazon CodeArtifact Put Package Origin Configuration
+      hints:
+        readOnly: false
+        openWorld: true
+      call: codeartifact.putPackageOriginConfiguration
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: codeartifact-deletePackageVersions
+      description: Amazon CodeArtifact Delete Package Versions
+      hints:
+        readOnly: false
+        openWorld: true
+      call: codeartifact.deletePackageVersions
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: codeartifact-describePackageVersion
+      description: Amazon CodeArtifact Describe Package Version
+      hints:
+        readOnly: true
+        openWorld: true
+      call: codeartifact.describePackageVersion
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: codeartifact-disposePackageVersions
+      description: Amazon CodeArtifact Dispose Package Versions
+      hints:
+        readOnly: false
+        openWorld: true
+      call: codeartifact.disposePackageVersions
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: codeartifact-getPackageVersionAsset
+      description: Amazon CodeArtifact Get Package Version Asset
+      hints:
+        readOnly: true
+        openWorld: true
+      call: codeartifact.getPackageVersionAsset
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: codeartifact-getPackageVersionReadme
+      description: Amazon CodeArtifact Get Package Version Readme
+      hints:
+        readOnly: true
+        openWorld: true
+      call: codeartifact.getPackageVersionReadme
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: codeartifact-listPackageVersionAssets
+      description: Amazon CodeArtifact List Package Version Assets
+      hints:
+        readOnly: false
+        openWorld: true
+      call: codeartifact.listPackageVersionAssets
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: codeartifact-listPackageVersionDependencies
+      description: Amazon CodeArtifact List Package Version Dependencies
+      hints:
+        readOnly: false
+        openWorld: true
+      call: codeartifact.listPackageVersionDependencies
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: codeartifact-listPackageVersions
+      description: Amazon CodeArtifact List Package Versions
+      hints:
+        readOnly: false
+        openWorld: true
+      call: codeartifact.listPackageVersions
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: codeartifact-publishPackageVersion
+      description: Amazon CodeArtifact Publish Package Version
+      hints:
+        readOnly: false
+        openWorld: true
+      call: codeartifact.publishPackageVersion
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: codeartifact-updatePackageVersionsStatus
+      description: Amazon CodeArtifact Update Package Versions Status
+      hints:
+        readOnly: false
+        openWorld: true
+      call: codeartifact.updatePackageVersionsStatus
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: codeartifact-createDomain
+      description: Amazon CodeArtifact Create Domain
+      hints:
+        readOnly: false
+        openWorld: true
+      call: codeartifact.createDomain
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: codeartifact-deleteDomain
+      description: Amazon CodeArtifact Delete Domain
+      hints:
+        readOnly: false
+        openWorld: true
+      call: codeartifact.deleteDomain
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: codeartifact-describeDomain
+      description: Amazon CodeArtifact Describe Domain
+      hints:
+        readOnly: true
+        openWorld: true
+      call: codeartifact.describeDomain
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: codeartifact-deleteDomainPermissionsPolicy
+      description: Amazon CodeArtifact Delete Domain Permissions Policy
+      hints:
+        readOnly: false
+        openWorld: true
+      call: codeartifact.deleteDomainPermissionsPolicy
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: codeartifact-getDomainPermissionsPolicy
+      description: Amazon CodeArtifact Get Domain Permissions Policy
+      hints:
+        readOnly: true
+        openWorld: true
+      call: codeartifact.getDomainPermissionsPolicy
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: codeartifact-listRepositoriesInDomain
+      description: Amazon CodeArtifact List Repositories in Domain
+      hints:
+        readOnly: false
+        openWorld: true
+      call: codeartifact.listRepositoriesInDomain
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: codeartifact-putDomainPermissionsPolicy
+      description: Amazon CodeArtifact Put Domain Permissions Policy
+      hints:
+        readOnly: false
+        openWorld: true
+      call: codeartifact.putDomainPermissionsPolicy
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: codeartifact-getAuthorizationToken
+      description: Amazon CodeArtifact Get Authorization Token
+      hints:
+        readOnly: false
+        openWorld: true
+      call: codeartifact.getAuthorizationToken
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: codeartifact-listDomains
+      description: Amazon CodeArtifact List Domains
+      hints:
+        readOnly: false
+        openWorld: true
+      call: codeartifact.listDomains
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: codeartifact-listPackages
+      description: Amazon CodeArtifact List Packages
+      hints:
+        readOnly: false
+        openWorld: true
+      call: codeartifact.listPackages
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: codeartifact-listRepositories
+      description: Amazon CodeArtifact List Repositories
+      hints:
+        readOnly: false
+        openWorld: true
+      call: codeartifact.listRepositories
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: codeartifact-listTagsForResource
+      description: Amazon CodeArtifact List Tags for Resource
+      hints:
+        readOnly: false
+        openWorld: true
+      call: codeartifact.listTagsForResource
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: codeartifact-tagResource
+      description: Amazon CodeArtifact Tag Resource
+      hints:
+        readOnly: false
+        openWorld: true
+      call: codeartifact.tagResource
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: codeartifact-untagResource
+      description: Amazon CodeArtifact Untag Resource
+      hints:
+        readOnly: false
+        openWorld: true
+      call: codeartifact.untagResource
+      outputParameters:
+      - type: object
+        mapping: $.

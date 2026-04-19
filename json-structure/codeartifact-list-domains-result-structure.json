@@ -1,0 +1,29 @@
+{
+  "$schema": "https://json-structure.org/meta/core/v0/#",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/amazon-codeartifact/refs/heads/main/json-structure/codeartifact-list-domains-result-structure.json",
+  "name": "ListDomainsResult",
+  "description": "ListDomainsResult schema from Amazon CodeArtifact API",
+  "type": "object",
+  "properties": {
+    "domains": {
+      "allOf": [
+        {
+          "$ref": "#/components/schemas/DomainSummaryList"
+        },
+        {
+          "description": " The returned list of <a href=\"https://docs.aws.amazon.com/codeartifact/latest/APIReference/API_DomainSummary.html\">DomainSummary</a> objects. "
+        }
+      ]
+    },
+    "nextToken": {
+      "allOf": [
+        {
+          "$ref": "#/components/schemas/PaginationToken"
+        },
+        {
+          "description": " The token for the next set of results. Use the value returned in the previous response in the next request to retrieve the next set of results. "
+        }
+      ]
+    }
+  }
+}

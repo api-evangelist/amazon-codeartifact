@@ -1,0 +1,19 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/amazon-codeartifact/refs/heads/main/json-schema/codeartifact-describe-repository-result-schema.json",
+  "title": "DescribeRepositoryResult",
+  "description": "DescribeRepositoryResult schema from Amazon CodeArtifact API",
+  "type": "object",
+  "properties": {
+    "repository": {
+      "allOf": [
+        {
+          "$ref": "#/components/schemas/RepositoryDescription"
+        },
+        {
+          "description": " A <code>RepositoryDescription</code> object that contains the requested repository information. "
+        }
+      ]
+    }
+  }
+}

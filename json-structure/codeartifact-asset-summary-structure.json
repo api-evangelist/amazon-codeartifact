@@ -1,0 +1,42 @@
+{
+  "$schema": "https://json-structure.org/meta/core/v0/#",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/amazon-codeartifact/refs/heads/main/json-structure/codeartifact-asset-summary-structure.json",
+  "name": "AssetSummary",
+  "description": " Contains details about a package version asset. ",
+  "type": "object",
+  "properties": {
+    "name": {
+      "allOf": [
+        {
+          "$ref": "#/components/schemas/AssetName"
+        },
+        {
+          "description": " The name of the asset. "
+        }
+      ]
+    },
+    "size": {
+      "allOf": [
+        {
+          "$ref": "#/components/schemas/LongOptional"
+        },
+        {
+          "description": " The size of the asset. "
+        }
+      ]
+    },
+    "hashes": {
+      "allOf": [
+        {
+          "$ref": "#/components/schemas/AssetHashes"
+        },
+        {
+          "description": " The hashes of the asset. "
+        }
+      ]
+    }
+  },
+  "required": [
+    "name"
+  ]
+}

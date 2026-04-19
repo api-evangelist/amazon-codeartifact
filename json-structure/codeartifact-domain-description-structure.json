@@ -1,0 +1,99 @@
+{
+  "$schema": "https://json-structure.org/meta/core/v0/#",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/amazon-codeartifact/refs/heads/main/json-structure/codeartifact-domain-description-structure.json",
+  "name": "DomainDescription",
+  "description": " Information about a domain. A domain is a container for repositories. When you create a domain, it is empty until you add one or more repositories. ",
+  "type": "object",
+  "properties": {
+    "name": {
+      "allOf": [
+        {
+          "$ref": "#/components/schemas/DomainName"
+        },
+        {
+          "description": " The name of the domain. "
+        }
+      ]
+    },
+    "owner": {
+      "allOf": [
+        {
+          "$ref": "#/components/schemas/AccountId"
+        },
+        {
+          "description": " The Amazon Web Services account ID that owns the domain. "
+        }
+      ]
+    },
+    "arn": {
+      "allOf": [
+        {
+          "$ref": "#/components/schemas/Arn"
+        },
+        {
+          "description": " The Amazon Resource Name (ARN) of the domain. "
+        }
+      ]
+    },
+    "status": {
+      "allOf": [
+        {
+          "$ref": "#/components/schemas/DomainStatus"
+        },
+        {
+          "description": " The current status of a domain. "
+        }
+      ]
+    },
+    "createdTime": {
+      "allOf": [
+        {
+          "$ref": "#/components/schemas/Timestamp"
+        },
+        {
+          "description": " A timestamp that represents the date and time the domain was created. "
+        }
+      ]
+    },
+    "encryptionKey": {
+      "allOf": [
+        {
+          "$ref": "#/components/schemas/Arn"
+        },
+        {
+          "description": " The ARN of an Key Management Service (KMS) key associated with a domain. "
+        }
+      ]
+    },
+    "repositoryCount": {
+      "allOf": [
+        {
+          "$ref": "#/components/schemas/Integer"
+        },
+        {
+          "description": " The number of repositories in the domain. "
+        }
+      ]
+    },
+    "assetSizeBytes": {
+      "allOf": [
+        {
+          "$ref": "#/components/schemas/Long"
+        },
+        {
+          "description": " The total size of all assets in the domain. "
+        }
+      ]
+    },
+    "s3BucketArn": {
+      "allOf": [
+        {
+          "$ref": "#/components/schemas/Arn"
+        },
+        {
+          "description": "The Amazon Resource Name (ARN) of the Amazon S3 bucket that is used to store package assets in the domain."
+        }
+      ]
+    }
+  }
+}

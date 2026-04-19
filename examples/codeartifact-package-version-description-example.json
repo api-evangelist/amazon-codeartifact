@@ -1,0 +1,10 @@
+{
+  "format": "npm",
+  "namespace": "my-package",
+  "packageName": "my-package",
+  "displayName": "my-package",
+  "version": "1.0.0",
+  "summary": "example-value",
+  "homePage": "example-value",
+  "sourceCodeRepository": "my-repo"
+}

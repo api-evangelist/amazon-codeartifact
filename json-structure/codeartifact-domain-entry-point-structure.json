@@ -1,0 +1,29 @@
+{
+  "$schema": "https://json-structure.org/meta/core/v0/#",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/amazon-codeartifact/refs/heads/main/json-structure/codeartifact-domain-entry-point-structure.json",
+  "name": "DomainEntryPoint",
+  "description": "Information about how a package originally entered the CodeArtifact domain. For packages published directly to CodeArtifact, the entry point is the repository it was published to. For packages ingested from an external repository, the entry point is the external connection that it was ingested from. An external connection is a CodeArtifact repository that is connected to an external repository such as the npm registry or NuGet gallery.",
+  "type": "object",
+  "properties": {
+    "repositoryName": {
+      "allOf": [
+        {
+          "$ref": "#/components/schemas/RepositoryName"
+        },
+        {
+          "description": "The name of the repository that a package was originally published to."
+        }
+      ]
+    },
+    "externalConnectionName": {
+      "allOf": [
+        {
+          "$ref": "#/components/schemas/ExternalConnectionName"
+        },
+        {
+          "description": "The name of the external connection that a package was ingested from."
+        }
+      ]
+    }
+  }
+}

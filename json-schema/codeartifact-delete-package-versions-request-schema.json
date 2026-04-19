@@ -1,0 +1,32 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/amazon-codeartifact/refs/heads/main/json-schema/codeartifact-delete-package-versions-request-schema.json",
+  "title": "DeletePackageVersionsRequest",
+  "description": "DeletePackageVersionsRequest schema from Amazon CodeArtifact API",
+  "type": "object",
+  "properties": {
+    "versions": {
+      "allOf": [
+        {
+          "$ref": "#/components/schemas/PackageVersionList"
+        },
+        {
+          "description": " An array of strings that specify the versions of the package to delete. "
+        }
+      ]
+    },
+    "expectedStatus": {
+      "allOf": [
+        {
+          "$ref": "#/components/schemas/PackageVersionStatus"
+        },
+        {
+          "description": " The expected status of the package version to delete. "
+        }
+      ]
+    }
+  },
+  "required": [
+    "versions"
+  ]
+}

@@ -1,0 +1,22 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/amazon-codeartifact/refs/heads/main/json-schema/codeartifact-describe-package-version-result-schema.json",
+  "title": "DescribePackageVersionResult",
+  "description": "DescribePackageVersionResult schema from Amazon CodeArtifact API",
+  "type": "object",
+  "properties": {
+    "packageVersion": {
+      "allOf": [
+        {
+          "$ref": "#/components/schemas/PackageVersionDescription"
+        },
+        {
+          "description": " A <a href=\"https://docs.aws.amazon.com/codeartifact/latest/APIReference/API_PackageVersionDescription.html\">PackageVersionDescription</a> object that contains information about the requested package version. "
+        }
+      ]
+    }
+  },
+  "required": [
+    "packageVersion"
+  ]
+}

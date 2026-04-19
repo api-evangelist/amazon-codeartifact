@@ -1,0 +1,19 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/amazon-codeartifact/refs/heads/main/json-schema/codeartifact-put-domain-permissions-policy-result-schema.json",
+  "title": "PutDomainPermissionsPolicyResult",
+  "description": "PutDomainPermissionsPolicyResult schema from Amazon CodeArtifact API",
+  "type": "object",
+  "properties": {
+    "policy": {
+      "allOf": [
+        {
+          "$ref": "#/components/schemas/ResourcePolicy"
+        },
+        {
+          "description": " The resource policy that was set after processing the request. "
+        }
+      ]
+    }
+  }
+}

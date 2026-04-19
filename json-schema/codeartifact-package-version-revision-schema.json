@@ -1,0 +1,10 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/amazon-codeartifact/refs/heads/main/json-schema/codeartifact-package-version-revision-schema.json",
+  "title": "PackageVersionRevision",
+  "description": "PackageVersionRevision schema from Amazon CodeArtifact API",
+  "type": "string",
+  "pattern": "\\S+",
+  "minLength": 1,
+  "maxLength": 50
+}

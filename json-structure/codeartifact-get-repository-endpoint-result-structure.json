@@ -1,0 +1,19 @@
+{
+  "$schema": "https://json-structure.org/meta/core/v0/#",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/amazon-codeartifact/refs/heads/main/json-structure/codeartifact-get-repository-endpoint-result-structure.json",
+  "name": "GetRepositoryEndpointResult",
+  "description": "GetRepositoryEndpointResult schema from Amazon CodeArtifact API",
+  "type": "object",
+  "properties": {
+    "repositoryEndpoint": {
+      "allOf": [
+        {
+          "$ref": "#/components/schemas/String"
+        },
+        {
+          "description": " A string that specifies the URL of the returned endpoint. "
+        }
+      ]
+    }
+  }
+}

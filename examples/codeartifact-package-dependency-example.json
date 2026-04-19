@@ -1,0 +1,6 @@
+{
+  "namespace": "my-package",
+  "package": "example-value",
+  "dependencyType": "example-value",
+  "versionRequirement": "1.0.0"
+}

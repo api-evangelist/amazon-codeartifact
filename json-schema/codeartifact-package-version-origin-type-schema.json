@@ -1,0 +1,12 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/amazon-codeartifact/refs/heads/main/json-schema/codeartifact-package-version-origin-type-schema.json",
+  "title": "PackageVersionOriginType",
+  "description": "PackageVersionOriginType schema from Amazon CodeArtifact API",
+  "type": "string",
+  "enum": [
+    "INTERNAL",
+    "EXTERNAL",
+    "UNKNOWN"
+  ]
+}

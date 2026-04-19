@@ -1,0 +1,29 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/amazon-codeartifact/refs/heads/main/json-schema/codeartifact-successful-package-version-info-schema.json",
+  "title": "SuccessfulPackageVersionInfo",
+  "description": " Contains the revision and status of a package version. ",
+  "type": "object",
+  "properties": {
+    "revision": {
+      "allOf": [
+        {
+          "$ref": "#/components/schemas/String"
+        },
+        {
+          "description": " The revision of a package version. "
+        }
+      ]
+    },
+    "status": {
+      "allOf": [
+        {
+          "$ref": "#/components/schemas/PackageVersionStatus"
+        },
+        {
+          "description": " The status of a package version. "
+        }
+      ]
+    }
+  }
+}

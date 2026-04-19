@@ -1,0 +1,99 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/amazon-codeartifact/refs/heads/main/json-schema/codeartifact-repository-description-schema.json",
+  "title": "RepositoryDescription",
+  "description": " The details of a repository stored in CodeArtifact. A CodeArtifact repository contains a set of package versions, each of which maps to a set of assets. Repositories are polyglot\u2014a single repository can contain packages of any supported type. Each repository exposes endpoints for fetching and publishing packages using tools like the <code>npm</code> CLI, the Maven CLI (<code>mvn</code>), and <code>pip</code>. You can create up to 100 repositories per Amazon Web Services account. ",
+  "type": "object",
+  "properties": {
+    "name": {
+      "allOf": [
+        {
+          "$ref": "#/components/schemas/RepositoryName"
+        },
+        {
+          "description": " The name of the repository. "
+        }
+      ]
+    },
+    "administratorAccount": {
+      "allOf": [
+        {
+          "$ref": "#/components/schemas/AccountId"
+        },
+        {
+          "description": " The 12-digit account number of the Amazon Web Services account that manages the repository. "
+        }
+      ]
+    },
+    "domainName": {
+      "allOf": [
+        {
+          "$ref": "#/components/schemas/DomainName"
+        },
+        {
+          "description": " The name of the domain that contains the repository. "
+        }
+      ]
+    },
+    "domainOwner": {
+      "allOf": [
+        {
+          "$ref": "#/components/schemas/AccountId"
+        },
+        {
+          "description": " The 12-digit account number of the Amazon Web Services account that owns the domain that contains the repository. It does not include dashes or spaces. "
+        }
+      ]
+    },
+    "arn": {
+      "allOf": [
+        {
+          "$ref": "#/components/schemas/Arn"
+        },
+        {
+          "description": " The Amazon Resource Name (ARN) of the repository. "
+        }
+      ]
+    },
+    "description": {
+      "allOf": [
+        {
+          "$ref": "#/components/schemas/Description"
+        },
+        {
+          "description": " A text description of the repository. "
+        }
+      ]
+    },
+    "upstreams": {
+      "allOf": [
+        {
+          "$ref": "#/components/schemas/UpstreamRepositoryInfoList"
+        },
+        {
+          "description": " A list of upstream repositories to associate with the repository. The order of the upstream repositories in the list determines their priority order when CodeArtifact looks for a requested package version. For more information, see <a href=\"https://docs.aws.amazon.com/codeartifact/latest/ug/repos-upstream.html\">Working with upstream repositories</a>. "
+        }
+      ]
+    },
+    "externalConnections": {
+      "allOf": [
+        {
+          "$ref": "#/components/schemas/RepositoryExternalConnectionInfoList"
+        },
+        {
+          "description": " An array of external connections associated with the repository. "
+        }
+      ]
+    },
+    "createdTime": {
+      "allOf": [
+        {
+          "$ref": "#/components/schemas/Timestamp"
+        },
+        {
+          "description": "A timestamp that represents the date and time the repository was created."
+        }
+      ]
+    }
+  }
+}

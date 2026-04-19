@@ -1,0 +1,10 @@
+{
+  "$schema": "https://json-structure.org/meta/core/v0/#",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/amazon-codeartifact/refs/heads/main/json-structure/codeartifact-account-id-structure.json",
+  "name": "AccountId",
+  "description": "AccountId schema from Amazon CodeArtifact API",
+  "type": "string",
+  "pattern": "[0-9]{12}",
+  "minLength": 12,
+  "maxLength": 12
+}

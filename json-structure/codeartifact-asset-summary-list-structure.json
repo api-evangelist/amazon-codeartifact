@@ -1,0 +1,10 @@
+{
+  "$schema": "https://json-structure.org/meta/core/v0/#",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/amazon-codeartifact/refs/heads/main/json-structure/codeartifact-asset-summary-list-structure.json",
+  "name": "AssetSummaryList",
+  "description": "AssetSummaryList schema from Amazon CodeArtifact API",
+  "type": "array",
+  "items": {
+    "$ref": "#/components/schemas/AssetSummary"
+  }
+}

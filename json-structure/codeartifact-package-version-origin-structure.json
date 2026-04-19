@@ -1,0 +1,29 @@
+{
+  "$schema": "https://json-structure.org/meta/core/v0/#",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/amazon-codeartifact/refs/heads/main/json-structure/codeartifact-package-version-origin-structure.json",
+  "name": "PackageVersionOrigin",
+  "description": "Information about how a package version was added to a repository.",
+  "type": "object",
+  "properties": {
+    "domainEntryPoint": {
+      "allOf": [
+        {
+          "$ref": "#/components/schemas/DomainEntryPoint"
+        },
+        {
+          "description": "A <a href=\"https://docs.aws.amazon.com/codeartifact/latest/APIReference/API_DomainEntryPoint.html\">DomainEntryPoint</a> object that contains information about from which repository or external connection the package version was added to the domain."
+        }
+      ]
+    },
+    "originType": {
+      "allOf": [
+        {
+          "$ref": "#/components/schemas/PackageVersionOriginType"
+        },
+        {
+          "description": "Describes how the package version was originally added to the domain. An <code>INTERNAL</code> origin type means the package version was published directly to a repository in the domain. An <code>EXTERNAL</code> origin type means the package version was ingested from an external connection."
+        }
+      ]
+    }
+  }
+}

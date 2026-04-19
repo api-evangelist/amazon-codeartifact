@@ -1,0 +1,39 @@
+{
+  "$schema": "https://json-structure.org/meta/core/v0/#",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/amazon-codeartifact/refs/heads/main/json-structure/codeartifact-resource-policy-structure.json",
+  "name": "ResourcePolicy",
+  "description": " An CodeArtifact resource policy that contains a resource ARN, document details, and a revision. ",
+  "type": "object",
+  "properties": {
+    "resourceArn": {
+      "allOf": [
+        {
+          "$ref": "#/components/schemas/Arn"
+        },
+        {
+          "description": " The ARN of the resource associated with the resource policy "
+        }
+      ]
+    },
+    "revision": {
+      "allOf": [
+        {
+          "$ref": "#/components/schemas/PolicyRevision"
+        },
+        {
+          "description": " The current revision of the resource policy. "
+        }
+      ]
+    },
+    "document": {
+      "allOf": [
+        {
+          "$ref": "#/components/schemas/PolicyDocument"
+        },
+        {
+          "description": " The resource policy formatted in JSON. "
+        }
+      ]
+    }
+  }
+}

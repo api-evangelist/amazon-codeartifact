@@ -1,0 +1,9 @@
+{
+  "format": "npm",
+  "namespace": "my-package",
+  "package": "example-value",
+  "version": "1.0.0",
+  "versionRevision": "1.0.0",
+  "nextToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.example",
+  "dependencies": "example-value"
+}

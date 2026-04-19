@@ -1,0 +1,9 @@
+{
+  "name": "my-package",
+  "administratorAccount": "123456789012",
+  "domainName": "my-domain",
+  "domainOwner": "my-domain",
+  "arn": "arn:aws:codeartifact:us-east-1:123456789012:domain/my-domain",
+  "description": "Example CodeArtifact resource",
+  "createdTime": "example-value"
+}

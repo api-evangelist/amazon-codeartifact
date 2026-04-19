@@ -1,0 +1,19 @@
+{
+  "$schema": "https://json-structure.org/meta/core/v0/#",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/amazon-codeartifact/refs/heads/main/json-structure/codeartifact-delete-repository-result-structure.json",
+  "name": "DeleteRepositoryResult",
+  "description": "DeleteRepositoryResult schema from Amazon CodeArtifact API",
+  "type": "object",
+  "properties": {
+    "repository": {
+      "allOf": [
+        {
+          "$ref": "#/components/schemas/RepositoryDescription"
+        },
+        {
+          "description": " Information about the deleted repository after processing the request. "
+        }
+      ]
+    }
+  }
+}

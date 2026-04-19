@@ -1,0 +1,19 @@
+{
+  "$schema": "https://json-structure.org/meta/core/v0/#",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/amazon-codeartifact/refs/heads/main/json-structure/codeartifact-delete-domain-permissions-policy-result-structure.json",
+  "name": "DeleteDomainPermissionsPolicyResult",
+  "description": "DeleteDomainPermissionsPolicyResult schema from Amazon CodeArtifact API",
+  "type": "object",
+  "properties": {
+    "policy": {
+      "allOf": [
+        {
+          "$ref": "#/components/schemas/ResourcePolicy"
+        },
+        {
+          "description": " Information about the deleted resource policy after processing the request. "
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,8 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/amazon-codeartifact/refs/heads/main/json-schema/codeartifact-list-packages-request-schema.json",
+  "title": "ListPackagesRequest",
+  "description": "ListPackagesRequest schema from Amazon CodeArtifact API",
+  "type": "object",
+  "properties": {}
+}

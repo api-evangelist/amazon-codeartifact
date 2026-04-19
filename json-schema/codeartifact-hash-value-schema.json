@@ -1,0 +1,10 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/amazon-codeartifact/refs/heads/main/json-schema/codeartifact-hash-value-schema.json",
+  "title": "HashValue",
+  "description": "HashValue schema from Amazon CodeArtifact API",
+  "type": "string",
+  "pattern": "[0-9a-f]+",
+  "minLength": 32,
+  "maxLength": 512
+}

@@ -1,0 +1,79 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/amazon-codeartifact/refs/heads/main/json-schema/codeartifact-list-package-version-assets-result-schema.json",
+  "title": "ListPackageVersionAssetsResult",
+  "description": "ListPackageVersionAssetsResult schema from Amazon CodeArtifact API",
+  "type": "object",
+  "properties": {
+    "format": {
+      "allOf": [
+        {
+          "$ref": "#/components/schemas/PackageFormat"
+        },
+        {
+          "description": " The format of the package that contains the requested package version assets. "
+        }
+      ]
+    },
+    "namespace": {
+      "allOf": [
+        {
+          "$ref": "#/components/schemas/PackageNamespace"
+        },
+        {
+          "description": "<p>The namespace of the package version that contains the requested package version assets. The package version component that specifies its namespace depends on its type. For example:</p> <ul> <li> <p> The namespace of a Maven package version is its <code>groupId</code>. </p> </li> <li> <p> The namespace of an npm package version is its <code>scope</code>. </p> </li> <li> <p> Python and NuGet package versions do not contain a corresponding component, package versions of those formats do not have a namespace. </p> </li> </ul>"
+        }
+      ]
+    },
+    "package": {
+      "allOf": [
+        {
+          "$ref": "#/components/schemas/PackageName"
+        },
+        {
+          "description": " The name of the package that contains the requested package version assets. "
+        }
+      ]
+    },
+    "version": {
+      "allOf": [
+        {
+          "$ref": "#/components/schemas/PackageVersion"
+        },
+        {
+          "description": " The version of the package associated with the requested assets. "
+        }
+      ]
+    },
+    "versionRevision": {
+      "allOf": [
+        {
+          "$ref": "#/components/schemas/PackageVersionRevision"
+        },
+        {
+          "description": " The current revision associated with the package version. "
+        }
+      ]
+    },
+    "nextToken": {
+      "allOf": [
+        {
+          "$ref": "#/components/schemas/PaginationToken"
+        },
+        {
+          "description": " If there are additional results, this is the token for the next set of results. "
+        }
+      ]
+    },
+    "assets": {
+      "allOf": [
+        {
+          "$ref": "#/components/schemas/AssetSummaryList"
+        },
+        {
+          "description": " The returned list of <a href=\"https://docs.aws.amazon.com/codeartifact/latest/APIReference/API_AssetSummary.html\">AssetSummary</a> objects. "
+        }
+      ]
+    }
+  }
+}

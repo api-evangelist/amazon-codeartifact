@@ -1,0 +1,79 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/amazon-codeartifact/refs/heads/main/json-schema/codeartifact-publish-package-version-result-schema.json",
+  "title": "PublishPackageVersionResult",
+  "description": "PublishPackageVersionResult schema from Amazon CodeArtifact API",
+  "type": "object",
+  "properties": {
+    "format": {
+      "allOf": [
+        {
+          "$ref": "#/components/schemas/PackageFormat"
+        },
+        {
+          "description": "The format of the package version."
+        }
+      ]
+    },
+    "namespace": {
+      "allOf": [
+        {
+          "$ref": "#/components/schemas/PackageNamespace"
+        },
+        {
+          "description": "The namespace of the package version."
+        }
+      ]
+    },
+    "package": {
+      "allOf": [
+        {
+          "$ref": "#/components/schemas/PackageName"
+        },
+        {
+          "description": "The name of the package."
+        }
+      ]
+    },
+    "version": {
+      "allOf": [
+        {
+          "$ref": "#/components/schemas/PackageVersion"
+        },
+        {
+          "description": "The version of the package."
+        }
+      ]
+    },
+    "versionRevision": {
+      "allOf": [
+        {
+          "$ref": "#/components/schemas/PackageVersionRevision"
+        },
+        {
+          "description": "The revision of the package version."
+        }
+      ]
+    },
+    "status": {
+      "allOf": [
+        {
+          "$ref": "#/components/schemas/PackageVersionStatus"
+        },
+        {
+          "description": "A string that contains the status of the package version. For more information, see <a href=\"https://docs.aws.amazon.com/codeartifact/latest/ug/packages-overview.html#package-version-status.html#package-version-status\">Package version status</a> in the <i>CodeArtifact User Guide</i>."
+        }
+      ]
+    },
+    "asset": {
+      "allOf": [
+        {
+          "$ref": "#/components/schemas/AssetSummary"
+        },
+        {
+          "description": "An <a href=\"https://docs.aws.amazon.com/codeartifact/latest/APIReference/API_AssetSummary.html\">AssetSummary</a> for the published asset."
+        }
+      ]
+    }
+  }
+}

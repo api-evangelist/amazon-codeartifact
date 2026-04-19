@@ -1,0 +1,79 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/amazon-codeartifact/refs/heads/main/json-schema/codeartifact-repository-summary-schema.json",
+  "title": "RepositorySummary",
+  "description": " Details about a repository, including its Amazon Resource Name (ARN), description, and domain information. The <a href=\"https://docs.aws.amazon.com/codeartifact/latest/APIReference/API_ListRepositories.html\">ListRepositories</a> operation returns a list of <code>RepositorySummary</code> objects. ",
+  "type": "object",
+  "properties": {
+    "name": {
+      "allOf": [
+        {
+          "$ref": "#/components/schemas/RepositoryName"
+        },
+        {
+          "description": " The name of the repository. "
+        }
+      ]
+    },
+    "administratorAccount": {
+      "allOf": [
+        {
+          "$ref": "#/components/schemas/AccountId"
+        },
+        {
+          "description": " The Amazon Web Services account ID that manages the repository. "
+        }
+      ]
+    },
+    "domainName": {
+      "allOf": [
+        {
+          "$ref": "#/components/schemas/DomainName"
+        },
+        {
+          "description": " The name of the domain that contains the repository. "
+        }
+      ]
+    },
+    "domainOwner": {
+      "allOf": [
+        {
+          "$ref": "#/components/schemas/AccountId"
+        },
+        {
+          "description": " The 12-digit account number of the Amazon Web Services account that owns the domain. It does not include dashes or spaces. "
+        }
+      ]
+    },
+    "arn": {
+      "allOf": [
+        {
+          "$ref": "#/components/schemas/Arn"
+        },
+        {
+          "description": " The ARN of the repository. "
+        }
+      ]
+    },
+    "description": {
+      "allOf": [
+        {
+          "$ref": "#/components/schemas/Description"
+        },
+        {
+          "description": " The description of the repository. "
+        }
+      ]
+    },
+    "createdTime": {
+      "allOf": [
+        {
+          "$ref": "#/components/schemas/Timestamp"
+        },
+        {
+          "description": "A timestamp that represents the date and time the repository was created."
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/amazon-codeartifact/refs/heads/main/json-schema/codeartifact-package-format-schema.json",
+  "title": "PackageFormat",
+  "description": "PackageFormat schema from Amazon CodeArtifact API",
+  "type": "string",
+  "enum": [
+    "npm",
+    "pypi",
+    "maven",
+    "nuget",
+    "generic"
+  ]
+}

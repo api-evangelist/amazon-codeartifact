@@ -1,0 +1,10 @@
+{
+  "$schema": "https://json-structure.org/meta/core/v0/#",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/amazon-codeartifact/refs/heads/main/json-structure/codeartifact-policy-document-structure.json",
+  "name": "PolicyDocument",
+  "description": "PolicyDocument schema from Amazon CodeArtifact API",
+  "type": "string",
+  "pattern": "[\\P{C}\\s]+",
+  "minLength": 1,
+  "maxLength": 7168
+}

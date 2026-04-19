@@ -1,0 +1,19 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/amazon-codeartifact/refs/heads/main/json-schema/codeartifact-list-tags-for-resource-result-schema.json",
+  "title": "ListTagsForResourceResult",
+  "description": "ListTagsForResourceResult schema from Amazon CodeArtifact API",
+  "type": "object",
+  "properties": {
+    "tags": {
+      "allOf": [
+        {
+          "$ref": "#/components/schemas/TagList"
+        },
+        {
+          "description": "A list of tag key and value pairs associated with the specified resource."
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "$schema": "https://json-structure.org/meta/core/v0/#",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/amazon-codeartifact/refs/heads/main/json-structure/codeartifact-allow-upstream-structure.json",
+  "name": "AllowUpstream",
+  "description": "AllowUpstream schema from Amazon CodeArtifact API",
+  "type": "string",
+  "enum": [
+    "ALLOW",
+    "BLOCK"
+  ]
+}
