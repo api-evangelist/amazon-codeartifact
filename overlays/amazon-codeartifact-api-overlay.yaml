@@ -1,0 +1,38 @@
+overlay: 1.0.0
+info:
+  title: API Evangelist enhancements for Amazon CodeArtifact API
+  version: 1.0.0
+# Provenance
+x-provenance:
+  generated: '2026-06-20'
+  method: generated
+  source: openapi/amazon-codeartifact-openapi-original.yaml
+extends: openapi/amazon-codeartifact-openapi-original.yaml
+actions:
+  - target: $.info
+    update:
+      x-apievangelist-provider: amazon
+      x-apievangelist-aid: amazon-codeartifact
+      x-apievangelist-category:
+        - Artifact Repository
+        - Package Management
+        - DevOps
+        - Software Supply Chain
+      x-apievangelist-auth: AWS Signature Version 4 (SigV4)
+      x-apievangelist-api-version-date: '2018-09-22'
+  - target: $.info
+    update:
+      x-apievangelist-related-artifacts:
+        packages: packages/amazon-codeartifact-packages.yml
+        llms: llms/amazon-codeartifact-llms.txt
+        conformance: conformance/amazon-codeartifact-conformance.yml
+        errors: errors/amazon-codeartifact-problem-types.yml
+        lifecycle: lifecycle/amazon-codeartifact-lifecycle.yml
+        well_known: well-known/amazon-codeartifact-well-known.yml
+        vocabulary: vocabulary/amazon-codeartifact-vocabulary.yaml
+        json_ld: json-ld/amazon-codeartifact-context.jsonld
+        spectral_rules: rules/amazon-codeartifact-spectral-rules.yml
+  - target: $.externalDocs
+    update:
+      description: Amazon CodeArtifact API Reference
+      url: https://docs.aws.amazon.com/codeartifact/latest/APIReference/Welcome.html

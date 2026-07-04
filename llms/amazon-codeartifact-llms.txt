@@ -1,0 +1,91 @@
+# AWS CodeArtifact Welcome
+
+> AWS CodeArtifact is a fully managed artifact repository compatible with language-native package managers and build tools such as npm, Apache Maven, pip, and dotnet. You can use CodeArtifact to share packages with development teams and pull packages. Packages can be pulled from both public and CodeArtifact repositories. You can also create an upstream relationship between a CodeArtifact repository and another repository, which effectively merges their contents from the point of view of a package manager client.
+
+- [Welcome](https://docs.aws.amazon.com/codeartifact/latest/APIReference/Welcome.md)
+- [Common Parameters](https://docs.aws.amazon.com/codeartifact/latest/APIReference/CommonParameters.md)
+- [Common Error Types](https://docs.aws.amazon.com/codeartifact/latest/APIReference/CommonErrors.md)
+
+## [Actions](https://docs.aws.amazon.com/codeartifact/latest/APIReference/API_Operations.md)
+
+- [AssociateExternalConnection](https://docs.aws.amazon.com/codeartifact/latest/APIReference/API_AssociateExternalConnection.md): Adds an existing external connection to a repository.
+- [CopyPackageVersions](https://docs.aws.amazon.com/codeartifact/latest/APIReference/API_CopyPackageVersions.md): Copies package versions from one repository to another repository in the same domain.
+- [CreateDomain](https://docs.aws.amazon.com/codeartifact/latest/APIReference/API_CreateDomain.md): Creates a domain.
+- [CreatePackageGroup](https://docs.aws.amazon.com/codeartifact/latest/APIReference/API_CreatePackageGroup.md): Creates a package group.
+- [CreateRepository](https://docs.aws.amazon.com/codeartifact/latest/APIReference/API_CreateRepository.md): Creates a repository.
+- [DeleteDomain](https://docs.aws.amazon.com/codeartifact/latest/APIReference/API_DeleteDomain.md): Deletes a domain.
+- [DeleteDomainPermissionsPolicy](https://docs.aws.amazon.com/codeartifact/latest/APIReference/API_DeleteDomainPermissionsPolicy.md): Deletes the resource policy set on a domain.
+- [DeletePackage](https://docs.aws.amazon.com/codeartifact/latest/APIReference/API_DeletePackage.md): Deletes a package and all associated package versions.
+- [DeletePackageGroup](https://docs.aws.amazon.com/codeartifact/latest/APIReference/API_DeletePackageGroup.md): Deletes a package group.
+- [DeletePackageVersions](https://docs.aws.amazon.com/codeartifact/latest/APIReference/API_DeletePackageVersions.md): Deletes one or more versions of a package.
+- [DeleteRepository](https://docs.aws.amazon.com/codeartifact/latest/APIReference/API_DeleteRepository.md): Deletes a repository.
+- [DeleteRepositoryPermissionsPolicy](https://docs.aws.amazon.com/codeartifact/latest/APIReference/API_DeleteRepositoryPermissionsPolicy.md): Deletes the resource policy that is set on a repository.
+- [DescribeDomain](https://docs.aws.amazon.com/codeartifact/latest/APIReference/API_DescribeDomain.md): Returns a DomainDescription object that contains information about the requested domain.
+- [DescribePackage](https://docs.aws.amazon.com/codeartifact/latest/APIReference/API_DescribePackage.md): Returns a PackageDescription object that contains information about the requested package.
+- [DescribePackageGroup](https://docs.aws.amazon.com/codeartifact/latest/APIReference/API_DescribePackageGroup.md): Returns a PackageGroupDescription object that contains information about the requested package group.
+- [DescribePackageVersion](https://docs.aws.amazon.com/codeartifact/latest/APIReference/API_DescribePackageVersion.md): Returns a PackageVersionDescription object that contains information about the requested package version.
+- [DescribeRepository](https://docs.aws.amazon.com/codeartifact/latest/APIReference/API_DescribeRepository.md): Returns a RepositoryDescription object that contains detailed information about the requested repository.
+- [DisassociateExternalConnection](https://docs.aws.amazon.com/codeartifact/latest/APIReference/API_DisassociateExternalConnection.md): Removes an existing external connection from a repository.
+- [DisposePackageVersions](https://docs.aws.amazon.com/codeartifact/latest/APIReference/API_DisposePackageVersions.md): Deletes the assets in package versions and sets the package versions' status to Disposed.
+- [GetAssociatedPackageGroup](https://docs.aws.amazon.com/codeartifact/latest/APIReference/API_GetAssociatedPackageGroup.md): Returns the most closely associated package group to the specified package.
+- [GetAuthorizationToken](https://docs.aws.amazon.com/codeartifact/latest/APIReference/API_GetAuthorizationToken.md): Generates a temporary authorization token for accessing repositories in the domain.
+- [GetDomainPermissionsPolicy](https://docs.aws.amazon.com/codeartifact/latest/APIReference/API_GetDomainPermissionsPolicy.md): Returns the resource policy attached to the specified domain.
+- [GetPackageVersionAsset](https://docs.aws.amazon.com/codeartifact/latest/APIReference/API_GetPackageVersionAsset.md): Returns an asset (or file) that is in a package.
+- [GetPackageVersionReadme](https://docs.aws.amazon.com/codeartifact/latest/APIReference/API_GetPackageVersionReadme.md): Gets the readme file or descriptive text for a package version.
+- [GetRepositoryEndpoint](https://docs.aws.amazon.com/codeartifact/latest/APIReference/API_GetRepositoryEndpoint.md): Returns the endpoint of a repository for a specific package format.
+- [GetRepositoryPermissionsPolicy](https://docs.aws.amazon.com/codeartifact/latest/APIReference/API_GetRepositoryPermissionsPolicy.md): Returns the resource policy that is set on a repository.
+- [ListAllowedRepositoriesForGroup](https://docs.aws.amazon.com/codeartifact/latest/APIReference/API_ListAllowedRepositoriesForGroup.md): Lists the repositories in the added repositories list of the specified restriction type for a package group.
+- [ListAssociatedPackages](https://docs.aws.amazon.com/codeartifact/latest/APIReference/API_ListAssociatedPackages.md): Returns a list of packages associated with the requested package group.
+- [ListDomains](https://docs.aws.amazon.com/codeartifact/latest/APIReference/API_ListDomains.md): Returns a list of DomainSummary objects for all domains owned by the AWS account that makes this call.
+- [ListPackageGroups](https://docs.aws.amazon.com/codeartifact/latest/APIReference/API_ListPackageGroups.md): Returns a list of package groups in the requested domain.
+- [ListPackages](https://docs.aws.amazon.com/codeartifact/latest/APIReference/API_ListPackages.md): Returns a list of PackageSummary objects for packages in a repository that match the request parameters.
+- [ListPackageVersionAssets](https://docs.aws.amazon.com/codeartifact/latest/APIReference/API_ListPackageVersionAssets.md): Returns a list of AssetSummary objects for assets in a package version.
+- [ListPackageVersionDependencies](https://docs.aws.amazon.com/codeartifact/latest/APIReference/API_ListPackageVersionDependencies.md): Returns the direct dependencies for a package version.
+- [ListPackageVersions](https://docs.aws.amazon.com/codeartifact/latest/APIReference/API_ListPackageVersions.md): Returns a list of PackageVersionSummary objects for package versions in a repository that match the request parameters.
+- [ListRepositories](https://docs.aws.amazon.com/codeartifact/latest/APIReference/API_ListRepositories.md): Returns a list of RepositorySummary objects.
+- [ListRepositoriesInDomain](https://docs.aws.amazon.com/codeartifact/latest/APIReference/API_ListRepositoriesInDomain.md): Returns a list of RepositorySummary objects.
+- [ListSubPackageGroups](https://docs.aws.amazon.com/codeartifact/latest/APIReference/API_ListSubPackageGroups.md): Returns a list of direct children of the specified package group.
+- [ListTagsForResource](https://docs.aws.amazon.com/codeartifact/latest/APIReference/API_ListTagsForResource.md): Gets information about AWS tags for a specified Amazon Resource Name (ARN) in AWS CodeArtifact.
+- [PublishPackageVersion](https://docs.aws.amazon.com/codeartifact/latest/APIReference/API_PublishPackageVersion.md): Creates a new package version containing one or more assets (or files).
+- [PutDomainPermissionsPolicy](https://docs.aws.amazon.com/codeartifact/latest/APIReference/API_PutDomainPermissionsPolicy.md): Sets a resource policy on a domain that specifies permissions to access it.
+- [PutPackageOriginConfiguration](https://docs.aws.amazon.com/codeartifact/latest/APIReference/API_PutPackageOriginConfiguration.md): Sets the package origin configuration for a package.
+- [PutRepositoryPermissionsPolicy](https://docs.aws.amazon.com/codeartifact/latest/APIReference/API_PutRepositoryPermissionsPolicy.md): Sets the resource policy on a repository that specifies permissions to access it.
+- [TagResource](https://docs.aws.amazon.com/codeartifact/latest/APIReference/API_TagResource.md): Adds or updates tags for a resource in AWS CodeArtifact.
+- [UntagResource](https://docs.aws.amazon.com/codeartifact/latest/APIReference/API_UntagResource.md): Removes tags from a resource in AWS CodeArtifact.
+- [UpdatePackageGroup](https://docs.aws.amazon.com/codeartifact/latest/APIReference/API_UpdatePackageGroup.md): Updates a package group.
+- [UpdatePackageGroupOriginConfiguration](https://docs.aws.amazon.com/codeartifact/latest/APIReference/API_UpdatePackageGroupOriginConfiguration.md): Updates the package origin configuration for a package group.
+- [UpdatePackageVersionsStatus](https://docs.aws.amazon.com/codeartifact/latest/APIReference/API_UpdatePackageVersionsStatus.md): Updates the status of one or more versions of a package.
+- [UpdateRepository](https://docs.aws.amazon.com/codeartifact/latest/APIReference/API_UpdateRepository.md): Update the properties of a repository.
+
+
+## [Data Types](https://docs.aws.amazon.com/codeartifact/latest/APIReference/API_Types.md)
+
+- [AssetSummary](https://docs.aws.amazon.com/codeartifact/latest/APIReference/API_AssetSummary.md): Contains details about a package version asset.
+- [AssociatedPackage](https://docs.aws.amazon.com/codeartifact/latest/APIReference/API_AssociatedPackage.md): A package associated with a package group.
+- [DomainDescription](https://docs.aws.amazon.com/codeartifact/latest/APIReference/API_DomainDescription.md): Information about a domain.
+- [DomainEntryPoint](https://docs.aws.amazon.com/codeartifact/latest/APIReference/API_DomainEntryPoint.md): Information about how a package originally entered the CodeArtifact domain.
+- [DomainSummary](https://docs.aws.amazon.com/codeartifact/latest/APIReference/API_DomainSummary.md): Information about a domain, including its name, Amazon Resource Name (ARN), and status.
+- [LicenseInfo](https://docs.aws.amazon.com/codeartifact/latest/APIReference/API_LicenseInfo.md): Details of the license data.
+- [PackageDependency](https://docs.aws.amazon.com/codeartifact/latest/APIReference/API_PackageDependency.md): Details about a package dependency.
+- [PackageDescription](https://docs.aws.amazon.com/codeartifact/latest/APIReference/API_PackageDescription.md): Details about a package.
+- [PackageGroupAllowedRepository](https://docs.aws.amazon.com/codeartifact/latest/APIReference/API_PackageGroupAllowedRepository.md): Details about an allowed repository for a package group, including its name and origin configuration.
+- [PackageGroupDescription](https://docs.aws.amazon.com/codeartifact/latest/APIReference/API_PackageGroupDescription.md): The description of the package group.
+- [PackageGroupOriginConfiguration](https://docs.aws.amazon.com/codeartifact/latest/APIReference/API_PackageGroupOriginConfiguration.md): The package group origin configuration that determines how package versions can enter repositories.
+- [PackageGroupOriginRestriction](https://docs.aws.amazon.com/codeartifact/latest/APIReference/API_PackageGroupOriginRestriction.md): Contains information about the configured restrictions of the origin controls of a package group.
+- [PackageGroupReference](https://docs.aws.amazon.com/codeartifact/latest/APIReference/API_PackageGroupReference.md): Information about the identifiers of a package group.
+- [PackageGroupSummary](https://docs.aws.amazon.com/codeartifact/latest/APIReference/API_PackageGroupSummary.md): Details about a package group.
+- [PackageOriginConfiguration](https://docs.aws.amazon.com/codeartifact/latest/APIReference/API_PackageOriginConfiguration.md): Details about the package origin configuration of a package.
+- [PackageOriginRestrictions](https://docs.aws.amazon.com/codeartifact/latest/APIReference/API_PackageOriginRestrictions.md): Details about the origin restrictions set on the package.
+- [PackageSummary](https://docs.aws.amazon.com/codeartifact/latest/APIReference/API_PackageSummary.md): Details about a package, including its format, namespace, and name.
+- [PackageVersionDescription](https://docs.aws.amazon.com/codeartifact/latest/APIReference/API_PackageVersionDescription.md): Details about a package version.
+- [PackageVersionError](https://docs.aws.amazon.com/codeartifact/latest/APIReference/API_PackageVersionError.md): l An error associated with package.
+- [PackageVersionOrigin](https://docs.aws.amazon.com/codeartifact/latest/APIReference/API_PackageVersionOrigin.md): Information about how a package version was added to a repository.
+- [PackageVersionSummary](https://docs.aws.amazon.com/codeartifact/latest/APIReference/API_PackageVersionSummary.md): Details about a package version, including its status, version, and revision.
+- [RepositoryDescription](https://docs.aws.amazon.com/codeartifact/latest/APIReference/API_RepositoryDescription.md): The details of a repository stored in AWS CodeArtifact.
+- [RepositoryExternalConnectionInfo](https://docs.aws.amazon.com/codeartifact/latest/APIReference/API_RepositoryExternalConnectionInfo.md): Contains information about the external connection of a repository.
+- [RepositorySummary](https://docs.aws.amazon.com/codeartifact/latest/APIReference/API_RepositorySummary.md): Details about a repository, including its Amazon Resource Name (ARN), description, and domain information.
+- [ResourcePolicy](https://docs.aws.amazon.com/codeartifact/latest/APIReference/API_ResourcePolicy.md): An AWS CodeArtifact resource policy that contains a resource ARN, document details, and a revision.
+- [SuccessfulPackageVersionInfo](https://docs.aws.amazon.com/codeartifact/latest/APIReference/API_SuccessfulPackageVersionInfo.md): Contains the revision and status of a package version.
+- [Tag](https://docs.aws.amazon.com/codeartifact/latest/APIReference/API_Tag.md): A tag is a key-value pair that can be used to manage, search for, or filter resources in AWS CodeArtifact.
+- [UpstreamRepository](https://docs.aws.amazon.com/codeartifact/latest/APIReference/API_UpstreamRepository.md): Information about an upstream repository.
+- [UpstreamRepositoryInfo](https://docs.aws.amazon.com/codeartifact/latest/APIReference/API_UpstreamRepositoryInfo.md): Information about an upstream repository.

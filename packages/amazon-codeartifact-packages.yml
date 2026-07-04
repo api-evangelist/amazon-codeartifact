@@ -1,0 +1,78 @@
+generated: '2026-06-20'
+method: searched
+source: >-
+  AWS SDK per-service client packages for the CodeArtifact service, verified
+  against each public registry. CodeArtifact has no dedicated single-service SDK;
+  it is accessed through the multi-service AWS SDKs and the AWS CLI, all
+  first-party.
+packages:
+  - language: javascript
+    registry: npm
+    name: "@aws-sdk/client-codeartifact"
+    url: https://www.npmjs.com/package/@aws-sdk/client-codeartifact
+    install: npm install @aws-sdk/client-codeartifact
+    official: true
+    note: AWS SDK for JavaScript v3 dedicated CodeArtifact client.
+  - language: python
+    registry: pypi
+    name: boto3
+    url: https://pypi.org/project/boto3/
+    install: pip install boto3
+    official: true
+    note: AWS SDK for Python; CodeArtifact via boto3.client('codeartifact').
+  - language: python
+    registry: pypi
+    name: botocore
+    url: https://pypi.org/project/botocore/
+    install: pip install botocore
+    official: true
+    note: Low-level core that boto3 builds on; carries the CodeArtifact service model.
+  - language: go
+    registry: pkg.go.dev
+    name: github.com/aws/aws-sdk-go-v2/service/codeartifact
+    url: https://pkg.go.dev/github.com/aws/aws-sdk-go-v2/service/codeartifact
+    install: go get github.com/aws/aws-sdk-go-v2/service/codeartifact
+    official: true
+    note: AWS SDK for Go v2 dedicated CodeArtifact client.
+  - language: java
+    registry: maven-central
+    name: software.amazon.awssdk:codeartifact
+    url: https://central.sonatype.com/artifact/software.amazon.awssdk/codeartifact
+    install: "implementation 'software.amazon.awssdk:codeartifact'"
+    official: true
+    note: AWS SDK for Java v2 dedicated CodeArtifact module.
+  - language: csharp
+    registry: nuget
+    name: AWSSDK.CodeArtifact
+    url: https://www.nuget.org/packages/AWSSDK.CodeArtifact
+    install: dotnet add package AWSSDK.CodeArtifact
+    official: true
+    note: AWS SDK for .NET dedicated CodeArtifact package.
+  - language: ruby
+    registry: rubygems
+    name: aws-sdk-codeartifact
+    url: https://rubygems.org/gems/aws-sdk-codeartifact
+    install: gem install aws-sdk-codeartifact
+    official: true
+    note: AWS SDK for Ruby dedicated CodeArtifact gem.
+  - language: rust
+    registry: crates.io
+    name: aws-sdk-codeartifact
+    url: https://crates.io/crates/aws-sdk-codeartifact
+    install: cargo add aws-sdk-codeartifact
+    official: true
+    note: AWS SDK for Rust dedicated CodeArtifact crate.
+  - language: php
+    registry: packagist
+    name: aws/aws-sdk-php
+    url: https://packagist.org/packages/aws/aws-sdk-php
+    install: composer require aws/aws-sdk-php
+    official: true
+    note: AWS SDK for PHP (multi-service); CodeArtifact via the CodeArtifact client.
+  - language: cli
+    registry: pypi
+    name: awscli
+    url: https://pypi.org/project/awscli/
+    install: pip install awscli
+    official: true
+    note: "AWS CLI; CodeArtifact commands under `aws codeartifact`."

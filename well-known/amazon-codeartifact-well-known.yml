@@ -1,0 +1,29 @@
+generated: '2026-06-20'
+method: searched
+source: >-
+  Probed the /.well-known/ discovery surface on the CodeArtifact API base host
+  and the AWS portal host. The regional API endpoint serves no discovery
+  documents (it is an AWS SigV4 JSON-protocol endpoint). The corporate portal
+  host publishes an RFC 9116 security.txt covering all AWS services.
+hosts:
+  - host: https://codeartifact.us-east-1.amazonaws.com
+    role: api-base
+    documents:
+      - path: /.well-known/security.txt
+        status: 404
+      - path: /.well-known/openid-configuration
+        status: 404
+      - path: /.well-known/oauth-authorization-server
+        status: 404
+      - path: /.well-known/api-catalog
+        status: 404
+      - path: /.well-known/ai-plugin.json
+        status: 404
+  - host: https://aws.amazon.com
+    role: portal
+    documents:
+      - path: /.well-known/security.txt
+        status: 200
+        file: amazon-codeartifact-security.txt
+        type: SecurityTxt
+        standard: RFC 9116

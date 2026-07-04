@@ -1,0 +1,52 @@
+generated: '2026-06-20'
+method: derived
+source: >-
+  Derived from openapi/amazon-codeartifact-openapi-original.yaml (security
+  schemes, servers, response media types) and the CodeArtifact documentation.
+  CodeArtifact authenticates with AWS Signature Version 4, not OAuth2/OIDC, and
+  uses the AWS JSON error protocol rather than RFC 9457 problem details.
+standards:
+  - id: oauth2
+    conforms: false
+    evidence: >-
+      Only security scheme is `hmac` (AWS Signature Version 4 / SigV4); no
+      OAuth2 flows are defined.
+  - id: oidc
+    conforms: false
+    evidence: No OpenID Connect discovery or ID tokens; auth is IAM + SigV4.
+  - id: aws-sigv4
+    conforms: true
+    evidence: >-
+      securitySchemes.hmac and the CodeArtifact docs require AWS Signature
+      Version 4 request signing.
+  - id: rfc9457-problem-details
+    conforms: false
+    evidence: >-
+      Error responses use application/json with AWS exception shapes
+      (__type/message), not application/problem+json.
+  - id: json-api
+    conforms: false
+    evidence: Responses are plain application/json, not the JSON:API media type.
+  - id: pagination
+    conforms: true
+    evidence: >-
+      List operations use nextToken / maxResults cursor pagination
+      (ListPackages, ListPackageVersions, ListRepositories, ListDomains, etc.).
+  - id: idempotency
+    conforms: false
+    evidence: >-
+      No Idempotency-Key header or client request token is defined for the
+      CodeArtifact REST operations.
+  - id: rest
+    conforms: true
+    evidence: OpenAPI 3.0.0 REST description over HTTPS with resource-oriented paths.
+  - id: fhir-r4
+    conforms: false
+  - id: fapi
+    conforms: false
+  - id: scim2
+    conforms: false
+  - id: odata
+    conforms: false
+  - id: psd2
+    conforms: false

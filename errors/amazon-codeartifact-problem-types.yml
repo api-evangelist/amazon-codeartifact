@@ -1,0 +1,54 @@
+generated: '2026-06-20'
+method: derived
+format: aws-json
+source: >-
+  Derived from the exception shapes referenced in
+  openapi/amazon-codeartifact-openapi-original.yaml responses (encoded as
+  Botocore status 480-486) and enriched with the documented HTTP status codes
+  and remediation from the CodeArtifact API Reference Common Errors page
+  (https://docs.aws.amazon.com/codeartifact/latest/APIReference/CommonErrors.html).
+  CodeArtifact returns AWS JSON error shapes ({"__type","message"}), not RFC 9457
+  application/problem+json.
+docs: https://docs.aws.amazon.com/codeartifact/latest/APIReference/CommonErrors.html
+problems:
+  - name: AccessDeniedException
+    http_status: 403
+    title: Access denied
+    detail: The caller does not have sufficient IAM permissions for the requested action.
+    remediation: >-
+      Attach an IAM policy granting the required codeartifact:* action to the
+      caller, and verify any domain or repository resource policy allows access.
+  - name: ValidationException
+    http_status: 400
+    title: Invalid input
+    detail: The request parameters failed validation (bad format, length, or value).
+    remediation: Correct the offending parameters and retry.
+  - name: ResourceNotFoundException
+    http_status: 404
+    title: Resource not found
+    detail: The referenced domain, repository, package, or package version does not exist.
+    remediation: Verify the domain/repository/package identifiers and the domain owner account.
+  - name: ConflictException
+    http_status: 409
+    title: Resource conflict
+    detail: >-
+      The request conflicts with current resource state (for example, creating a
+      resource that already exists or a revision mismatch).
+    remediation: Reconcile with the current resource state or revision and retry.
+  - name: ServiceQuotaExceededException
+    http_status: 402
+    title: Service quota exceeded
+    detail: The request would exceed a CodeArtifact service quota.
+    remediation: >-
+      Request a quota increase via Service Quotas or reduce usage. See
+      https://docs.aws.amazon.com/codeartifact/latest/ug/service-limits.html
+  - name: ThrottlingException
+    http_status: 429
+    title: Request throttled
+    detail: The request rate exceeded the allowed throughput and was throttled.
+    remediation: Back off and retry with exponential backoff and jitter.
+  - name: InternalServerException
+    http_status: 500
+    title: Internal server error
+    detail: CodeArtifact encountered an unexpected internal error.
+    remediation: Retry the request; if it persists, contact AWS Support.

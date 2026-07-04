@@ -1,0 +1,34 @@
+generated: '2026-06-20'
+method: searched
+source: >-
+  CodeArtifact API Reference (API version date 2018-09-22), the User Guide
+  document history, AWS service terms, and the AWS Health status dashboard. AWS
+  versions this service by a fixed API version date rather than URI-path major
+  versions; new operations (package groups, ListAssociatedPackages, etc.) are
+  added additively under the same API version.
+versioning:
+  scheme: api-version-date
+  current: '2018-09-22'
+  uri_prefix: /v1
+  policy: >-
+    Additive, backward-compatible changes under a single dated API version; new
+    operations and fields are added without breaking existing clients.
+  docs: https://docs.aws.amazon.com/codeartifact/latest/APIReference/Welcome.html
+  history: https://docs.aws.amazon.com/codeartifact/latest/ug/history.html
+deprecation:
+  policy_url: https://docs.aws.amazon.com/codeartifact/latest/ug/history.html
+  sunset_header: false
+  deprecation_header: false
+  note: >-
+    No RFC 8594 Sunset/Deprecation response headers are documented; lifecycle
+    changes are communicated through the User Guide document history and AWS
+    announcements.
+sla:
+  url: https://aws.amazon.com/codeartifact/sla/
+  uptime_target: "99.9%"
+  note: >-
+    CodeArtifact is covered by an AWS service-level agreement; confirm the
+    current monthly uptime commitment on the linked SLA page.
+status_page: https://health.aws.amazon.com/health/status
+quotas: https://docs.aws.amazon.com/codeartifact/latest/ug/service-limits.html
+deprecated_operations: []

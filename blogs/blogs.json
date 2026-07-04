@@ -1,0 +1,6 @@
+{
+  "repo": "amazon-codeartifact",
+  "feeds": [ { "source": "https://aws.amazon.com/blogs/devops/tag/codeartifact/feed/", "feed_url": "https://aws.amazon.com/blogs/devops/tag/codeartifact/feed/", "title": "CodeArtifact – AWS DevOps & Developer Productivity Blog", "saved": 7 } ],
+  "fetched": "2026-07-04T13:39:37Z",
+  "post_count": 7
+}
