@@ -64,6 +64,14 @@ apis:
       - type: Lifecycle
         url: lifecycle/amazon-codeartifact-lifecycle.yml
 common:
+  - type: TrustCenter
+    url: security/amazon-codeartifact-trust-center.yml
+  - type: VulnerabilityDisclosure
+    url: security/amazon-codeartifact-vulnerability-disclosure.yml
+  - type: DomainSecurity
+    url: security/amazon-codeartifact-domain-security.yml
+  - type: Authentication
+    url: authentication/amazon-codeartifact-authentication.yml
   - type: GettingStarted
     url: https://docs.aws.amazon.com/codeartifact/latest/ug/getting-started.html
   - type: Authentication
