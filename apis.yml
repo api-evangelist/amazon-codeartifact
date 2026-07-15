@@ -64,6 +64,8 @@ apis:
       - type: Lifecycle
         url: lifecycle/amazon-codeartifact-lifecycle.yml
 common:
+  - type: AgenticAccess
+    url: agentic-access/amazon-codeartifact-agentic-access.yml
   - type: TrustCenter
     url: security/amazon-codeartifact-trust-center.yml
   - type: VulnerabilityDisclosure
