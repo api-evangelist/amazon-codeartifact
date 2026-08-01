@@ -1,0 +1,2926 @@
+{
+  "info": {
+    "_postman_id": "60f6483d-7d89-46e9-93c2-1a14941e7515",
+    "name": "CodeArtifact Authorization Token# Domain API",
+    "description": "<p> CodeArtifact is a fully managed artifact repository compatible with language-native package managers and build tools such as npm, Apache Maven, pip, and dotnet. You can use CodeArtifact to share packages with development teams and pull packages. Packages can be pulled from both public and CodeArtifact repositories. You can also create an upstream relationship between a CodeArtifact repository and another repository, which effectively merges their contents from the point of view of a package manager client. </p> <p> <b>CodeArtifact Components</b> </p> <p>Use the information in this guide to help you work with the following CodeArtifact components:</p> <ul> <li> <p> <b>Repository</b>: A CodeArtifact repository contains a set of <a href=\"https://docs.aws.amazon.com/codeartifact/latest/ug/welcome.html#welcome-concepts-package-version\">package versions</a>, each of which maps to a set of assets, or files. Repositories are polyglot, so a single repository can contain packages of any supported type. Each repository exposes endpoints for fetching and publishing packages using tools like the <b> <code>npm</code> </b> CLI, the Maven CLI (<b> <code>mvn</code> </b>), Python CLIs (<b> <code>pip</code> </b> and <code>twine</code>), and NuGet CLIs (<code>nuget</code> and <code>dotnet</code>).</p> </li> <li> <p> <b>Domain</b>: Repositories are aggregated into a higher-level entity known as a <i>domain</i>. All package assets and metadata are stored in the domain, but are consumed through repositories. A given package asset, such as a Maven JAR file, is stored once per domain, no matter how many repositories it's present in. All of the assets and metadata in a domain are encrypted with the same customer master key (CMK) stored in Key Management Service (KMS).</p> <p>Each repository is a member of a single domain and can't be moved to a different domain.</p> <p>The domain allows organizational policy to be applied across multiple repositories, such as which accounts can access repositories in the domain, and which public repositories can be used as sources of packages.</p> <p>Although an organization can have multiple domains, we recommend a single production domain that contains all published artifacts so that teams can find and share packages across their organization.</p> </li> <li> <p> <b>Package</b>: A <i>package</i> is a bundle of software and the metadata required to resolve dependencies and install the software. CodeArtifact supports <a href=\"https://docs.aws.amazon.com/codeartifact/latest/ug/using-npm.html\">npm</a>, <a href=\"https://docs.aws.amazon.com/codeartifact/latest/ug/using-python.html\">PyPI</a>, <a href=\"https://docs.aws.amazon.com/codeartifact/latest/ug/using-maven\">Maven</a>, and <a href=\"https://docs.aws.amazon.com/codeartifact/latest/ug/using-nuget\">NuGet</a> package formats.</p> <p>In CodeArtifact, a package consists of:</p> <ul> <li> <p>A <i>name</i> (for example, <code>webpack</code> is the name of a popular npm package)</p> </li> <li> <p>An optional namespace (for example, <code>@types</code> in <code>@types/node</code>)</p> </li> <li> <p>A set of versions (for example, <code>1.0.0</code>, <code>1.0.1</code>, <code>1.0.2</code>, etc.)</p> </li> <li> <p> Package-level metadata (for example, npm tags)</p> </li> </ul> </li> <li> <p> <b>Package version</b>: A version of a package, such as <code>@types/node 12.6.9</code>. The version number format and semantics vary for different package formats. For example, npm package versions must conform to the <a href=\"https://semver.org/\">Semantic Versioning specification</a>. In CodeArtifact, a package version consists of the version identifier, metadata at the package version level, and a set of assets.</p> </li> <li> <p> <b>Upstream repository</b>: One repository is <i>upstream</i> of another when the package versions in it can be accessed from the repository endpoint of the downstream repository, effectively merging the contents of the two repositories from the point of view of a client. CodeArtifact allows creating an upstream relationship between two repositories.</p> </li> <li> <p> <b>Asset</b>: An individual file stored in CodeArtifact associated with a package version, such as an npm <code>.tgz</code> file or Maven POM and JAR files.</p> </li> </ul> <p>CodeArtifact supports these operations:</p> <ul> <li> <p> <code>AssociateExternalConnection</code>: Adds an existing external connection to a repository. </p> </li> <li> <p> <code>CopyPackageVersions</code>: Copies package versions from one repository to another repository in the same domain.</p> </li> <li> <p> <code>CreateDomain</code>: Creates a domain</p> </li> <li> <p> <code>CreateRepository</code>: Creates a CodeArtifact repository in a domain. </p> </li> <li> <p> <code>DeleteDomain</code>: Deletes a domain. You cannot delete a domain that contains repositories. </p> </li> <li> <p> <code>DeleteDomainPermissionsPolicy</code>: Deletes the resource policy that is set on a domain.</p> </li> <li> <p> <code>DeletePackage</code>: Deletes a package and all associated package versions.</p> </li> <li> <p> <code>DeletePackageVersions</code>: Deletes versions of a package. After a package has been deleted, it can be republished, but its assets and metadata cannot be restored because they have been permanently removed from storage.</p> </li> <li> <p> <code>DeleteRepository</code>: Deletes a repository. </p> </li> <li> <p> <code>DeleteRepositoryPermissionsPolicy</code>: Deletes the resource policy that is set on a repository.</p> </li> <li> <p> <code>DescribeDomain</code>: Returns a <code>DomainDescription</code> object that contains information about the requested domain.</p> </li> <li> <p> <code>DescribePackage</code>: Returns a <a href=\"https://docs.aws.amazon.com/codeartifact/latest/APIReference/API_PackageDescription.html\">PackageDescription</a> object that contains details about a package. </p> </li> <li> <p> <code>DescribePackageVersion</code>: Returns a <a href=\"https://docs.aws.amazon.com/codeartifact/latest/APIReference/API_PackageVersionDescription.html\">PackageVersionDescription</a> object that contains details about a package version. </p> </li> <li> <p> <code>DescribeRepository</code>: Returns a <code>RepositoryDescription</code> object that contains detailed information about the requested repository. </p> </li> <li> <p> <code>DisposePackageVersions</code>: Disposes versions of a package. A package version with the status <code>Disposed</code> cannot be restored because they have been permanently removed from storage.</p> </li> <li> <p> <code>DisassociateExternalConnection</code>: Removes an existing external connection from a repository. </p> </li> <li> <p> <code>GetAuthorizationToken</code>: Generates a temporary authorization token for accessing repositories in the domain. The token expires the authorization period has passed. The default authorization period is 12 hours and can be customized to any length with a maximum of 12 hours.</p> </li> <li> <p> <code>GetDomainPermissionsPolicy</code>: Returns the policy of a resource that is attached to the specified domain. </p> </li> <li> <p> <code>GetPackageVersionAsset</code>: Returns the contents of an asset that is in a package version. </p> </li> <li> <p> <code>GetPackageVersionReadme</code>: Gets the readme file or descriptive text for a package version.</p> </li> <li> <p> <code>GetRepositoryEndpoint</code>: Returns the endpoint of a repository for a specific package format. A repository has one endpoint for each package format: </p> <ul> <li> <p> <code>maven</code> </p> </li> <li> <p> <code>npm</code> </p> </li> <li> <p> <code>nuget</code> </p> </li> <li> <p> <code>pypi</code> </p> </li> </ul> </li> <li> <p> <code>GetRepositoryPermissionsPolicy</code>: Returns the resource policy that is set on a repository. </p> </li> <li> <p> <code>ListDomains</code>: Returns a list of <code>DomainSummary</code> objects. Each returned <code>DomainSummary</code> object contains information about a domain.</p> </li> <li> <p> <code>ListPackages</code>: Lists the packages in a repository.</p> </li> <li> <p> <code>ListPackageVersionAssets</code>: Lists the assets for a given package version.</p> </li> <li> <p> <code>ListPackageVersionDependencies</code>: Returns a list of the direct dependencies for a package version. </p> </li> <li> <p> <code>ListPackageVersions</code>: Returns a list of package versions for a specified package in a repository.</p> </li> <li> <p> <code>ListRepositories</code>: Returns a list of repositories owned by the Amazon Web Services account that called this method.</p> </li> <li> <p> <code>ListRepositoriesInDomain</code>: Returns a list of the repositories in a domain.</p> </li> <li> <p> <code>PublishPackageVersion</code>: Creates a new package version containing one or more assets.</p> </li> <li> <p> <code>PutDomainPermissionsPolicy</code>: Attaches a resource policy to a domain.</p> </li> <li> <p> <code>PutPackageOriginConfiguration</code>: Sets the package origin configuration for a package, which determine how new versions of the package can be added to a specific repository.</p> </li> <li> <p> <code>PutRepositoryPermissionsPolicy</code>: Sets the resource policy on a repository that specifies permissions to access it. </p> </li> <li> <p> <code>UpdatePackageVersionsStatus</code>: Updates the status of one or more versions of a package.</p> </li> <li> <p> <code>UpdateRepository</code>: Updates the properties of a repository.</p> </li> </ul>\n\nContact Support:\n Name: Mike Ralphson\n Email: mike.ralphson@gmail.com",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "createdAt": "2026-07-28T10:09:29.000Z",
+    "updatedAt": "2026-07-28T10:09:30.000Z",
+    "lastUpdatedBy": "35240",
+    "uid": "35240-60f6483d-7d89-46e9-93c2-1a14941e7515"
+  },
+  "item": [
+    {
+      "name": "v1",
+      "item": [
+        {
+          "name": "domain",
+          "item": [
+            {
+              "name": "permissions",
+              "item": [
+                {
+                  "name": "policy#domain",
+                  "item": [
+                    {
+                      "name": "Amazon CodeArtifact Delete Domain Permissions Policy",
+                      "id": "2294be5d-78e9-47b1-a04b-4f545589174b",
+                      "protocolProfileBehavior": {
+                        "disableBodyPruning": true
+                      },
+                      "request": {
+                        "method": "DELETE",
+                        "header": [
+                          {
+                            "key": "X-Amz-Content-Sha256",
+                            "value": "<string>"
+                          },
+                          {
+                            "key": "X-Amz-Date",
+                            "value": "<string>"
+                          },
+                          {
+                            "key": "X-Amz-Algorithm",
+                            "value": "<string>"
+                          },
+                          {
+                            "key": "X-Amz-Credential",
+                            "value": "<string>"
+                          },
+                          {
+                            "key": "X-Amz-Security-Token",
+                            "value": "<string>"
+                          },
+                          {
+                            "key": "X-Amz-Signature",
+                            "value": "<string>"
+                          },
+                          {
+                            "key": "X-Amz-SignedHeaders",
+                            "value": "<string>"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/v1/domain/permissions/policy?domain=kv4kt4c41dcizy-4i-vr58t-e6&domain-owner=009669069102&policy-revision=[|KGwbXFJ#domain",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "v1",
+                            "domain",
+                            "permissions",
+                            "policy"
+                          ],
+                          "query": [
+                            {
+                              "description": "(Required)  The name of the domain associated with the resource policy to be deleted. ",
+                              "key": "domain",
+                              "value": "kv4kt4c41dcizy-4i-vr58t-e6"
+                            },
+                            {
+                              "description": " The 12-digit account number of the Amazon Web Services account that owns the domain. It does not include dashes or spaces. ",
+                              "key": "domain-owner",
+                              "value": "009669069102"
+                            },
+                            {
+                              "description": " The current revision of the resource policy to be deleted. This revision is used for optimistic locking, which prevents others from overwriting your changes to the domain's resource policy. ",
+                              "key": "policy-revision",
+                              "value": "[|KGwbXFJ"
+                            }
+                          ],
+                          "hash": "domain"
+                        },
+                        "description": " Deletes the resource policy set on a domain. "
+                      },
+                      "response": [
+                        {
+                          "id": "af2b96c0-b73f-4e8a-b8c1-af0d38157f5e",
+                          "name": "Success",
+                          "originalRequest": {
+                            "method": "DELETE",
+                            "header": [
+                              {
+                                "key": "X-Amz-Content-Sha256",
+                                "value": "<string>"
+                              },
+                              {
+                                "key": "X-Amz-Date",
+                                "value": "<string>"
+                              },
+                              {
+                                "key": "X-Amz-Algorithm",
+                                "value": "<string>"
+                              },
+                              {
+                                "key": "X-Amz-Credential",
+                                "value": "<string>"
+                              },
+                              {
+                                "key": "X-Amz-Security-Token",
+                                "value": "<string>"
+                              },
+                              {
+                                "key": "X-Amz-Signature",
+                                "value": "<string>"
+                              },
+                              {
+                                "key": "X-Amz-SignedHeaders",
+                                "value": "<string>"
+                              },
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: apikey",
+                                "key": "Authorization",
+                                "value": "<API Key>"
+                              }
+                            ],
+                            "url": {
+                              "raw": "{{baseUrl}}/v1/domain/permissions/policy?domain=kv4kt4c41dcizy-4i-vr58t-e6&domain-owner=009669069102&policy-revision=[|KGwbXFJ#domain",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "v1",
+                                "domain",
+                                "permissions",
+                                "policy"
+                              ],
+                              "query": [
+                                {
+                                  "description": "(Required)  The name of the domain associated with the resource policy to be deleted. ",
+                                  "key": "domain",
+                                  "value": "kv4kt4c41dcizy-4i-vr58t-e6"
+                                },
+                                {
+                                  "description": " The 12-digit account number of the Amazon Web Services account that owns the domain. It does not include dashes or spaces. ",
+                                  "key": "domain-owner",
+                                  "value": "009669069102"
+                                },
+                                {
+                                  "description": " The current revision of the resource policy to be deleted. This revision is used for optimistic locking, which prevents others from overwriting your changes to the domain's resource policy. ",
+                                  "key": "policy-revision",
+                                  "value": "[|KGwbXFJ"
+                                }
+                              ],
+                              "hash": "domain"
+                            }
+                          },
+                          "status": "OK",
+                          "code": 200,
+                          "_postman_previewlanguage": "json",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": "{\n  \"policy\": {\n    \"resourceArn\": \"k\",\n    \"revision\": \"f\",\n    \"document\": \"\u2005\u180e\u2000\u2028\\r}\u2004\\t\"\n  }\n}",
+                          "createdAt": "2026-07-28T10:09:30.000Z",
+                          "updatedAt": "2026-07-28T10:09:30.000Z",
+                          "uid": "35240-af2b96c0-b73f-4e8a-b8c1-af0d38157f5e"
+                        },
+                        {
+                          "id": "b5be10fc-edfe-42db-9306-593b37fb128f",
+                          "name": "AccessDeniedException",
+                          "originalRequest": {
+                            "method": "DELETE",
+                            "header": [
+                              {
+                                "key": "X-Amz-Content-Sha256",
+                                "value": "<string>"
+                              },
+                              {
+                                "key": "X-Amz-Date",
+                                "value": "<string>"
+                              },
+                              {
+                                "key": "X-Amz-Algorithm",
+                                "value": "<string>"
+                              },
+                              {
+                                "key": "X-Amz-Credential",
+                                "value": "<string>"
+                              },
+                              {
+                                "key": "X-Amz-Security-Token",
+                                "value": "<string>"
+                              },
+                              {
+                                "key": "X-Amz-Signature",
+                                "value": "<string>"
+                              },
+                              {
+                                "key": "X-Amz-SignedHeaders",
+                                "value": "<string>"
+                              },
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: apikey",
+                                "key": "Authorization",
+                                "value": "<API Key>"
+                              }
+                            ],
+                            "url": {
+                              "raw": "{{baseUrl}}/v1/domain/permissions/policy?domain=kv4kt4c41dcizy-4i-vr58t-e6&domain-owner=009669069102&policy-revision=[|KGwbXFJ#domain",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "v1",
+                                "domain",
+                                "permissions",
+                                "policy"
+                              ],
+                              "query": [
+                                {
+                                  "description": "(Required)  The name of the domain associated with the resource policy to be deleted. ",
+                                  "key": "domain",
+                                  "value": "kv4kt4c41dcizy-4i-vr58t-e6"
+                                },
+                                {
+                                  "description": " The 12-digit account number of the Amazon Web Services account that owns the domain. It does not include dashes or spaces. ",
+                                  "key": "domain-owner",
+                                  "value": "009669069102"
+                                },
+                                {
+                                  "description": " The current revision of the resource policy to be deleted. This revision is used for optimistic locking, which prevents others from overwriting your changes to the domain's resource policy. ",
+                                  "key": "policy-revision",
+                                  "value": "[|KGwbXFJ"
+                                }
+                              ],
+                              "hash": "domain"
+                            }
+                          },
+                          "_postman_previewlanguage": "json",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": "{}",
+                          "createdAt": "2026-07-28T10:09:30.000Z",
+                          "updatedAt": "2026-07-28T10:09:30.000Z",
+                          "uid": "35240-b5be10fc-edfe-42db-9306-593b37fb128f"
+                        },
+                        {
+                          "id": "4afed543-6b9d-41af-8127-791918127ab4",
+                          "name": "ConflictException",
+                          "originalRequest": {
+                            "method": "DELETE",
+                            "header": [
+                              {
+                                "key": "X-Amz-Content-Sha256",
+                                "value": "<string>"
+                              },
+                              {
+                                "key": "X-Amz-Date",
+                                "value": "<string>"
+                              },
+                              {
+                                "key": "X-Amz-Algorithm",
+                                "value": "<string>"
+                              },
+                              {
+                                "key": "X-Amz-Credential",
+                                "value": "<string>"
+                              },
+                              {
+                                "key": "X-Amz-Security-Token",
+                                "value": "<string>"
+                              },
+                              {
+                                "key": "X-Amz-Signature",
+                                "value": "<string>"
+                              },
+                              {
+                                "key": "X-Amz-SignedHeaders",
+                                "value": "<string>"
+                              },
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: apikey",
+                                "key": "Authorization",
+                                "value": "<API Key>"
+                              }
+                            ],
+                            "url": {
+                              "raw": "{{baseUrl}}/v1/domain/permissions/policy?domain=kv4kt4c41dcizy-4i-vr58t-e6&domain-owner=009669069102&policy-revision=[|KGwbXFJ#domain",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "v1",
+                                "domain",
+                                "permissions",
+                                "policy"
+                              ],
+                              "query": [
+                                {
+                                  "description": "(Required)  The name of the domain associated with the resource policy to be deleted. ",
+                                  "key": "domain",
+                                  "value": "kv4kt4c41dcizy-4i-vr58t-e6"
+                                },
+                                {
+                                  "description": " The 12-digit account number of the Amazon Web Services account that owns the domain. It does not include dashes or spaces. ",
+                                  "key": "domain-owner",
+                                  "value": "009669069102"
+                                },
+                                {
+                                  "description": " The current revision of the resource policy to be deleted. This revision is used for optimistic locking, which prevents others from overwriting your changes to the domain's resource policy. ",
+                                  "key": "policy-revision",
+                                  "value": "[|KGwbXFJ"
+                                }
+                              ],
+                              "hash": "domain"
+                            }
+                          },
+                          "_postman_previewlanguage": "json",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": "{}",
+                          "createdAt": "2026-07-28T10:09:30.000Z",
+                          "updatedAt": "2026-07-28T10:09:30.000Z",
+                          "uid": "35240-4afed543-6b9d-41af-8127-791918127ab4"
+                        },
+                        {
+                          "id": "80538c4d-7dba-4ebb-86f5-606c733544ca",
+                          "name": "InternalServerException",
+                          "originalRequest": {
+                            "method": "DELETE",
+                            "header": [
+                              {
+                                "key": "X-Amz-Content-Sha256",
+                                "value": "<string>"
+                              },
+                              {
+                                "key": "X-Amz-Date",
+                                "value": "<string>"
+                              },
+                              {
+                                "key": "X-Amz-Algorithm",
+                                "value": "<string>"
+                              },
+                              {
+                                "key": "X-Amz-Credential",
+                                "value": "<string>"
+                              },
+                              {
+                                "key": "X-Amz-Security-Token",
+                                "value": "<string>"
+                              },
+                              {
+                                "key": "X-Amz-Signature",
+                                "value": "<string>"
+                              },
+                              {
+                                "key": "X-Amz-SignedHeaders",
+                                "value": "<string>"
+                              },
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: apikey",
+                                "key": "Authorization",
+                                "value": "<API Key>"
+                              }
+                            ],
+                            "url": {
+                              "raw": "{{baseUrl}}/v1/domain/permissions/policy?domain=kv4kt4c41dcizy-4i-vr58t-e6&domain-owner=009669069102&policy-revision=[|KGwbXFJ#domain",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "v1",
+                                "domain",
+                                "permissions",
+                                "policy"
+                              ],
+                              "query": [
+                                {
+                                  "description": "(Required)  The name of the domain associated with the resource policy to be deleted. ",
+                                  "key": "domain",
+                                  "value": "kv4kt4c41dcizy-4i-vr58t-e6"
+                                },
+                                {
+                                  "description": " The 12-digit account number of the Amazon Web Services account that owns the domain. It does not include dashes or spaces. ",
+                                  "key": "domain-owner",
+                                  "value": "009669069102"
+                                },
+                                {
+                                  "description": " The current revision of the resource policy to be deleted. This revision is used for optimistic locking, which prevents others from overwriting your changes to the domain's resource policy. ",
+                                  "key": "policy-revision",
+                                  "value": "[|KGwbXFJ"
+                                }
+                              ],
+                              "hash": "domain"
+                            }
+                          },
+                          "_postman_previewlanguage": "json",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": "{}",
+                          "createdAt": "2026-07-28T10:09:30.000Z",
+                          "updatedAt": "2026-07-28T10:09:30.000Z",
+                          "uid": "35240-80538c4d-7dba-4ebb-86f5-606c733544ca"
+                        },
+                        {
+                          "id": "97b2b591-345d-48ab-b888-0775517c2912",
+                          "name": "ResourceNotFoundException",
+                          "originalRequest": {
+                            "method": "DELETE",
+                            "header": [
+                              {
+                                "key": "X-Amz-Content-Sha256",
+                                "value": "<string>"
+                              },
+                              {
+                                "key": "X-Amz-Date",
+                                "value": "<string>"
+                              },
+                              {
+                                "key": "X-Amz-Algorithm",
+                                "value": "<string>"
+                              },
+                              {
+                                "key": "X-Amz-Credential",
+                                "value": "<string>"
+                              },
+                              {
+                                "key": "X-Amz-Security-Token",
+                                "value": "<string>"
+                              },
+                              {
+                                "key": "X-Amz-Signature",
+                                "value": "<string>"
+                              },
+                              {
+                                "key": "X-Amz-SignedHeaders",
+                                "value": "<string>"
+                              },
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: apikey",
+                                "key": "Authorization",
+                                "value": "<API Key>"
+                              }
+                            ],
+                            "url": {
+                              "raw": "{{baseUrl}}/v1/domain/permissions/policy?domain=kv4kt4c41dcizy-4i-vr58t-e6&domain-owner=009669069102&policy-revision=[|KGwbXFJ#domain",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "v1",
+                                "domain",
+                                "permissions",
+                                "policy"
+                              ],
+                              "query": [
+                                {
+                                  "description": "(Required)  The name of the domain associated with the resource policy to be deleted. ",
+                                  "key": "domain",
+                                  "value": "kv4kt4c41dcizy-4i-vr58t-e6"
+                                },
+                                {
+                                  "description": " The 12-digit account number of the Amazon Web Services account that owns the domain. It does not include dashes or spaces. ",
+                                  "key": "domain-owner",
+                                  "value": "009669069102"
+                                },
+                                {
+                                  "description": " The current revision of the resource policy to be deleted. This revision is used for optimistic locking, which prevents others from overwriting your changes to the domain's resource policy. ",
+                                  "key": "policy-revision",
+                                  "value": "[|KGwbXFJ"
+                                }
+                              ],
+                              "hash": "domain"
+                            }
+                          },
+                          "_postman_previewlanguage": "json",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": "{}",
+                          "createdAt": "2026-07-28T10:09:30.000Z",
+                          "updatedAt": "2026-07-28T10:09:30.000Z",
+                          "uid": "35240-97b2b591-345d-48ab-b888-0775517c2912"
+                        },
+                        {
+                          "id": "3f906c15-a3bd-4765-a76c-e6e30a373865",
+                          "name": "ThrottlingException",
+                          "originalRequest": {
+                            "method": "DELETE",
+                            "header": [
+                              {
+                                "key": "X-Amz-Content-Sha256",
+                                "value": "<string>"
+                              },
+                              {
+                                "key": "X-Amz-Date",
+                                "value": "<string>"
+                              },
+                              {
+                                "key": "X-Amz-Algorithm",
+                                "value": "<string>"
+                              },
+                              {
+                                "key": "X-Amz-Credential",
+                                "value": "<string>"
+                              },
+                              {
+                                "key": "X-Amz-Security-Token",
+                                "value": "<string>"
+                              },
+                              {
+                                "key": "X-Amz-Signature",
+                                "value": "<string>"
+                              },
+                              {
+                                "key": "X-Amz-SignedHeaders",
+                                "value": "<string>"
+                              },
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: apikey",
+                                "key": "Authorization",
+                                "value": "<API Key>"
+                              }
+                            ],
+                            "url": {
+                              "raw": "{{baseUrl}}/v1/domain/permissions/policy?domain=kv4kt4c41dcizy-4i-vr58t-e6&domain-owner=009669069102&policy-revision=[|KGwbXFJ#domain",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "v1",
+                                "domain",
+                                "permissions",
+                                "policy"
+                              ],
+                              "query": [
+                                {
+                                  "description": "(Required)  The name of the domain associated with the resource policy to be deleted. ",
+                                  "key": "domain",
+                                  "value": "kv4kt4c41dcizy-4i-vr58t-e6"
+                                },
+                                {
+                                  "description": " The 12-digit account number of the Amazon Web Services account that owns the domain. It does not include dashes or spaces. ",
+                                  "key": "domain-owner",
+                                  "value": "009669069102"
+                                },
+                                {
+                                  "description": " The current revision of the resource policy to be deleted. This revision is used for optimistic locking, which prevents others from overwriting your changes to the domain's resource policy. ",
+                                  "key": "policy-revision",
+                                  "value": "[|KGwbXFJ"
+                                }
+                              ],
+                              "hash": "domain"
+                            }
+                          },
+                          "_postman_previewlanguage": "json",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": "{}",
+                          "createdAt": "2026-07-28T10:09:30.000Z",
+                          "updatedAt": "2026-07-28T10:09:30.000Z",
+                          "uid": "35240-3f906c15-a3bd-4765-a76c-e6e30a373865"
+                        },
+                        {
+                          "id": "2faeb223-2d0d-481a-80bb-6d5291d4f0e5",
+                          "name": "ValidationException",
+                          "originalRequest": {
+                            "method": "DELETE",
+                            "header": [
+                              {
+                                "key": "X-Amz-Content-Sha256",
+                                "value": "<string>"
+                              },
+                              {
+                                "key": "X-Amz-Date",
+                                "value": "<string>"
+                              },
+                              {
+                                "key": "X-Amz-Algorithm",
+                                "value": "<string>"
+                              },
+                              {
+                                "key": "X-Amz-Credential",
+                                "value": "<string>"
+                              },
+                              {
+                                "key": "X-Amz-Security-Token",
+                                "value": "<string>"
+                              },
+                              {
+                                "key": "X-Amz-Signature",
+                                "value": "<string>"
+                              },
+                              {
+                                "key": "X-Amz-SignedHeaders",
+                                "value": "<string>"
+                              },
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: apikey",
+                                "key": "Authorization",
+                                "value": "<API Key>"
+                              }
+                            ],
+                            "url": {
+                              "raw": "{{baseUrl}}/v1/domain/permissions/policy?domain=kv4kt4c41dcizy-4i-vr58t-e6&domain-owner=009669069102&policy-revision=[|KGwbXFJ#domain",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "v1",
+                                "domain",
+                                "permissions",
+                                "policy"
+                              ],
+                              "query": [
+                                {
+                                  "description": "(Required)  The name of the domain associated with the resource policy to be deleted. ",
+                                  "key": "domain",
+                                  "value": "kv4kt4c41dcizy-4i-vr58t-e6"
+                                },
+                                {
+                                  "description": " The 12-digit account number of the Amazon Web Services account that owns the domain. It does not include dashes or spaces. ",
+                                  "key": "domain-owner",
+                                  "value": "009669069102"
+                                },
+                                {
+                                  "description": " The current revision of the resource policy to be deleted. This revision is used for optimistic locking, which prevents others from overwriting your changes to the domain's resource policy. ",
+                                  "key": "policy-revision",
+                                  "value": "[|KGwbXFJ"
+                                }
+                              ],
+                              "hash": "domain"
+                            }
+                          },
+                          "_postman_previewlanguage": "json",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": "{}",
+                          "createdAt": "2026-07-28T10:09:30.000Z",
+                          "updatedAt": "2026-07-28T10:09:30.000Z",
+                          "uid": "35240-2faeb223-2d0d-481a-80bb-6d5291d4f0e5"
+                        }
+                      ],
+                      "createdAt": "2026-07-28T10:09:30.000Z",
+                      "updatedAt": "2026-07-28T10:09:30.000Z",
+                      "uid": "35240-2294be5d-78e9-47b1-a04b-4f545589174b"
+                    },
+                    {
+                      "name": "Amazon CodeArtifact Get Domain Permissions Policy",
+                      "id": "5832343b-db16-4f77-85eb-ce71e4b92cd2",
+                      "protocolProfileBehavior": {
+                        "disableBodyPruning": true
+                      },
+                      "request": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "key": "X-Amz-Content-Sha256",
+                            "value": "<string>"
+                          },
+                          {
+                            "key": "X-Amz-Date",
+                            "value": "<string>"
+                          },
+                          {
+                            "key": "X-Amz-Algorithm",
+                            "value": "<string>"
+                          },
+                          {
+                            "key": "X-Amz-Credential",
+                            "value": "<string>"
+                          },
+                          {
+                            "key": "X-Amz-Security-Token",
+                            "value": "<string>"
+                          },
+                          {
+                            "key": "X-Amz-Signature",
+                            "value": "<string>"
+                          },
+                          {
+                            "key": "X-Amz-SignedHeaders",
+                            "value": "<string>"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/v1/domain/permissions/policy?domain=kv4kt4c41dcizy-4i-vr58t-e6&domain-owner=009669069102#domain",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "v1",
+                            "domain",
+                            "permissions",
+                            "policy"
+                          ],
+                          "query": [
+                            {
+                              "description": "(Required)  The name of the domain to which the resource policy is attached. ",
+                              "key": "domain",
+                              "value": "kv4kt4c41dcizy-4i-vr58t-e6"
+                            },
+                            {
+                              "description": " The 12-digit account number of the Amazon Web Services account that owns the domain. It does not include dashes or spaces. ",
+                              "key": "domain-owner",
+                              "value": "009669069102"
+                            }
+                          ],
+                          "hash": "domain"
+                        },
+                        "description": "<p> Returns the resource policy attached to the specified domain. </p> <note> <p> The policy is a resource-based policy, not an identity-based policy. For more information, see <a href=\"https://docs.aws.amazon.com/IAM/latest/UserGuide/access_policies_identity-vs-resource.html\">Identity-based policies and resource-based policies </a> in the <i>IAM User Guide</i>. </p> </note>"
+                      },
+                      "response": [
+                        {
+                          "id": "d2bb3f17-7e91-403b-a406-eab8a19257a6",
+                          "name": "Success",
+                          "originalRequest": {
+                            "method": "GET",
+                            "header": [
+                              {
+                                "key": "X-Amz-Content-Sha256",
+                                "value": "<string>"
+                              },
+                              {
+                                "key": "X-Amz-Date",
+                                "value": "<string>"
+                              },
+                              {
+                                "key": "X-Amz-Algorithm",
+                                "value": "<string>"
+                              },
+                              {
+                                "key": "X-Amz-Credential",
+                                "value": "<string>"
+                              },
+                              {
+                                "key": "X-Amz-Security-Token",
+                                "value": "<string>"
+                              },
+                              {
+                                "key": "X-Amz-Signature",
+                                "value": "<string>"
+                              },
+                              {
+                                "key": "X-Amz-SignedHeaders",
+                                "value": "<string>"
+                              },
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: apikey",
+                                "key": "Authorization",
+                                "value": "<API Key>"
+                              }
+                            ],
+                            "url": {
+                              "raw": "{{baseUrl}}/v1/domain/permissions/policy?domain=kv4kt4c41dcizy-4i-vr58t-e6&domain-owner=009669069102#domain",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "v1",
+                                "domain",
+                                "permissions",
+                                "policy"
+                              ],
+                              "query": [
+                                {
+                                  "description": "(Required)  The name of the domain to which the resource policy is attached. ",
+                                  "key": "domain",
+                                  "value": "kv4kt4c41dcizy-4i-vr58t-e6"
+                                },
+                                {
+                                  "description": " The 12-digit account number of the Amazon Web Services account that owns the domain. It does not include dashes or spaces. ",
+                                  "key": "domain-owner",
+                                  "value": "009669069102"
+                                }
+                              ],
+                              "hash": "domain"
+                            }
+                          },
+                          "status": "OK",
+                          "code": 200,
+                          "_postman_previewlanguage": "json",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": "{\n  \"policy\": {\n    \"resourceArn\": \"k\",\n    \"revision\": \"f\",\n    \"document\": \"\u2005\u180e\u2000\u2028\\r}\u2004\\t\"\n  }\n}",
+                          "createdAt": "2026-07-28T10:09:30.000Z",
+                          "updatedAt": "2026-07-28T10:09:30.000Z",
+                          "uid": "35240-d2bb3f17-7e91-403b-a406-eab8a19257a6"
+                        },
+                        {
+                          "id": "15267eb0-e85a-4b1b-9ec3-2f99cf588028",
+                          "name": "AccessDeniedException",
+                          "originalRequest": {
+                            "method": "GET",
+                            "header": [
+                              {
+                                "key": "X-Amz-Content-Sha256",
+                                "value": "<string>"
+                              },
+                              {
+                                "key": "X-Amz-Date",
+                                "value": "<string>"
+                              },
+                              {
+                                "key": "X-Amz-Algorithm",
+                                "value": "<string>"
+                              },
+                              {
+                                "key": "X-Amz-Credential",
+                                "value": "<string>"
+                              },
+                              {
+                                "key": "X-Amz-Security-Token",
+                                "value": "<string>"
+                              },
+                              {
+                                "key": "X-Amz-Signature",
+                                "value": "<string>"
+                              },
+                              {
+                                "key": "X-Amz-SignedHeaders",
+                                "value": "<string>"
+                              },
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: apikey",
+                                "key": "Authorization",
+                                "value": "<API Key>"
+                              }
+                            ],
+                            "url": {
+                              "raw": "{{baseUrl}}/v1/domain/permissions/policy?domain=kv4kt4c41dcizy-4i-vr58t-e6&domain-owner=009669069102#domain",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "v1",
+                                "domain",
+                                "permissions",
+                                "policy"
+                              ],
+                              "query": [
+                                {
+                                  "description": "(Required)  The name of the domain to which the resource policy is attached. ",
+                                  "key": "domain",
+                                  "value": "kv4kt4c41dcizy-4i-vr58t-e6"
+                                },
+                                {
+                                  "description": " The 12-digit account number of the Amazon Web Services account that owns the domain. It does not include dashes or spaces. ",
+                                  "key": "domain-owner",
+                                  "value": "009669069102"
+                                }
+                              ],
+                              "hash": "domain"
+                            }
+                          },
+                          "_postman_previewlanguage": "json",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": "{}",
+                          "createdAt": "2026-07-28T10:09:30.000Z",
+                          "updatedAt": "2026-07-28T10:09:30.000Z",
+                          "uid": "35240-15267eb0-e85a-4b1b-9ec3-2f99cf588028"
+                        },
+                        {
+                          "id": "a0110639-fcaa-420f-9710-6e1fbd853139",
+                          "name": "InternalServerException",
+                          "originalRequest": {
+                            "method": "GET",
+                            "header": [
+                              {
+                                "key": "X-Amz-Content-Sha256",
+                                "value": "<string>"
+                              },
+                              {
+                                "key": "X-Amz-Date",
+                                "value": "<string>"
+                              },
+                              {
+                                "key": "X-Amz-Algorithm",
+                                "value": "<string>"
+                              },
+                              {
+                                "key": "X-Amz-Credential",
+                                "value": "<string>"
+                              },
+                              {
+                                "key": "X-Amz-Security-Token",
+                                "value": "<string>"
+                              },
+                              {
+                                "key": "X-Amz-Signature",
+                                "value": "<string>"
+                              },
+                              {
+                                "key": "X-Amz-SignedHeaders",
+                                "value": "<string>"
+                              },
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: apikey",
+                                "key": "Authorization",
+                                "value": "<API Key>"
+                              }
+                            ],
+                            "url": {
+                              "raw": "{{baseUrl}}/v1/domain/permissions/policy?domain=kv4kt4c41dcizy-4i-vr58t-e6&domain-owner=009669069102#domain",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "v1",
+                                "domain",
+                                "permissions",
+                                "policy"
+                              ],
+                              "query": [
+                                {
+                                  "description": "(Required)  The name of the domain to which the resource policy is attached. ",
+                                  "key": "domain",
+                                  "value": "kv4kt4c41dcizy-4i-vr58t-e6"
+                                },
+                                {
+                                  "description": " The 12-digit account number of the Amazon Web Services account that owns the domain. It does not include dashes or spaces. ",
+                                  "key": "domain-owner",
+                                  "value": "009669069102"
+                                }
+                              ],
+                              "hash": "domain"
+                            }
+                          },
+                          "_postman_previewlanguage": "json",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": "{}",
+                          "createdAt": "2026-07-28T10:09:30.000Z",
+                          "updatedAt": "2026-07-28T10:09:30.000Z",
+                          "uid": "35240-a0110639-fcaa-420f-9710-6e1fbd853139"
+                        },
+                        {
+                          "id": "e37125f8-b9bc-4b7e-9a32-14c7c5e66d4b",
+                          "name": "ResourceNotFoundException",
+                          "originalRequest": {
+                            "method": "GET",
+                            "header": [
+                              {
+                                "key": "X-Amz-Content-Sha256",
+                                "value": "<string>"
+                              },
+                              {
+                                "key": "X-Amz-Date",
+                                "value": "<string>"
+                              },
+                              {
+                                "key": "X-Amz-Algorithm",
+                                "value": "<string>"
+                              },
+                              {
+                                "key": "X-Amz-Credential",
+                                "value": "<string>"
+                              },
+                              {
+                                "key": "X-Amz-Security-Token",
+                                "value": "<string>"
+                              },
+                              {
+                                "key": "X-Amz-Signature",
+                                "value": "<string>"
+                              },
+                              {
+                                "key": "X-Amz-SignedHeaders",
+                                "value": "<string>"
+                              },
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: apikey",
+                                "key": "Authorization",
+                                "value": "<API Key>"
+                              }
+                            ],
+                            "url": {
+                              "raw": "{{baseUrl}}/v1/domain/permissions/policy?domain=kv4kt4c41dcizy-4i-vr58t-e6&domain-owner=009669069102#domain",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "v1",
+                                "domain",
+                                "permissions",
+                                "policy"
+                              ],
+                              "query": [
+                                {
+                                  "description": "(Required)  The name of the domain to which the resource policy is attached. ",
+                                  "key": "domain",
+                                  "value": "kv4kt4c41dcizy-4i-vr58t-e6"
+                                },
+                                {
+                                  "description": " The 12-digit account number of the Amazon Web Services account that owns the domain. It does not include dashes or spaces. ",
+                                  "key": "domain-owner",
+                                  "value": "009669069102"
+                                }
+                              ],
+                              "hash": "domain"
+                            }
+                          },
+                          "_postman_previewlanguage": "json",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": "{}",
+                          "createdAt": "2026-07-28T10:09:30.000Z",
+                          "updatedAt": "2026-07-28T10:09:30.000Z",
+                          "uid": "35240-e37125f8-b9bc-4b7e-9a32-14c7c5e66d4b"
+                        },
+                        {
+                          "id": "a521295f-93d9-4ed1-8fd5-0a2bf06c9b01",
+                          "name": "ThrottlingException",
+                          "originalRequest": {
+                            "method": "GET",
+                            "header": [
+                              {
+                                "key": "X-Amz-Content-Sha256",
+                                "value": "<string>"
+                              },
+                              {
+                                "key": "X-Amz-Date",
+                                "value": "<string>"
+                              },
+                              {
+                                "key": "X-Amz-Algorithm",
+                                "value": "<string>"
+                              },
+                              {
+                                "key": "X-Amz-Credential",
+                                "value": "<string>"
+                              },
+                              {
+                                "key": "X-Amz-Security-Token",
+                                "value": "<string>"
+                              },
+                              {
+                                "key": "X-Amz-Signature",
+                                "value": "<string>"
+                              },
+                              {
+                                "key": "X-Amz-SignedHeaders",
+                                "value": "<string>"
+                              },
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: apikey",
+                                "key": "Authorization",
+                                "value": "<API Key>"
+                              }
+                            ],
+                            "url": {
+                              "raw": "{{baseUrl}}/v1/domain/permissions/policy?domain=kv4kt4c41dcizy-4i-vr58t-e6&domain-owner=009669069102#domain",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "v1",
+                                "domain",
+                                "permissions",
+                                "policy"
+                              ],
+                              "query": [
+                                {
+                                  "description": "(Required)  The name of the domain to which the resource policy is attached. ",
+                                  "key": "domain",
+                                  "value": "kv4kt4c41dcizy-4i-vr58t-e6"
+                                },
+                                {
+                                  "description": " The 12-digit account number of the Amazon Web Services account that owns the domain. It does not include dashes or spaces. ",
+                                  "key": "domain-owner",
+                                  "value": "009669069102"
+                                }
+                              ],
+                              "hash": "domain"
+                            }
+                          },
+                          "_postman_previewlanguage": "json",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": "{}",
+                          "createdAt": "2026-07-28T10:09:30.000Z",
+                          "updatedAt": "2026-07-28T10:09:30.000Z",
+                          "uid": "35240-a521295f-93d9-4ed1-8fd5-0a2bf06c9b01"
+                        },
+                        {
+                          "id": "a0ed7f89-48ff-4628-a9e7-f7557d723634",
+                          "name": "ValidationException",
+                          "originalRequest": {
+                            "method": "GET",
+                            "header": [
+                              {
+                                "key": "X-Amz-Content-Sha256",
+                                "value": "<string>"
+                              },
+                              {
+                                "key": "X-Amz-Date",
+                                "value": "<string>"
+                              },
+                              {
+                                "key": "X-Amz-Algorithm",
+                                "value": "<string>"
+                              },
+                              {
+                                "key": "X-Amz-Credential",
+                                "value": "<string>"
+                              },
+                              {
+                                "key": "X-Amz-Security-Token",
+                                "value": "<string>"
+                              },
+                              {
+                                "key": "X-Amz-Signature",
+                                "value": "<string>"
+                              },
+                              {
+                                "key": "X-Amz-SignedHeaders",
+                                "value": "<string>"
+                              },
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: apikey",
+                                "key": "Authorization",
+                                "value": "<API Key>"
+                              }
+                            ],
+                            "url": {
+                              "raw": "{{baseUrl}}/v1/domain/permissions/policy?domain=kv4kt4c41dcizy-4i-vr58t-e6&domain-owner=009669069102#domain",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "v1",
+                                "domain",
+                                "permissions",
+                                "policy"
+                              ],
+                              "query": [
+                                {
+                                  "description": "(Required)  The name of the domain to which the resource policy is attached. ",
+                                  "key": "domain",
+                                  "value": "kv4kt4c41dcizy-4i-vr58t-e6"
+                                },
+                                {
+                                  "description": " The 12-digit account number of the Amazon Web Services account that owns the domain. It does not include dashes or spaces. ",
+                                  "key": "domain-owner",
+                                  "value": "009669069102"
+                                }
+                              ],
+                              "hash": "domain"
+                            }
+                          },
+                          "_postman_previewlanguage": "json",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": "{}",
+                          "createdAt": "2026-07-28T10:09:30.000Z",
+                          "updatedAt": "2026-07-28T10:09:30.000Z",
+                          "uid": "35240-a0ed7f89-48ff-4628-a9e7-f7557d723634"
+                        }
+                      ],
+                      "createdAt": "2026-07-28T10:09:30.000Z",
+                      "updatedAt": "2026-07-28T10:09:30.000Z",
+                      "uid": "35240-5832343b-db16-4f77-85eb-ce71e4b92cd2"
+                    }
+                  ],
+                  "id": "d5227cff-66ca-4553-9c9e-a45d7a69137b",
+                  "createdAt": "2026-07-28T10:09:30.000Z",
+                  "updatedAt": "2026-07-28T10:09:30.000Z",
+                  "uid": "35240-d5227cff-66ca-4553-9c9e-a45d7a69137b"
+                },
+                {
+                  "name": "policy",
+                  "item": [
+                    {
+                      "name": "Amazon CodeArtifact Put Domain Permissions Policy",
+                      "id": "fb002fa0-fc77-48f4-a115-91d0dd186b58",
+                      "protocolProfileBehavior": {
+                        "disableBodyPruning": true
+                      },
+                      "request": {
+                        "method": "PUT",
+                        "header": [
+                          {
+                            "key": "X-Amz-Content-Sha256",
+                            "value": "<string>"
+                          },
+                          {
+                            "key": "X-Amz-Date",
+                            "value": "<string>"
+                          },
+                          {
+                            "key": "X-Amz-Algorithm",
+                            "value": "<string>"
+                          },
+                          {
+                            "key": "X-Amz-Credential",
+                            "value": "<string>"
+                          },
+                          {
+                            "key": "X-Amz-Security-Token",
+                            "value": "<string>"
+                          },
+                          {
+                            "key": "X-Amz-Signature",
+                            "value": "<string>"
+                          },
+                          {
+                            "key": "X-Amz-SignedHeaders",
+                            "value": "<string>"
+                          },
+                          {
+                            "key": "Content-Type",
+                            "value": "application/json"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          }
+                        ],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\n  \"domain\": \"e-z57g75307ycgvr2706stel\",\n  \"policyDocument\": \"\\r\u2001\u2002\\t\u2008\ufeff\u2028\",\n  \"domainOwner\": \"678837086590\",\n  \"policyRevision\": \"`O\"\n}",
+                          "options": {
+                            "raw": {
+                              "headerFamily": "json",
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/v1/domain/permissions/policy",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "v1",
+                            "domain",
+                            "permissions",
+                            "policy"
+                          ]
+                        },
+                        "description": "<p> Sets a resource policy on a domain that specifies permissions to access it. </p> <p> When you call <code>PutDomainPermissionsPolicy</code>, the resource policy on the domain is ignored when evaluting permissions. This ensures that the owner of a domain cannot lock themselves out of the domain, which would prevent them from being able to update the resource policy. </p>"
+                      },
+                      "response": [
+                        {
+                          "id": "cb285964-67d6-4dd3-9e19-3e59413db10e",
+                          "name": "Success",
+                          "originalRequest": {
+                            "method": "PUT",
+                            "header": [
+                              {
+                                "key": "X-Amz-Content-Sha256",
+                                "value": "<string>"
+                              },
+                              {
+                                "key": "X-Amz-Date",
+                                "value": "<string>"
+                              },
+                              {
+                                "key": "X-Amz-Algorithm",
+                                "value": "<string>"
+                              },
+                              {
+                                "key": "X-Amz-Credential",
+                                "value": "<string>"
+                              },
+                              {
+                                "key": "X-Amz-Security-Token",
+                                "value": "<string>"
+                              },
+                              {
+                                "key": "X-Amz-Signature",
+                                "value": "<string>"
+                              },
+                              {
+                                "key": "X-Amz-SignedHeaders",
+                                "value": "<string>"
+                              },
+                              {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                              },
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: apikey",
+                                "key": "Authorization",
+                                "value": "<API Key>"
+                              }
+                            ],
+                            "body": {
+                              "mode": "raw",
+                              "raw": "{\n  \"domain\": \"e-z57g75307ycgvr2706stel\",\n  \"policyDocument\": \"\\r\u2001\u2002\\t\u2008\ufeff\u2028\",\n  \"domainOwner\": \"678837086590\",\n  \"policyRevision\": \"`O\"\n}",
+                              "options": {
+                                "raw": {
+                                  "headerFamily": "json",
+                                  "language": "json"
+                                }
+                              }
+                            },
+                            "url": {
+                              "raw": "{{baseUrl}}/v1/domain/permissions/policy",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "v1",
+                                "domain",
+                                "permissions",
+                                "policy"
+                              ]
+                            }
+                          },
+                          "status": "OK",
+                          "code": 200,
+                          "_postman_previewlanguage": "json",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": "{\n  \"policy\": {\n    \"resourceArn\": \"k\",\n    \"revision\": \"f\",\n    \"document\": \"\u2005\u180e\u2000\u2028\\r}\u2004\\t\"\n  }\n}",
+                          "createdAt": "2026-07-28T10:09:30.000Z",
+                          "updatedAt": "2026-07-28T10:09:30.000Z",
+                          "uid": "35240-cb285964-67d6-4dd3-9e19-3e59413db10e"
+                        },
+                        {
+                          "id": "840174cf-523a-4229-ac61-b7b4290ecc80",
+                          "name": "AccessDeniedException",
+                          "originalRequest": {
+                            "method": "PUT",
+                            "header": [
+                              {
+                                "key": "X-Amz-Content-Sha256",
+                                "value": "<string>"
+                              },
+                              {
+                                "key": "X-Amz-Date",
+                                "value": "<string>"
+                              },
+                              {
+                                "key": "X-Amz-Algorithm",
+                                "value": "<string>"
+                              },
+                              {
+                                "key": "X-Amz-Credential",
+                                "value": "<string>"
+                              },
+                              {
+                                "key": "X-Amz-Security-Token",
+                                "value": "<string>"
+                              },
+                              {
+                                "key": "X-Amz-Signature",
+                                "value": "<string>"
+                              },
+                              {
+                                "key": "X-Amz-SignedHeaders",
+                                "value": "<string>"
+                              },
+                              {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                              },
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: apikey",
+                                "key": "Authorization",
+                                "value": "<API Key>"
+                              }
+                            ],
+                            "body": {
+                              "mode": "raw",
+                              "raw": "{\n  \"domain\": \"e-z57g75307ycgvr2706stel\",\n  \"policyDocument\": \"\\r\u2001\u2002\\t\u2008\ufeff\u2028\",\n  \"domainOwner\": \"678837086590\",\n  \"policyRevision\": \"`O\"\n}",
+                              "options": {
+                                "raw": {
+                                  "headerFamily": "json",
+                                  "language": "json"
+                                }
+                              }
+                            },
+                            "url": {
+                              "raw": "{{baseUrl}}/v1/domain/permissions/policy",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "v1",
+                                "domain",
+                                "permissions",
+                                "policy"
+                              ]
+                            }
+                          },
+                          "_postman_previewlanguage": "json",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": "{}",
+                          "createdAt": "2026-07-28T10:09:30.000Z",
+                          "updatedAt": "2026-07-28T10:09:30.000Z",
+                          "uid": "35240-840174cf-523a-4229-ac61-b7b4290ecc80"
+                        },
+                        {
+                          "id": "5a72167f-f2d6-4c4b-9526-d88e52c448b3",
+                          "name": "ConflictException",
+                          "originalRequest": {
+                            "method": "PUT",
+                            "header": [
+                              {
+                                "key": "X-Amz-Content-Sha256",
+                                "value": "<string>"
+                              },
+                              {
+                                "key": "X-Amz-Date",
+                                "value": "<string>"
+                              },
+                              {
+                                "key": "X-Amz-Algorithm",
+                                "value": "<string>"
+                              },
+                              {
+                                "key": "X-Amz-Credential",
+                                "value": "<string>"
+                              },
+                              {
+                                "key": "X-Amz-Security-Token",
+                                "value": "<string>"
+                              },
+                              {
+                                "key": "X-Amz-Signature",
+                                "value": "<string>"
+                              },
+                              {
+                                "key": "X-Amz-SignedHeaders",
+                                "value": "<string>"
+                              },
+                              {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                              },
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: apikey",
+                                "key": "Authorization",
+                                "value": "<API Key>"
+                              }
+                            ],
+                            "body": {
+                              "mode": "raw",
+                              "raw": "{\n  \"domain\": \"e-z57g75307ycgvr2706stel\",\n  \"policyDocument\": \"\\r\u2001\u2002\\t\u2008\ufeff\u2028\",\n  \"domainOwner\": \"678837086590\",\n  \"policyRevision\": \"`O\"\n}",
+                              "options": {
+                                "raw": {
+                                  "headerFamily": "json",
+                                  "language": "json"
+                                }
+                              }
+                            },
+                            "url": {
+                              "raw": "{{baseUrl}}/v1/domain/permissions/policy",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "v1",
+                                "domain",
+                                "permissions",
+                                "policy"
+                              ]
+                            }
+                          },
+                          "_postman_previewlanguage": "json",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": "{}",
+                          "createdAt": "2026-07-28T10:09:30.000Z",
+                          "updatedAt": "2026-07-28T10:09:30.000Z",
+                          "uid": "35240-5a72167f-f2d6-4c4b-9526-d88e52c448b3"
+                        },
+                        {
+                          "id": "580c2499-71ff-416d-8f48-431bde05715b",
+                          "name": "InternalServerException",
+                          "originalRequest": {
+                            "method": "PUT",
+                            "header": [
+                              {
+                                "key": "X-Amz-Content-Sha256",
+                                "value": "<string>"
+                              },
+                              {
+                                "key": "X-Amz-Date",
+                                "value": "<string>"
+                              },
+                              {
+                                "key": "X-Amz-Algorithm",
+                                "value": "<string>"
+                              },
+                              {
+                                "key": "X-Amz-Credential",
+                                "value": "<string>"
+                              },
+                              {
+                                "key": "X-Amz-Security-Token",
+                                "value": "<string>"
+                              },
+                              {
+                                "key": "X-Amz-Signature",
+                                "value": "<string>"
+                              },
+                              {
+                                "key": "X-Amz-SignedHeaders",
+                                "value": "<string>"
+                              },
+                              {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                              },
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: apikey",
+                                "key": "Authorization",
+                                "value": "<API Key>"
+                              }
+                            ],
+                            "body": {
+                              "mode": "raw",
+                              "raw": "{\n  \"domain\": \"e-z57g75307ycgvr2706stel\",\n  \"policyDocument\": \"\\r\u2001\u2002\\t\u2008\ufeff\u2028\",\n  \"domainOwner\": \"678837086590\",\n  \"policyRevision\": \"`O\"\n}",
+                              "options": {
+                                "raw": {
+                                  "headerFamily": "json",
+                                  "language": "json"
+                                }
+                              }
+                            },
+                            "url": {
+                              "raw": "{{baseUrl}}/v1/domain/permissions/policy",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "v1",
+                                "domain",
+                                "permissions",
+                                "policy"
+                              ]
+                            }
+                          },
+                          "_postman_previewlanguage": "json",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": "{}",
+                          "createdAt": "2026-07-28T10:09:30.000Z",
+                          "updatedAt": "2026-07-28T10:09:30.000Z",
+                          "uid": "35240-580c2499-71ff-416d-8f48-431bde05715b"
+                        },
+                        {
+                          "id": "94b91617-b8b2-48cd-b103-bf8a775d464d",
+                          "name": "ResourceNotFoundException",
+                          "originalRequest": {
+                            "method": "PUT",
+                            "header": [
+                              {
+                                "key": "X-Amz-Content-Sha256",
+                                "value": "<string>"
+                              },
+                              {
+                                "key": "X-Amz-Date",
+                                "value": "<string>"
+                              },
+                              {
+                                "key": "X-Amz-Algorithm",
+                                "value": "<string>"
+                              },
+                              {
+                                "key": "X-Amz-Credential",
+                                "value": "<string>"
+                              },
+                              {
+                                "key": "X-Amz-Security-Token",
+                                "value": "<string>"
+                              },
+                              {
+                                "key": "X-Amz-Signature",
+                                "value": "<string>"
+                              },
+                              {
+                                "key": "X-Amz-SignedHeaders",
+                                "value": "<string>"
+                              },
+                              {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                              },
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: apikey",
+                                "key": "Authorization",
+                                "value": "<API Key>"
+                              }
+                            ],
+                            "body": {
+                              "mode": "raw",
+                              "raw": "{\n  \"domain\": \"e-z57g75307ycgvr2706stel\",\n  \"policyDocument\": \"\\r\u2001\u2002\\t\u2008\ufeff\u2028\",\n  \"domainOwner\": \"678837086590\",\n  \"policyRevision\": \"`O\"\n}",
+                              "options": {
+                                "raw": {
+                                  "headerFamily": "json",
+                                  "language": "json"
+                                }
+                              }
+                            },
+                            "url": {
+                              "raw": "{{baseUrl}}/v1/domain/permissions/policy",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "v1",
+                                "domain",
+                                "permissions",
+                                "policy"
+                              ]
+                            }
+                          },
+                          "_postman_previewlanguage": "json",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": "{}",
+                          "createdAt": "2026-07-28T10:09:30.000Z",
+                          "updatedAt": "2026-07-28T10:09:30.000Z",
+                          "uid": "35240-94b91617-b8b2-48cd-b103-bf8a775d464d"
+                        },
+                        {
+                          "id": "038398f0-5f18-422c-ad32-20b436d16ba7",
+                          "name": "ServiceQuotaExceededException",
+                          "originalRequest": {
+                            "method": "PUT",
+                            "header": [
+                              {
+                                "key": "X-Amz-Content-Sha256",
+                                "value": "<string>"
+                              },
+                              {
+                                "key": "X-Amz-Date",
+                                "value": "<string>"
+                              },
+                              {
+                                "key": "X-Amz-Algorithm",
+                                "value": "<string>"
+                              },
+                              {
+                                "key": "X-Amz-Credential",
+                                "value": "<string>"
+                              },
+                              {
+                                "key": "X-Amz-Security-Token",
+                                "value": "<string>"
+                              },
+                              {
+                                "key": "X-Amz-Signature",
+                                "value": "<string>"
+                              },
+                              {
+                                "key": "X-Amz-SignedHeaders",
+                                "value": "<string>"
+                              },
+                              {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                              },
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: apikey",
+                                "key": "Authorization",
+                                "value": "<API Key>"
+                              }
+                            ],
+                            "body": {
+                              "mode": "raw",
+                              "raw": "{\n  \"domain\": \"e-z57g75307ycgvr2706stel\",\n  \"policyDocument\": \"\\r\u2001\u2002\\t\u2008\ufeff\u2028\",\n  \"domainOwner\": \"678837086590\",\n  \"policyRevision\": \"`O\"\n}",
+                              "options": {
+                                "raw": {
+                                  "headerFamily": "json",
+                                  "language": "json"
+                                }
+                              }
+                            },
+                            "url": {
+                              "raw": "{{baseUrl}}/v1/domain/permissions/policy",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "v1",
+                                "domain",
+                                "permissions",
+                                "policy"
+                              ]
+                            }
+                          },
+                          "_postman_previewlanguage": "json",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": "{}",
+                          "createdAt": "2026-07-28T10:09:30.000Z",
+                          "updatedAt": "2026-07-28T10:09:30.000Z",
+                          "uid": "35240-038398f0-5f18-422c-ad32-20b436d16ba7"
+                        },
+                        {
+                          "id": "926ceb73-4a99-4eb4-b7cc-6eed5bdfcef4",
+                          "name": "ThrottlingException",
+                          "originalRequest": {
+                            "method": "PUT",
+                            "header": [
+                              {
+                                "key": "X-Amz-Content-Sha256",
+                                "value": "<string>"
+                              },
+                              {
+                                "key": "X-Amz-Date",
+                                "value": "<string>"
+                              },
+                              {
+                                "key": "X-Amz-Algorithm",
+                                "value": "<string>"
+                              },
+                              {
+                                "key": "X-Amz-Credential",
+                                "value": "<string>"
+                              },
+                              {
+                                "key": "X-Amz-Security-Token",
+                                "value": "<string>"
+                              },
+                              {
+                                "key": "X-Amz-Signature",
+                                "value": "<string>"
+                              },
+                              {
+                                "key": "X-Amz-SignedHeaders",
+                                "value": "<string>"
+                              },
+                              {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                              },
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: apikey",
+                                "key": "Authorization",
+                                "value": "<API Key>"
+                              }
+                            ],
+                            "body": {
+                              "mode": "raw",
+                              "raw": "{\n  \"domain\": \"e-z57g75307ycgvr2706stel\",\n  \"policyDocument\": \"\\r\u2001\u2002\\t\u2008\ufeff\u2028\",\n  \"domainOwner\": \"678837086590\",\n  \"policyRevision\": \"`O\"\n}",
+                              "options": {
+                                "raw": {
+                                  "headerFamily": "json",
+                                  "language": "json"
+                                }
+                              }
+                            },
+                            "url": {
+                              "raw": "{{baseUrl}}/v1/domain/permissions/policy",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "v1",
+                                "domain",
+                                "permissions",
+                                "policy"
+                              ]
+                            }
+                          },
+                          "_postman_previewlanguage": "json",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": "{}",
+                          "createdAt": "2026-07-28T10:09:30.000Z",
+                          "updatedAt": "2026-07-28T10:09:30.000Z",
+                          "uid": "35240-926ceb73-4a99-4eb4-b7cc-6eed5bdfcef4"
+                        },
+                        {
+                          "id": "c8dd8318-c320-4f01-a559-c75146128946",
+                          "name": "ValidationException",
+                          "originalRequest": {
+                            "method": "PUT",
+                            "header": [
+                              {
+                                "key": "X-Amz-Content-Sha256",
+                                "value": "<string>"
+                              },
+                              {
+                                "key": "X-Amz-Date",
+                                "value": "<string>"
+                              },
+                              {
+                                "key": "X-Amz-Algorithm",
+                                "value": "<string>"
+                              },
+                              {
+                                "key": "X-Amz-Credential",
+                                "value": "<string>"
+                              },
+                              {
+                                "key": "X-Amz-Security-Token",
+                                "value": "<string>"
+                              },
+                              {
+                                "key": "X-Amz-Signature",
+                                "value": "<string>"
+                              },
+                              {
+                                "key": "X-Amz-SignedHeaders",
+                                "value": "<string>"
+                              },
+                              {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                              },
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: apikey",
+                                "key": "Authorization",
+                                "value": "<API Key>"
+                              }
+                            ],
+                            "body": {
+                              "mode": "raw",
+                              "raw": "{\n  \"domain\": \"e-z57g75307ycgvr2706stel\",\n  \"policyDocument\": \"\\r\u2001\u2002\\t\u2008\ufeff\u2028\",\n  \"domainOwner\": \"678837086590\",\n  \"policyRevision\": \"`O\"\n}",
+                              "options": {
+                                "raw": {
+                                  "headerFamily": "json",
+                                  "language": "json"
+                                }
+                              }
+                            },
+                            "url": {
+                              "raw": "{{baseUrl}}/v1/domain/permissions/policy",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "v1",
+                                "domain",
+                                "permissions",
+                                "policy"
+                              ]
+                            }
+                          },
+                          "_postman_previewlanguage": "json",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": "{}",
+                          "createdAt": "2026-07-28T10:09:30.000Z",
+                          "updatedAt": "2026-07-28T10:09:30.000Z",
+                          "uid": "35240-c8dd8318-c320-4f01-a559-c75146128946"
+                        }
+                      ],
+                      "createdAt": "2026-07-28T10:09:30.000Z",
+                      "updatedAt": "2026-07-28T10:09:30.000Z",
+                      "uid": "35240-fb002fa0-fc77-48f4-a115-91d0dd186b58"
+                    }
+                  ],
+                  "id": "63beac89-9a02-4eae-a4d5-98812fa5e229",
+                  "createdAt": "2026-07-28T10:09:30.000Z",
+                  "updatedAt": "2026-07-28T10:09:30.000Z",
+                  "uid": "35240-63beac89-9a02-4eae-a4d5-98812fa5e229"
+                }
+              ],
+              "id": "94dcfbf1-828e-4349-b3f7-9e6d8fb5481b",
+              "createdAt": "2026-07-28T10:09:30.000Z",
+              "updatedAt": "2026-07-28T10:09:30.000Z",
+              "uid": "35240-94dcfbf1-828e-4349-b3f7-9e6d8fb5481b"
+            },
+            {
+              "name": "repositories#domain",
+              "item": [
+                {
+                  "name": "Amazon CodeArtifact List Repositories in Domain",
+                  "id": "b87d0949-7092-48a3-8747-81e9b5cf9839",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "method": "POST",
+                    "header": [
+                      {
+                        "key": "X-Amz-Content-Sha256",
+                        "value": "<string>"
+                      },
+                      {
+                        "key": "X-Amz-Date",
+                        "value": "<string>"
+                      },
+                      {
+                        "key": "X-Amz-Algorithm",
+                        "value": "<string>"
+                      },
+                      {
+                        "key": "X-Amz-Credential",
+                        "value": "<string>"
+                      },
+                      {
+                        "key": "X-Amz-Security-Token",
+                        "value": "<string>"
+                      },
+                      {
+                        "key": "X-Amz-Signature",
+                        "value": "<string>"
+                      },
+                      {
+                        "key": "X-Amz-SignedHeaders",
+                        "value": "<string>"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/v1/domain/repositories?domain=kv4kt4c41dcizy-4i-vr58t-e6&domain-owner=009669069102&administrator-account=009669069102&repository-prefix=U6Z6uJOFoSh_Rz69EPz8wQ4ry-U63PICtnMk6LGvFqkXJYCr8yJIx7qPoDHz_3vXAYcDL3H4yw66PxZSUOGG0Rfyj5lxUeWf&max-results=<integer>&next-token=~5m-Xp&maxResults=<string>&nextToken=<string>#domain",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "v1",
+                        "domain",
+                        "repositories"
+                      ],
+                      "query": [
+                        {
+                          "description": "(Required)  The name of the domain that contains the returned list of repositories. ",
+                          "key": "domain",
+                          "value": "kv4kt4c41dcizy-4i-vr58t-e6"
+                        },
+                        {
+                          "description": " The 12-digit account number of the Amazon Web Services account that owns the domain. It does not include dashes or spaces. ",
+                          "key": "domain-owner",
+                          "value": "009669069102"
+                        },
+                        {
+                          "description": " Filter the list of repositories to only include those that are managed by the Amazon Web Services account ID. ",
+                          "key": "administrator-account",
+                          "value": "009669069102"
+                        },
+                        {
+                          "description": " A prefix used to filter returned repositories. Only repositories with names that start with <code>repositoryPrefix</code> are returned. ",
+                          "key": "repository-prefix",
+                          "value": "U6Z6uJOFoSh_Rz69EPz8wQ4ry-U63PICtnMk6LGvFqkXJYCr8yJIx7qPoDHz_3vXAYcDL3H4yw66PxZSUOGG0Rfyj5lxUeWf"
+                        },
+                        {
+                          "description": " The maximum number of results to return per page. ",
+                          "key": "max-results",
+                          "value": "<integer>"
+                        },
+                        {
+                          "description": " The token for the next set of results. Use the value returned in the previous response in the next request to retrieve the next set of results. ",
+                          "key": "next-token",
+                          "value": "~5m-Xp"
+                        },
+                        {
+                          "description": "Pagination limit",
+                          "key": "maxResults",
+                          "value": "<string>"
+                        },
+                        {
+                          "description": "Pagination token",
+                          "key": "nextToken",
+                          "value": "<string>"
+                        }
+                      ],
+                      "hash": "domain"
+                    },
+                    "description": " Returns a list of <a href=\"https://docs.aws.amazon.com/codeartifact/latest/APIReference/API_RepositorySummary.html\">RepositorySummary</a> objects. Each <code>RepositorySummary</code> contains information about a repository in the specified domain and that matches the input parameters. "
+                  },
+                  "response": [
+                    {
+                      "id": "178e7421-7d07-4c7f-ba7c-d7efd611386b",
+                      "name": "Success",
+                      "originalRequest": {
+                        "method": "POST",
+                        "header": [
+                          {
+                            "key": "X-Amz-Content-Sha256",
+                            "value": "<string>"
+                          },
+                          {
+                            "key": "X-Amz-Date",
+                            "value": "<string>"
+                          },
+                          {
+                            "key": "X-Amz-Algorithm",
+                            "value": "<string>"
+                          },
+                          {
+                            "key": "X-Amz-Credential",
+                            "value": "<string>"
+                          },
+                          {
+                            "key": "X-Amz-Security-Token",
+                            "value": "<string>"
+                          },
+                          {
+                            "key": "X-Amz-Signature",
+                            "value": "<string>"
+                          },
+                          {
+                            "key": "X-Amz-SignedHeaders",
+                            "value": "<string>"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: apikey",
+                            "key": "Authorization",
+                            "value": "<API Key>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/v1/domain/repositories?domain=kv4kt4c41dcizy-4i-vr58t-e6&domain-owner=009669069102&administrator-account=009669069102&repository-prefix=U6Z6uJOFoSh_Rz69EPz8wQ4ry-U63PICtnMk6LGvFqkXJYCr8yJIx7qPoDHz_3vXAYcDL3H4yw66PxZSUOGG0Rfyj5lxUeWf&max-results=<integer>&next-token=~5m-Xp&maxResults=<string>&nextToken=<string>#domain",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "v1",
+                            "domain",
+                            "repositories"
+                          ],
+                          "query": [
+                            {
+                              "description": "(Required)  The name of the domain that contains the returned list of repositories. ",
+                              "key": "domain",
+                              "value": "kv4kt4c41dcizy-4i-vr58t-e6"
+                            },
+                            {
+                              "description": " The 12-digit account number of the Amazon Web Services account that owns the domain. It does not include dashes or spaces. ",
+                              "key": "domain-owner",
+                              "value": "009669069102"
+                            },
+                            {
+                              "description": " Filter the list of repositories to only include those that are managed by the Amazon Web Services account ID. ",
+                              "key": "administrator-account",
+                              "value": "009669069102"
+                            },
+                            {
+                              "description": " A prefix used to filter returned repositories. Only repositories with names that start with <code>repositoryPrefix</code> are returned. ",
+                              "key": "repository-prefix",
+                              "value": "U6Z6uJOFoSh_Rz69EPz8wQ4ry-U63PICtnMk6LGvFqkXJYCr8yJIx7qPoDHz_3vXAYcDL3H4yw66PxZSUOGG0Rfyj5lxUeWf"
+                            },
+                            {
+                              "description": " The maximum number of results to return per page. ",
+                              "key": "max-results",
+                              "value": "<integer>"
+                            },
+                            {
+                              "description": " The token for the next set of results. Use the value returned in the previous response in the next request to retrieve the next set of results. ",
+                              "key": "next-token",
+                              "value": "~5m-Xp"
+                            },
+                            {
+                              "description": "Pagination limit",
+                              "key": "maxResults",
+                              "value": "<string>"
+                            },
+                            {
+                              "description": "Pagination token",
+                              "key": "nextToken",
+                              "value": "<string>"
+                            }
+                          ],
+                          "hash": "domain"
+                        }
+                      },
+                      "status": "OK",
+                      "code": 200,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"repositories\": [\n    {\n      \"name\": \"lzu7Dkt5DsP6\",\n      \"administratorAccount\": \"452342340307\",\n      \"domainName\": \"txg8p7-fi0-do-g\",\n      \"domainOwner\": \"859887559514\",\n      \"arn\": \"bA~vV0=)XY\",\n      \"description\": \"P{C}}}}}}}}}}\",\n      \"createdTime\": \"<dateTime>\"\n    },\n    {\n      \"name\": \"mnhSu2._Dx4hCZNJJQX95U-XesBia2enRRiyDH5JuCdFo\",\n      \"administratorAccount\": \"573443376762\",\n      \"domainName\": \"uh8iy-rtcmes0cn49m\",\n      \"domainOwner\": \"509585229182\",\n      \"arn\": \"t,NZcLq\",\n      \"description\": \"P{C}}}}}\",\n      \"createdTime\": \"<dateTime>\"\n    }\n  ],\n  \"nextToken\": \"GE+XQ=\"\n}",
+                      "createdAt": "2026-07-28T10:09:30.000Z",
+                      "updatedAt": "2026-07-28T10:09:30.000Z",
+                      "uid": "35240-178e7421-7d07-4c7f-ba7c-d7efd611386b"
+                    },
+                    {
+                      "id": "176a150e-d85a-4a70-914e-ac75ed8d6b03",
+                      "name": "AccessDeniedException",
+                      "originalRequest": {
+                        "method": "POST",
+                        "header": [
+                          {
+                            "key": "X-Amz-Content-Sha256",
+                            "value": "<string>"
+                          },
+                          {
+                            "key": "X-Amz-Date",
+                            "value": "<string>"
+                          },
+                          {
+                            "key": "X-Amz-Algorithm",
+                            "value": "<string>"
+                          },
+                          {
+                            "key": "X-Amz-Credential",
+                            "value": "<string>"
+                          },
+                          {
+                            "key": "X-Amz-Security-Token",
+                            "value": "<string>"
+                          },
+                          {
+                            "key": "X-Amz-Signature",
+                            "value": "<string>"
+                          },
+                          {
+                            "key": "X-Amz-SignedHeaders",
+                            "value": "<string>"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: apikey",
+                            "key": "Authorization",
+                            "value": "<API Key>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/v1/domain/repositories?domain=kv4kt4c41dcizy-4i-vr58t-e6&domain-owner=009669069102&administrator-account=009669069102&repository-prefix=U6Z6uJOFoSh_Rz69EPz8wQ4ry-U63PICtnMk6LGvFqkXJYCr8yJIx7qPoDHz_3vXAYcDL3H4yw66PxZSUOGG0Rfyj5lxUeWf&max-results=<integer>&next-token=~5m-Xp&maxResults=<string>&nextToken=<string>#domain",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "v1",
+                            "domain",
+                            "repositories"
+                          ],
+                          "query": [
+                            {
+                              "description": "(Required)  The name of the domain that contains the returned list of repositories. ",
+                              "key": "domain",
+                              "value": "kv4kt4c41dcizy-4i-vr58t-e6"
+                            },
+                            {
+                              "description": " The 12-digit account number of the Amazon Web Services account that owns the domain. It does not include dashes or spaces. ",
+                              "key": "domain-owner",
+                              "value": "009669069102"
+                            },
+                            {
+                              "description": " Filter the list of repositories to only include those that are managed by the Amazon Web Services account ID. ",
+                              "key": "administrator-account",
+                              "value": "009669069102"
+                            },
+                            {
+                              "description": " A prefix used to filter returned repositories. Only repositories with names that start with <code>repositoryPrefix</code> are returned. ",
+                              "key": "repository-prefix",
+                              "value": "U6Z6uJOFoSh_Rz69EPz8wQ4ry-U63PICtnMk6LGvFqkXJYCr8yJIx7qPoDHz_3vXAYcDL3H4yw66PxZSUOGG0Rfyj5lxUeWf"
+                            },
+                            {
+                              "description": " The maximum number of results to return per page. ",
+                              "key": "max-results",
+                              "value": "<integer>"
+                            },
+                            {
+                              "description": " The token for the next set of results. Use the value returned in the previous response in the next request to retrieve the next set of results. ",
+                              "key": "next-token",
+                              "value": "~5m-Xp"
+                            },
+                            {
+                              "description": "Pagination limit",
+                              "key": "maxResults",
+                              "value": "<string>"
+                            },
+                            {
+                              "description": "Pagination token",
+                              "key": "nextToken",
+                              "value": "<string>"
+                            }
+                          ],
+                          "hash": "domain"
+                        }
+                      },
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{}",
+                      "createdAt": "2026-07-28T10:09:30.000Z",
+                      "updatedAt": "2026-07-28T10:09:30.000Z",
+                      "uid": "35240-176a150e-d85a-4a70-914e-ac75ed8d6b03"
+                    },
+                    {
+                      "id": "f1b1495b-4330-4e74-8b3a-a64ae3a5884e",
+                      "name": "InternalServerException",
+                      "originalRequest": {
+                        "method": "POST",
+                        "header": [
+                          {
+                            "key": "X-Amz-Content-Sha256",
+                            "value": "<string>"
+                          },
+                          {
+                            "key": "X-Amz-Date",
+                            "value": "<string>"
+                          },
+                          {
+                            "key": "X-Amz-Algorithm",
+                            "value": "<string>"
+                          },
+                          {
+                            "key": "X-Amz-Credential",
+                            "value": "<string>"
+                          },
+                          {
+                            "key": "X-Amz-Security-Token",
+                            "value": "<string>"
+                          },
+                          {
+                            "key": "X-Amz-Signature",
+                            "value": "<string>"
+                          },
+                          {
+                            "key": "X-Amz-SignedHeaders",
+                            "value": "<string>"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: apikey",
+                            "key": "Authorization",
+                            "value": "<API Key>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/v1/domain/repositories?domain=kv4kt4c41dcizy-4i-vr58t-e6&domain-owner=009669069102&administrator-account=009669069102&repository-prefix=U6Z6uJOFoSh_Rz69EPz8wQ4ry-U63PICtnMk6LGvFqkXJYCr8yJIx7qPoDHz_3vXAYcDL3H4yw66PxZSUOGG0Rfyj5lxUeWf&max-results=<integer>&next-token=~5m-Xp&maxResults=<string>&nextToken=<string>#domain",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "v1",
+                            "domain",
+                            "repositories"
+                          ],
+                          "query": [
+                            {
+                              "description": "(Required)  The name of the domain that contains the returned list of repositories. ",
+                              "key": "domain",
+                              "value": "kv4kt4c41dcizy-4i-vr58t-e6"
+                            },
+                            {
+                              "description": " The 12-digit account number of the Amazon Web Services account that owns the domain. It does not include dashes or spaces. ",
+                              "key": "domain-owner",
+                              "value": "009669069102"
+                            },
+                            {
+                              "description": " Filter the list of repositories to only include those that are managed by the Amazon Web Services account ID. ",
+                              "key": "administrator-account",
+                              "value": "009669069102"
+                            },
+                            {
+                              "description": " A prefix used to filter returned repositories. Only repositories with names that start with <code>repositoryPrefix</code> are returned. ",
+                              "key": "repository-prefix",
+                              "value": "U6Z6uJOFoSh_Rz69EPz8wQ4ry-U63PICtnMk6LGvFqkXJYCr8yJIx7qPoDHz_3vXAYcDL3H4yw66PxZSUOGG0Rfyj5lxUeWf"
+                            },
+                            {
+                              "description": " The maximum number of results to return per page. ",
+                              "key": "max-results",
+                              "value": "<integer>"
+                            },
+                            {
+                              "description": " The token for the next set of results. Use the value returned in the previous response in the next request to retrieve the next set of results. ",
+                              "key": "next-token",
+                              "value": "~5m-Xp"
+                            },
+                            {
+                              "description": "Pagination limit",
+                              "key": "maxResults",
+                              "value": "<string>"
+                            },
+                            {
+                              "description": "Pagination token",
+                              "key": "nextToken",
+                              "value": "<string>"
+                            }
+                          ],
+                          "hash": "domain"
+                        }
+                      },
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{}",
+                      "createdAt": "2026-07-28T10:09:30.000Z",
+                      "updatedAt": "2026-07-28T10:09:30.000Z",
+                      "uid": "35240-f1b1495b-4330-4e74-8b3a-a64ae3a5884e"
+                    },
+                    {
+                      "id": "13664b03-f4f4-4ff8-8b9d-074d4e441cfe",
+                      "name": "ResourceNotFoundException",
+                      "originalRequest": {
+                        "method": "POST",
+                        "header": [
+                          {
+                            "key": "X-Amz-Content-Sha256",
+                            "value": "<string>"
+                          },
+                          {
+                            "key": "X-Amz-Date",
+                            "value": "<string>"
+                          },
+                          {
+                            "key": "X-Amz-Algorithm",
+                            "value": "<string>"
+                          },
+                          {
+                            "key": "X-Amz-Credential",
+                            "value": "<string>"
+                          },
+                          {
+                            "key": "X-Amz-Security-Token",
+                            "value": "<string>"
+                          },
+                          {
+                            "key": "X-Amz-Signature",
+                            "value": "<string>"
+                          },
+                          {
+                            "key": "X-Amz-SignedHeaders",
+                            "value": "<string>"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: apikey",
+                            "key": "Authorization",
+                            "value": "<API Key>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/v1/domain/repositories?domain=kv4kt4c41dcizy-4i-vr58t-e6&domain-owner=009669069102&administrator-account=009669069102&repository-prefix=U6Z6uJOFoSh_Rz69EPz8wQ4ry-U63PICtnMk6LGvFqkXJYCr8yJIx7qPoDHz_3vXAYcDL3H4yw66PxZSUOGG0Rfyj5lxUeWf&max-results=<integer>&next-token=~5m-Xp&maxResults=<string>&nextToken=<string>#domain",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "v1",
+                            "domain",
+                            "repositories"
+                          ],
+                          "query": [
+                            {
+                              "description": "(Required)  The name of the domain that contains the returned list of repositories. ",
+                              "key": "domain",
+                              "value": "kv4kt4c41dcizy-4i-vr58t-e6"
+                            },
+                            {
+                              "description": " The 12-digit account number of the Amazon Web Services account that owns the domain. It does not include dashes or spaces. ",
+                              "key": "domain-owner",
+                              "value": "009669069102"
+                            },
+                            {
+                              "description": " Filter the list of repositories to only include those that are managed by the Amazon Web Services account ID. ",
+                              "key": "administrator-account",
+                              "value": "009669069102"
+                            },
+                            {
+                              "description": " A prefix used to filter returned repositories. Only repositories with names that start with <code>repositoryPrefix</code> are returned. ",
+                              "key": "repository-prefix",
+                              "value": "U6Z6uJOFoSh_Rz69EPz8wQ4ry-U63PICtnMk6LGvFqkXJYCr8yJIx7qPoDHz_3vXAYcDL3H4yw66PxZSUOGG0Rfyj5lxUeWf"
+                            },
+                            {
+                              "description": " The maximum number of results to return per page. ",
+                              "key": "max-results",
+                              "value": "<integer>"
+                            },
+                            {
+                              "description": " The token for the next set of results. Use the value returned in the previous response in the next request to retrieve the next set of results. ",
+                              "key": "next-token",
+                              "value": "~5m-Xp"
+                            },
+                            {
+                              "description": "Pagination limit",
+                              "key": "maxResults",
+                              "value": "<string>"
+                            },
+                            {
+                              "description": "Pagination token",
+                              "key": "nextToken",
+                              "value": "<string>"
+                            }
+                          ],
+                          "hash": "domain"
+                        }
+                      },
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{}",
+                      "createdAt": "2026-07-28T10:09:30.000Z",
+                      "updatedAt": "2026-07-28T10:09:30.000Z",
+                      "uid": "35240-13664b03-f4f4-4ff8-8b9d-074d4e441cfe"
+                    },
+                    {
+                      "id": "0d6dfff3-13b2-45ce-a6f2-ea9d98860e3a",
+                      "name": "ThrottlingException",
+                      "originalRequest": {
+                        "method": "POST",
+                        "header": [
+                          {
+                            "key": "X-Amz-Content-Sha256",
+                            "value": "<string>"
+                          },
+                          {
+                            "key": "X-Amz-Date",
+                            "value": "<string>"
+                          },
+                          {
+                            "key": "X-Amz-Algorithm",
+                            "value": "<string>"
+                          },
+                          {
+                            "key": "X-Amz-Credential",
+                            "value": "<string>"
+                          },
+                          {
+                            "key": "X-Amz-Security-Token",
+                            "value": "<string>"
+                          },
+                          {
+                            "key": "X-Amz-Signature",
+                            "value": "<string>"
+                          },
+                          {
+                            "key": "X-Amz-SignedHeaders",
+                            "value": "<string>"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: apikey",
+                            "key": "Authorization",
+                            "value": "<API Key>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/v1/domain/repositories?domain=kv4kt4c41dcizy-4i-vr58t-e6&domain-owner=009669069102&administrator-account=009669069102&repository-prefix=U6Z6uJOFoSh_Rz69EPz8wQ4ry-U63PICtnMk6LGvFqkXJYCr8yJIx7qPoDHz_3vXAYcDL3H4yw66PxZSUOGG0Rfyj5lxUeWf&max-results=<integer>&next-token=~5m-Xp&maxResults=<string>&nextToken=<string>#domain",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "v1",
+                            "domain",
+                            "repositories"
+                          ],
+                          "query": [
+                            {
+                              "description": "(Required)  The name of the domain that contains the returned list of repositories. ",
+                              "key": "domain",
+                              "value": "kv4kt4c41dcizy-4i-vr58t-e6"
+                            },
+                            {
+                              "description": " The 12-digit account number of the Amazon Web Services account that owns the domain. It does not include dashes or spaces. ",
+                              "key": "domain-owner",
+                              "value": "009669069102"
+                            },
+                            {
+                              "description": " Filter the list of repositories to only include those that are managed by the Amazon Web Services account ID. ",
+                              "key": "administrator-account",
+                              "value": "009669069102"
+                            },
+                            {
+                              "description": " A prefix used to filter returned repositories. Only repositories with names that start with <code>repositoryPrefix</code> are returned. ",
+                              "key": "repository-prefix",
+                              "value": "U6Z6uJOFoSh_Rz69EPz8wQ4ry-U63PICtnMk6LGvFqkXJYCr8yJIx7qPoDHz_3vXAYcDL3H4yw66PxZSUOGG0Rfyj5lxUeWf"
+                            },
+                            {
+                              "description": " The maximum number of results to return per page. ",
+                              "key": "max-results",
+                              "value": "<integer>"
+                            },
+                            {
+                              "description": " The token for the next set of results. Use the value returned in the previous response in the next request to retrieve the next set of results. ",
+                              "key": "next-token",
+                              "value": "~5m-Xp"
+                            },
+                            {
+                              "description": "Pagination limit",
+                              "key": "maxResults",
+                              "value": "<string>"
+                            },
+                            {
+                              "description": "Pagination token",
+                              "key": "nextToken",
+                              "value": "<string>"
+                            }
+                          ],
+                          "hash": "domain"
+                        }
+                      },
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{}",
+                      "createdAt": "2026-07-28T10:09:30.000Z",
+                      "updatedAt": "2026-07-28T10:09:30.000Z",
+                      "uid": "35240-0d6dfff3-13b2-45ce-a6f2-ea9d98860e3a"
+                    },
+                    {
+                      "id": "97ec07ae-88d3-41c8-8c2c-79253899f3ff",
+                      "name": "ValidationException",
+                      "originalRequest": {
+                        "method": "POST",
+                        "header": [
+                          {
+                            "key": "X-Amz-Content-Sha256",
+                            "value": "<string>"
+                          },
+                          {
+                            "key": "X-Amz-Date",
+                            "value": "<string>"
+                          },
+                          {
+                            "key": "X-Amz-Algorithm",
+                            "value": "<string>"
+                          },
+                          {
+                            "key": "X-Amz-Credential",
+                            "value": "<string>"
+                          },
+                          {
+                            "key": "X-Amz-Security-Token",
+                            "value": "<string>"
+                          },
+                          {
+                            "key": "X-Amz-Signature",
+                            "value": "<string>"
+                          },
+                          {
+                            "key": "X-Amz-SignedHeaders",
+                            "value": "<string>"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: apikey",
+                            "key": "Authorization",
+                            "value": "<API Key>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/v1/domain/repositories?domain=kv4kt4c41dcizy-4i-vr58t-e6&domain-owner=009669069102&administrator-account=009669069102&repository-prefix=U6Z6uJOFoSh_Rz69EPz8wQ4ry-U63PICtnMk6LGvFqkXJYCr8yJIx7qPoDHz_3vXAYcDL3H4yw66PxZSUOGG0Rfyj5lxUeWf&max-results=<integer>&next-token=~5m-Xp&maxResults=<string>&nextToken=<string>#domain",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "v1",
+                            "domain",
+                            "repositories"
+                          ],
+                          "query": [
+                            {
+                              "description": "(Required)  The name of the domain that contains the returned list of repositories. ",
+                              "key": "domain",
+                              "value": "kv4kt4c41dcizy-4i-vr58t-e6"
+                            },
+                            {
+                              "description": " The 12-digit account number of the Amazon Web Services account that owns the domain. It does not include dashes or spaces. ",
+                              "key": "domain-owner",
+                              "value": "009669069102"
+                            },
+                            {
+                              "description": " Filter the list of repositories to only include those that are managed by the Amazon Web Services account ID. ",
+                              "key": "administrator-account",
+                              "value": "009669069102"
+                            },
+                            {
+                              "description": " A prefix used to filter returned repositories. Only repositories with names that start with <code>repositoryPrefix</code> are returned. ",
+                              "key": "repository-prefix",
+                              "value": "U6Z6uJOFoSh_Rz69EPz8wQ4ry-U63PICtnMk6LGvFqkXJYCr8yJIx7qPoDHz_3vXAYcDL3H4yw66PxZSUOGG0Rfyj5lxUeWf"
+                            },
+                            {
+                              "description": " The maximum number of results to return per page. ",
+                              "key": "max-results",
+                              "value": "<integer>"
+                            },
+                            {
+                              "description": " The token for the next set of results. Use the value returned in the previous response in the next request to retrieve the next set of results. ",
+                              "key": "next-token",
+                              "value": "~5m-Xp"
+                            },
+                            {
+                              "description": "Pagination limit",
+                              "key": "maxResults",
+                              "value": "<string>"
+                            },
+                            {
+                              "description": "Pagination token",
+                              "key": "nextToken",
+                              "value": "<string>"
+                            }
+                          ],
+                          "hash": "domain"
+                        }
+                      },
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{}",
+                      "createdAt": "2026-07-28T10:09:30.000Z",
+                      "updatedAt": "2026-07-28T10:09:30.000Z",
+                      "uid": "35240-97ec07ae-88d3-41c8-8c2c-79253899f3ff"
+                    }
+                  ],
+                  "createdAt": "2026-07-28T10:09:30.000Z",
+                  "updatedAt": "2026-07-28T10:09:30.000Z",
+                  "uid": "35240-b87d0949-7092-48a3-8747-81e9b5cf9839"
+                }
+              ],
+              "id": "4b8a8c99-90d3-4554-a01f-bc7520305ee8",
+              "createdAt": "2026-07-28T10:09:30.000Z",
+              "updatedAt": "2026-07-28T10:09:30.000Z",
+              "uid": "35240-4b8a8c99-90d3-4554-a01f-bc7520305ee8"
+            }
+          ],
+          "id": "8df7caa7-3971-49e4-9712-63f752adf073",
+          "createdAt": "2026-07-28T10:09:30.000Z",
+          "updatedAt": "2026-07-28T10:09:30.000Z",
+          "uid": "35240-8df7caa7-3971-49e4-9712-63f752adf073"
+        }
+      ],
+      "id": "4d6a71f8-41d4-4a32-94c2-0e76481310b7",
+      "createdAt": "2026-07-28T10:09:30.000Z",
+      "updatedAt": "2026-07-28T10:09:30.000Z",
+      "uid": "35240-4d6a71f8-41d4-4a32-94c2-0e76481310b7"
+    }
+  ],
+  "auth": {
+    "type": "apikey",
+    "apikey": [
+      {
+        "key": "key",
+        "value": "Authorization",
+        "type": "string"
+      },
+      {
+        "key": "value",
+        "value": "{{apiKey}}",
+        "type": "string"
+      },
+      {
+        "key": "in",
+        "value": "header",
+        "type": "string"
+      }
+    ]
+  },
+  "variable": [
+    {
+      "key": "region",
+      "value": "us-east-1"
+    },
+    {
+      "key": "baseUrl",
+      "value": "http://codeartifact.{{region}}.amazonaws.com"
+    }
+  ]
+}

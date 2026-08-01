@@ -1,0 +1,3157 @@
+{
+  "info": {
+    "_postman_id": "c5700fae-e1d8-4a77-97bf-d644e11eee45",
+    "name": "CodeArtifact Authorization Token#domain Repository#domain&repository API",
+    "description": "<p> CodeArtifact is a fully managed artifact repository compatible with language-native package managers and build tools such as npm, Apache Maven, pip, and dotnet. You can use CodeArtifact to share packages with development teams and pull packages. Packages can be pulled from both public and CodeArtifact repositories. You can also create an upstream relationship between a CodeArtifact repository and another repository, which effectively merges their contents from the point of view of a package manager client. </p> <p> <b>CodeArtifact Components</b> </p> <p>Use the information in this guide to help you work with the following CodeArtifact components:</p> <ul> <li> <p> <b>Repository</b>: A CodeArtifact repository contains a set of <a href=\"https://docs.aws.amazon.com/codeartifact/latest/ug/welcome.html#welcome-concepts-package-version\">package versions</a>, each of which maps to a set of assets, or files. Repositories are polyglot, so a single repository can contain packages of any supported type. Each repository exposes endpoints for fetching and publishing packages using tools like the <b> <code>npm</code> </b> CLI, the Maven CLI (<b> <code>mvn</code> </b>), Python CLIs (<b> <code>pip</code> </b> and <code>twine</code>), and NuGet CLIs (<code>nuget</code> and <code>dotnet</code>).</p> </li> <li> <p> <b>Domain</b>: Repositories are aggregated into a higher-level entity known as a <i>domain</i>. All package assets and metadata are stored in the domain, but are consumed through repositories. A given package asset, such as a Maven JAR file, is stored once per domain, no matter how many repositories it's present in. All of the assets and metadata in a domain are encrypted with the same customer master key (CMK) stored in Key Management Service (KMS).</p> <p>Each repository is a member of a single domain and can't be moved to a different domain.</p> <p>The domain allows organizational policy to be applied across multiple repositories, such as which accounts can access repositories in the domain, and which public repositories can be used as sources of packages.</p> <p>Although an organization can have multiple domains, we recommend a single production domain that contains all published artifacts so that teams can find and share packages across their organization.</p> </li> <li> <p> <b>Package</b>: A <i>package</i> is a bundle of software and the metadata required to resolve dependencies and install the software. CodeArtifact supports <a href=\"https://docs.aws.amazon.com/codeartifact/latest/ug/using-npm.html\">npm</a>, <a href=\"https://docs.aws.amazon.com/codeartifact/latest/ug/using-python.html\">PyPI</a>, <a href=\"https://docs.aws.amazon.com/codeartifact/latest/ug/using-maven\">Maven</a>, and <a href=\"https://docs.aws.amazon.com/codeartifact/latest/ug/using-nuget\">NuGet</a> package formats.</p> <p>In CodeArtifact, a package consists of:</p> <ul> <li> <p>A <i>name</i> (for example, <code>webpack</code> is the name of a popular npm package)</p> </li> <li> <p>An optional namespace (for example, <code>@types</code> in <code>@types/node</code>)</p> </li> <li> <p>A set of versions (for example, <code>1.0.0</code>, <code>1.0.1</code>, <code>1.0.2</code>, etc.)</p> </li> <li> <p> Package-level metadata (for example, npm tags)</p> </li> </ul> </li> <li> <p> <b>Package version</b>: A version of a package, such as <code>@types/node 12.6.9</code>. The version number format and semantics vary for different package formats. For example, npm package versions must conform to the <a href=\"https://semver.org/\">Semantic Versioning specification</a>. In CodeArtifact, a package version consists of the version identifier, metadata at the package version level, and a set of assets.</p> </li> <li> <p> <b>Upstream repository</b>: One repository is <i>upstream</i> of another when the package versions in it can be accessed from the repository endpoint of the downstream repository, effectively merging the contents of the two repositories from the point of view of a client. CodeArtifact allows creating an upstream relationship between two repositories.</p> </li> <li> <p> <b>Asset</b>: An individual file stored in CodeArtifact associated with a package version, such as an npm <code>.tgz</code> file or Maven POM and JAR files.</p> </li> </ul> <p>CodeArtifact supports these operations:</p> <ul> <li> <p> <code>AssociateExternalConnection</code>: Adds an existing external connection to a repository. </p> </li> <li> <p> <code>CopyPackageVersions</code>: Copies package versions from one repository to another repository in the same domain.</p> </li> <li> <p> <code>CreateDomain</code>: Creates a domain</p> </li> <li> <p> <code>CreateRepository</code>: Creates a CodeArtifact repository in a domain. </p> </li> <li> <p> <code>DeleteDomain</code>: Deletes a domain. You cannot delete a domain that contains repositories. </p> </li> <li> <p> <code>DeleteDomainPermissionsPolicy</code>: Deletes the resource policy that is set on a domain.</p> </li> <li> <p> <code>DeletePackage</code>: Deletes a package and all associated package versions.</p> </li> <li> <p> <code>DeletePackageVersions</code>: Deletes versions of a package. After a package has been deleted, it can be republished, but its assets and metadata cannot be restored because they have been permanently removed from storage.</p> </li> <li> <p> <code>DeleteRepository</code>: Deletes a repository. </p> </li> <li> <p> <code>DeleteRepositoryPermissionsPolicy</code>: Deletes the resource policy that is set on a repository.</p> </li> <li> <p> <code>DescribeDomain</code>: Returns a <code>DomainDescription</code> object that contains information about the requested domain.</p> </li> <li> <p> <code>DescribePackage</code>: Returns a <a href=\"https://docs.aws.amazon.com/codeartifact/latest/APIReference/API_PackageDescription.html\">PackageDescription</a> object that contains details about a package. </p> </li> <li> <p> <code>DescribePackageVersion</code>: Returns a <a href=\"https://docs.aws.amazon.com/codeartifact/latest/APIReference/API_PackageVersionDescription.html\">PackageVersionDescription</a> object that contains details about a package version. </p> </li> <li> <p> <code>DescribeRepository</code>: Returns a <code>RepositoryDescription</code> object that contains detailed information about the requested repository. </p> </li> <li> <p> <code>DisposePackageVersions</code>: Disposes versions of a package. A package version with the status <code>Disposed</code> cannot be restored because they have been permanently removed from storage.</p> </li> <li> <p> <code>DisassociateExternalConnection</code>: Removes an existing external connection from a repository. </p> </li> <li> <p> <code>GetAuthorizationToken</code>: Generates a temporary authorization token for accessing repositories in the domain. The token expires the authorization period has passed. The default authorization period is 12 hours and can be customized to any length with a maximum of 12 hours.</p> </li> <li> <p> <code>GetDomainPermissionsPolicy</code>: Returns the policy of a resource that is attached to the specified domain. </p> </li> <li> <p> <code>GetPackageVersionAsset</code>: Returns the contents of an asset that is in a package version. </p> </li> <li> <p> <code>GetPackageVersionReadme</code>: Gets the readme file or descriptive text for a package version.</p> </li> <li> <p> <code>GetRepositoryEndpoint</code>: Returns the endpoint of a repository for a specific package format. A repository has one endpoint for each package format: </p> <ul> <li> <p> <code>maven</code> </p> </li> <li> <p> <code>npm</code> </p> </li> <li> <p> <code>nuget</code> </p> </li> <li> <p> <code>pypi</code> </p> </li> </ul> </li> <li> <p> <code>GetRepositoryPermissionsPolicy</code>: Returns the resource policy that is set on a repository. </p> </li> <li> <p> <code>ListDomains</code>: Returns a list of <code>DomainSummary</code> objects. Each returned <code>DomainSummary</code> object contains information about a domain.</p> </li> <li> <p> <code>ListPackages</code>: Lists the packages in a repository.</p> </li> <li> <p> <code>ListPackageVersionAssets</code>: Lists the assets for a given package version.</p> </li> <li> <p> <code>ListPackageVersionDependencies</code>: Returns a list of the direct dependencies for a package version. </p> </li> <li> <p> <code>ListPackageVersions</code>: Returns a list of package versions for a specified package in a repository.</p> </li> <li> <p> <code>ListRepositories</code>: Returns a list of repositories owned by the Amazon Web Services account that called this method.</p> </li> <li> <p> <code>ListRepositoriesInDomain</code>: Returns a list of the repositories in a domain.</p> </li> <li> <p> <code>PublishPackageVersion</code>: Creates a new package version containing one or more assets.</p> </li> <li> <p> <code>PutDomainPermissionsPolicy</code>: Attaches a resource policy to a domain.</p> </li> <li> <p> <code>PutPackageOriginConfiguration</code>: Sets the package origin configuration for a package, which determine how new versions of the package can be added to a specific repository.</p> </li> <li> <p> <code>PutRepositoryPermissionsPolicy</code>: Sets the resource policy on a repository that specifies permissions to access it. </p> </li> <li> <p> <code>UpdatePackageVersionsStatus</code>: Updates the status of one or more versions of a package.</p> </li> <li> <p> <code>UpdateRepository</code>: Updates the properties of a repository.</p> </li> </ul>\n\nContact Support:\n Name: Mike Ralphson\n Email: mike.ralphson@gmail.com",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "createdAt": "2026-07-28T10:09:45.000Z",
+    "updatedAt": "2026-07-28T10:09:45.000Z",
+    "lastUpdatedBy": "35240",
+    "uid": "35240-c5700fae-e1d8-4a77-97bf-d644e11eee45"
+  },
+  "item": [
+    {
+      "name": "v1",
+      "item": [
+        {
+          "name": "repository#domain&repository",
+          "item": [
+            {
+              "name": "Amazon CodeArtifact Create Repository",
+              "id": "ede23b0e-b8ac-4681-b577-2f00b0c39da4",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "X-Amz-Content-Sha256",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "X-Amz-Date",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "X-Amz-Algorithm",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "X-Amz-Credential",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "X-Amz-Security-Token",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "X-Amz-Signature",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "X-Amz-SignedHeaders",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"description\": \"P{C}}}}}}}}\",\n  \"upstreams\": [\n    {\n      \"repositoryName\": \"3D2WhTe9JuzEbt9AdaLEtCGT8Gci4OGnTqmM4D88b1RvBZJwv4bQ8BZAuo5TH4ziBmM3X3kKX0sn\"\n    },\n    {\n      \"repositoryName\": \"nilh1kzP1.JhtO4oNu5Ghvk-QkzK0xbrSC264j-x\"\n    }\n  ],\n  \"tags\": [\n    {\n      \"key\": \"P{C}}}}}}}}}}}\",\n      \"value\": \"P{C}}\"\n    },\n    {\n      \"key\": \"P{C}}}}}}}}}}}\",\n      \"value\": \"P{C}}}}}}}}\"\n    },\n    {\n      \"key\": \"P{C}\",\n      \"value\": \"P{C}}\"\n    },\n    {\n      \"key\": \"P{C}}}\",\n      \"value\": \"P{C}}}}\"\n    },\n    {\n      \"key\": \"P{C}}}}}}}}}}}\",\n      \"value\": \"P{C}}}}}}}}\"\n    },\n    {\n      \"key\": \"P{C}}\",\n      \"value\": \"P{C\"\n    },\n    {\n      \"key\": \"P{C}}}}}}}}}\",\n      \"value\": \"P{C\"\n    },\n    {\n      \"key\": \"P{C}\",\n      \"value\": \"P{C}}}}}}}}}}\"\n    },\n    {\n      \"key\": \"P{C}}}}\",\n      \"value\": \"P{C}}}}}}\"\n    },\n    {\n      \"key\": \"P{C}}}}}}}}}\",\n      \"value\": \"P{C}}}}}}}}\"\n    },\n    {\n      \"key\": \"P{C}}}}}}}}}}}\",\n      \"value\": \"P{C}}}}\"\n    },\n    {\n      \"key\": \"P{C}}}\",\n      \"value\": \"P{C\"\n    },\n    {\n      \"key\": \"P{C}}}}}}}}}\",\n      \"value\": \"P{C}}}}}}\"\n    },\n    {\n      \"key\": \"P{C}}}}}}}}\",\n      \"value\": \"P{C}}}}}}}}}}\"\n    },\n    {\n      \"key\": \"P{C}\",\n      \"value\": \"P{C\"\n    },\n    {\n      \"key\": \"P{C}}}}\",\n      \"value\": \"P{C}}}}}}}\"\n    },\n    {\n      \"key\": \"P{C}}}}}}}}}\",\n      \"value\": \"P{C}}}}}}\"\n    },\n    {\n      \"key\": \"P{C}}}}}\",\n      \"value\": \"P{C}}}}\"\n    },\n    {\n      \"key\": \"P{C}}}}}}}}\",\n      \"value\": \"P{C}}}}}}}}}\"\n    },\n    {\n      \"key\": \"P{C}}}}}}}}\",\n      \"value\": \"P{C\"\n    }\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/v1/repository?domain=vrjbtz&domain-owner=556179601684&repository=G.I_K22Td7DF9fR6rlxDH48AcTTGl#domain&repository",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "v1",
+                    "repository"
+                  ],
+                  "query": [
+                    {
+                      "description": "(Required)  The name of the domain that contains the created repository. ",
+                      "key": "domain",
+                      "value": "vrjbtz"
+                    },
+                    {
+                      "description": " The 12-digit account number of the Amazon Web Services account that owns the domain. It does not include dashes or spaces. ",
+                      "key": "domain-owner",
+                      "value": "556179601684"
+                    },
+                    {
+                      "description": "(Required)  The name of the repository to create. ",
+                      "key": "repository",
+                      "value": "G.I_K22Td7DF9fR6rlxDH48AcTTGl"
+                    }
+                  ],
+                  "hash": "domain&repository"
+                },
+                "description": " Creates a repository. "
+              },
+              "response": [
+                {
+                  "id": "3858f5f2-78a0-43ad-b9af-3938857b93a2",
+                  "name": "Success",
+                  "originalRequest": {
+                    "method": "POST",
+                    "header": [
+                      {
+                        "key": "X-Amz-Content-Sha256",
+                        "value": "<string>"
+                      },
+                      {
+                        "key": "X-Amz-Date",
+                        "value": "<string>"
+                      },
+                      {
+                        "key": "X-Amz-Algorithm",
+                        "value": "<string>"
+                      },
+                      {
+                        "key": "X-Amz-Credential",
+                        "value": "<string>"
+                      },
+                      {
+                        "key": "X-Amz-Security-Token",
+                        "value": "<string>"
+                      },
+                      {
+                        "key": "X-Amz-Signature",
+                        "value": "<string>"
+                      },
+                      {
+                        "key": "X-Amz-SignedHeaders",
+                        "value": "<string>"
+                      },
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: apikey",
+                        "key": "Authorization",
+                        "value": "<API Key>"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"description\": \"P{C}}}}}}}}\",\n  \"upstreams\": [\n    {\n      \"repositoryName\": \"3D2WhTe9JuzEbt9AdaLEtCGT8Gci4OGnTqmM4D88b1RvBZJwv4bQ8BZAuo5TH4ziBmM3X3kKX0sn\"\n    },\n    {\n      \"repositoryName\": \"nilh1kzP1.JhtO4oNu5Ghvk-QkzK0xbrSC264j-x\"\n    }\n  ],\n  \"tags\": [\n    {\n      \"key\": \"P{C}}}}}}}}}}}\",\n      \"value\": \"P{C}}\"\n    },\n    {\n      \"key\": \"P{C}}}}}}}}}}}\",\n      \"value\": \"P{C}}}}}}}}\"\n    },\n    {\n      \"key\": \"P{C}\",\n      \"value\": \"P{C}}\"\n    },\n    {\n      \"key\": \"P{C}}}\",\n      \"value\": \"P{C}}}}\"\n    },\n    {\n      \"key\": \"P{C}}}}}}}}}}}\",\n      \"value\": \"P{C}}}}}}}}\"\n    },\n    {\n      \"key\": \"P{C}}\",\n      \"value\": \"P{C\"\n    },\n    {\n      \"key\": \"P{C}}}}}}}}}\",\n      \"value\": \"P{C\"\n    },\n    {\n      \"key\": \"P{C}\",\n      \"value\": \"P{C}}}}}}}}}}\"\n    },\n    {\n      \"key\": \"P{C}}}}\",\n      \"value\": \"P{C}}}}}}\"\n    },\n    {\n      \"key\": \"P{C}}}}}}}}}\",\n      \"value\": \"P{C}}}}}}}}\"\n    },\n    {\n      \"key\": \"P{C}}}}}}}}}}}\",\n      \"value\": \"P{C}}}}\"\n    },\n    {\n      \"key\": \"P{C}}}\",\n      \"value\": \"P{C\"\n    },\n    {\n      \"key\": \"P{C}}}}}}}}}\",\n      \"value\": \"P{C}}}}}}\"\n    },\n    {\n      \"key\": \"P{C}}}}}}}}\",\n      \"value\": \"P{C}}}}}}}}}}\"\n    },\n    {\n      \"key\": \"P{C}\",\n      \"value\": \"P{C\"\n    },\n    {\n      \"key\": \"P{C}}}}\",\n      \"value\": \"P{C}}}}}}}\"\n    },\n    {\n      \"key\": \"P{C}}}}}}}}}\",\n      \"value\": \"P{C}}}}}}\"\n    },\n    {\n      \"key\": \"P{C}}}}}\",\n      \"value\": \"P{C}}}}\"\n    },\n    {\n      \"key\": \"P{C}}}}}}}}\",\n      \"value\": \"P{C}}}}}}}}}\"\n    },\n    {\n      \"key\": \"P{C}}}}}}}}\",\n      \"value\": \"P{C\"\n    }\n  ]\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/v1/repository?domain=vrjbtz&domain-owner=556179601684&repository=G.I_K22Td7DF9fR6rlxDH48AcTTGl#domain&repository",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "v1",
+                        "repository"
+                      ],
+                      "query": [
+                        {
+                          "description": "(Required)  The name of the domain that contains the created repository. ",
+                          "key": "domain",
+                          "value": "vrjbtz"
+                        },
+                        {
+                          "description": " The 12-digit account number of the Amazon Web Services account that owns the domain. It does not include dashes or spaces. ",
+                          "key": "domain-owner",
+                          "value": "556179601684"
+                        },
+                        {
+                          "description": "(Required)  The name of the repository to create. ",
+                          "key": "repository",
+                          "value": "G.I_K22Td7DF9fR6rlxDH48AcTTGl"
+                        }
+                      ],
+                      "hash": "domain&repository"
+                    }
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"repository\": {\n    \"name\": \"SWfVLLzS4nyCzKM9hWvH4ATKDNcEZYm-uCr685kq0zqwYJztRdX6IbvamowNtQ6boVj50nBLv7zVMM28vR3ly8cGGl\",\n    \"administratorAccount\": \"469314347786\",\n    \"domainName\": \"l4dinogw5see5t\",\n    \"domainOwner\": \"605420209588\",\n    \"arn\": \"X{b5F\",\n    \"description\": \"P{C}}}}\",\n    \"upstreams\": [\n      {\n        \"repositoryName\": \"xQ36aZSo6_yw.ue-eoobrH4yf9BfjbH5eLF0iI3NFh2T.cMAQMzeMvbW9WT.zl2eCCtp_fUQkZhqMtWxVpL\"\n      },\n      {\n        \"repositoryName\": \"h.xPAvn9HhGr_jl-xK.CfTQcxeCO7hcvdd4yF_HKNLTj-pvx3s3bz1iwTOqsPc-bQ0dUDcxWTGFUdgFs-ntcSxAiJr-_DPsTDJ\"\n      }\n    ],\n    \"externalConnections\": [\n      {\n        \"externalConnectionName\": \"lzhyy\",\n        \"packageFormat\": \"generic\",\n        \"status\": \"Available\"\n      },\n      {\n        \"externalConnectionName\": \"jyMpbNob\",\n        \"packageFormat\": \"maven\",\n        \"status\": \"Available\"\n      }\n    ],\n    \"createdTime\": \"<dateTime>\"\n  }\n}",
+                  "createdAt": "2026-07-28T10:09:45.000Z",
+                  "updatedAt": "2026-07-28T10:09:45.000Z",
+                  "uid": "35240-3858f5f2-78a0-43ad-b9af-3938857b93a2"
+                },
+                {
+                  "id": "70f21f9f-56e0-402b-934d-068cb42ea1a8",
+                  "name": "AccessDeniedException",
+                  "originalRequest": {
+                    "method": "POST",
+                    "header": [
+                      {
+                        "key": "X-Amz-Content-Sha256",
+                        "value": "<string>"
+                      },
+                      {
+                        "key": "X-Amz-Date",
+                        "value": "<string>"
+                      },
+                      {
+                        "key": "X-Amz-Algorithm",
+                        "value": "<string>"
+                      },
+                      {
+                        "key": "X-Amz-Credential",
+                        "value": "<string>"
+                      },
+                      {
+                        "key": "X-Amz-Security-Token",
+                        "value": "<string>"
+                      },
+                      {
+                        "key": "X-Amz-Signature",
+                        "value": "<string>"
+                      },
+                      {
+                        "key": "X-Amz-SignedHeaders",
+                        "value": "<string>"
+                      },
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: apikey",
+                        "key": "Authorization",
+                        "value": "<API Key>"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"description\": \"P{C}}}}}}}}\",\n  \"upstreams\": [\n    {\n      \"repositoryName\": \"3D2WhTe9JuzEbt9AdaLEtCGT8Gci4OGnTqmM4D88b1RvBZJwv4bQ8BZAuo5TH4ziBmM3X3kKX0sn\"\n    },\n    {\n      \"repositoryName\": \"nilh1kzP1.JhtO4oNu5Ghvk-QkzK0xbrSC264j-x\"\n    }\n  ],\n  \"tags\": [\n    {\n      \"key\": \"P{C}}}}}}}}}}}\",\n      \"value\": \"P{C}}\"\n    },\n    {\n      \"key\": \"P{C}}}}}}}}}}}\",\n      \"value\": \"P{C}}}}}}}}\"\n    },\n    {\n      \"key\": \"P{C}\",\n      \"value\": \"P{C}}\"\n    },\n    {\n      \"key\": \"P{C}}}\",\n      \"value\": \"P{C}}}}\"\n    },\n    {\n      \"key\": \"P{C}}}}}}}}}}}\",\n      \"value\": \"P{C}}}}}}}}\"\n    },\n    {\n      \"key\": \"P{C}}\",\n      \"value\": \"P{C\"\n    },\n    {\n      \"key\": \"P{C}}}}}}}}}\",\n      \"value\": \"P{C\"\n    },\n    {\n      \"key\": \"P{C}\",\n      \"value\": \"P{C}}}}}}}}}}\"\n    },\n    {\n      \"key\": \"P{C}}}}\",\n      \"value\": \"P{C}}}}}}\"\n    },\n    {\n      \"key\": \"P{C}}}}}}}}}\",\n      \"value\": \"P{C}}}}}}}}\"\n    },\n    {\n      \"key\": \"P{C}}}}}}}}}}}\",\n      \"value\": \"P{C}}}}\"\n    },\n    {\n      \"key\": \"P{C}}}\",\n      \"value\": \"P{C\"\n    },\n    {\n      \"key\": \"P{C}}}}}}}}}\",\n      \"value\": \"P{C}}}}}}\"\n    },\n    {\n      \"key\": \"P{C}}}}}}}}\",\n      \"value\": \"P{C}}}}}}}}}}\"\n    },\n    {\n      \"key\": \"P{C}\",\n      \"value\": \"P{C\"\n    },\n    {\n      \"key\": \"P{C}}}}\",\n      \"value\": \"P{C}}}}}}}\"\n    },\n    {\n      \"key\": \"P{C}}}}}}}}}\",\n      \"value\": \"P{C}}}}}}\"\n    },\n    {\n      \"key\": \"P{C}}}}}\",\n      \"value\": \"P{C}}}}\"\n    },\n    {\n      \"key\": \"P{C}}}}}}}}\",\n      \"value\": \"P{C}}}}}}}}}\"\n    },\n    {\n      \"key\": \"P{C}}}}}}}}\",\n      \"value\": \"P{C\"\n    }\n  ]\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/v1/repository?domain=vrjbtz&domain-owner=556179601684&repository=G.I_K22Td7DF9fR6rlxDH48AcTTGl#domain&repository",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "v1",
+                        "repository"
+                      ],
+                      "query": [
+                        {
+                          "description": "(Required)  The name of the domain that contains the created repository. ",
+                          "key": "domain",
+                          "value": "vrjbtz"
+                        },
+                        {
+                          "description": " The 12-digit account number of the Amazon Web Services account that owns the domain. It does not include dashes or spaces. ",
+                          "key": "domain-owner",
+                          "value": "556179601684"
+                        },
+                        {
+                          "description": "(Required)  The name of the repository to create. ",
+                          "key": "repository",
+                          "value": "G.I_K22Td7DF9fR6rlxDH48AcTTGl"
+                        }
+                      ],
+                      "hash": "domain&repository"
+                    }
+                  },
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{}",
+                  "createdAt": "2026-07-28T10:09:45.000Z",
+                  "updatedAt": "2026-07-28T10:09:45.000Z",
+                  "uid": "35240-70f21f9f-56e0-402b-934d-068cb42ea1a8"
+                },
+                {
+                  "id": "f9074f67-f4ca-4e7b-80fb-7c6154d66db7",
+                  "name": "ConflictException",
+                  "originalRequest": {
+                    "method": "POST",
+                    "header": [
+                      {
+                        "key": "X-Amz-Content-Sha256",
+                        "value": "<string>"
+                      },
+                      {
+                        "key": "X-Amz-Date",
+                        "value": "<string>"
+                      },
+                      {
+                        "key": "X-Amz-Algorithm",
+                        "value": "<string>"
+                      },
+                      {
+                        "key": "X-Amz-Credential",
+                        "value": "<string>"
+                      },
+                      {
+                        "key": "X-Amz-Security-Token",
+                        "value": "<string>"
+                      },
+                      {
+                        "key": "X-Amz-Signature",
+                        "value": "<string>"
+                      },
+                      {
+                        "key": "X-Amz-SignedHeaders",
+                        "value": "<string>"
+                      },
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: apikey",
+                        "key": "Authorization",
+                        "value": "<API Key>"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"description\": \"P{C}}}}}}}}\",\n  \"upstreams\": [\n    {\n      \"repositoryName\": \"3D2WhTe9JuzEbt9AdaLEtCGT8Gci4OGnTqmM4D88b1RvBZJwv4bQ8BZAuo5TH4ziBmM3X3kKX0sn\"\n    },\n    {\n      \"repositoryName\": \"nilh1kzP1.JhtO4oNu5Ghvk-QkzK0xbrSC264j-x\"\n    }\n  ],\n  \"tags\": [\n    {\n      \"key\": \"P{C}}}}}}}}}}}\",\n      \"value\": \"P{C}}\"\n    },\n    {\n      \"key\": \"P{C}}}}}}}}}}}\",\n      \"value\": \"P{C}}}}}}}}\"\n    },\n    {\n      \"key\": \"P{C}\",\n      \"value\": \"P{C}}\"\n    },\n    {\n      \"key\": \"P{C}}}\",\n      \"value\": \"P{C}}}}\"\n    },\n    {\n      \"key\": \"P{C}}}}}}}}}}}\",\n      \"value\": \"P{C}}}}}}}}\"\n    },\n    {\n      \"key\": \"P{C}}\",\n      \"value\": \"P{C\"\n    },\n    {\n      \"key\": \"P{C}}}}}}}}}\",\n      \"value\": \"P{C\"\n    },\n    {\n      \"key\": \"P{C}\",\n      \"value\": \"P{C}}}}}}}}}}\"\n    },\n    {\n      \"key\": \"P{C}}}}\",\n      \"value\": \"P{C}}}}}}\"\n    },\n    {\n      \"key\": \"P{C}}}}}}}}}\",\n      \"value\": \"P{C}}}}}}}}\"\n    },\n    {\n      \"key\": \"P{C}}}}}}}}}}}\",\n      \"value\": \"P{C}}}}\"\n    },\n    {\n      \"key\": \"P{C}}}\",\n      \"value\": \"P{C\"\n    },\n    {\n      \"key\": \"P{C}}}}}}}}}\",\n      \"value\": \"P{C}}}}}}\"\n    },\n    {\n      \"key\": \"P{C}}}}}}}}\",\n      \"value\": \"P{C}}}}}}}}}}\"\n    },\n    {\n      \"key\": \"P{C}\",\n      \"value\": \"P{C\"\n    },\n    {\n      \"key\": \"P{C}}}}\",\n      \"value\": \"P{C}}}}}}}\"\n    },\n    {\n      \"key\": \"P{C}}}}}}}}}\",\n      \"value\": \"P{C}}}}}}\"\n    },\n    {\n      \"key\": \"P{C}}}}}\",\n      \"value\": \"P{C}}}}\"\n    },\n    {\n      \"key\": \"P{C}}}}}}}}\",\n      \"value\": \"P{C}}}}}}}}}\"\n    },\n    {\n      \"key\": \"P{C}}}}}}}}\",\n      \"value\": \"P{C\"\n    }\n  ]\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/v1/repository?domain=vrjbtz&domain-owner=556179601684&repository=G.I_K22Td7DF9fR6rlxDH48AcTTGl#domain&repository",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "v1",
+                        "repository"
+                      ],
+                      "query": [
+                        {
+                          "description": "(Required)  The name of the domain that contains the created repository. ",
+                          "key": "domain",
+                          "value": "vrjbtz"
+                        },
+                        {
+                          "description": " The 12-digit account number of the Amazon Web Services account that owns the domain. It does not include dashes or spaces. ",
+                          "key": "domain-owner",
+                          "value": "556179601684"
+                        },
+                        {
+                          "description": "(Required)  The name of the repository to create. ",
+                          "key": "repository",
+                          "value": "G.I_K22Td7DF9fR6rlxDH48AcTTGl"
+                        }
+                      ],
+                      "hash": "domain&repository"
+                    }
+                  },
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{}",
+                  "createdAt": "2026-07-28T10:09:45.000Z",
+                  "updatedAt": "2026-07-28T10:09:45.000Z",
+                  "uid": "35240-f9074f67-f4ca-4e7b-80fb-7c6154d66db7"
+                },
+                {
+                  "id": "52efa641-8efb-4f52-ad79-31de194a9c0c",
+                  "name": "InternalServerException",
+                  "originalRequest": {
+                    "method": "POST",
+                    "header": [
+                      {
+                        "key": "X-Amz-Content-Sha256",
+                        "value": "<string>"
+                      },
+                      {
+                        "key": "X-Amz-Date",
+                        "value": "<string>"
+                      },
+                      {
+                        "key": "X-Amz-Algorithm",
+                        "value": "<string>"
+                      },
+                      {
+                        "key": "X-Amz-Credential",
+                        "value": "<string>"
+                      },
+                      {
+                        "key": "X-Amz-Security-Token",
+                        "value": "<string>"
+                      },
+                      {
+                        "key": "X-Amz-Signature",
+                        "value": "<string>"
+                      },
+                      {
+                        "key": "X-Amz-SignedHeaders",
+                        "value": "<string>"
+                      },
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: apikey",
+                        "key": "Authorization",
+                        "value": "<API Key>"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"description\": \"P{C}}}}}}}}\",\n  \"upstreams\": [\n    {\n      \"repositoryName\": \"3D2WhTe9JuzEbt9AdaLEtCGT8Gci4OGnTqmM4D88b1RvBZJwv4bQ8BZAuo5TH4ziBmM3X3kKX0sn\"\n    },\n    {\n      \"repositoryName\": \"nilh1kzP1.JhtO4oNu5Ghvk-QkzK0xbrSC264j-x\"\n    }\n  ],\n  \"tags\": [\n    {\n      \"key\": \"P{C}}}}}}}}}}}\",\n      \"value\": \"P{C}}\"\n    },\n    {\n      \"key\": \"P{C}}}}}}}}}}}\",\n      \"value\": \"P{C}}}}}}}}\"\n    },\n    {\n      \"key\": \"P{C}\",\n      \"value\": \"P{C}}\"\n    },\n    {\n      \"key\": \"P{C}}}\",\n      \"value\": \"P{C}}}}\"\n    },\n    {\n      \"key\": \"P{C}}}}}}}}}}}\",\n      \"value\": \"P{C}}}}}}}}\"\n    },\n    {\n      \"key\": \"P{C}}\",\n      \"value\": \"P{C\"\n    },\n    {\n      \"key\": \"P{C}}}}}}}}}\",\n      \"value\": \"P{C\"\n    },\n    {\n      \"key\": \"P{C}\",\n      \"value\": \"P{C}}}}}}}}}}\"\n    },\n    {\n      \"key\": \"P{C}}}}\",\n      \"value\": \"P{C}}}}}}\"\n    },\n    {\n      \"key\": \"P{C}}}}}}}}}\",\n      \"value\": \"P{C}}}}}}}}\"\n    },\n    {\n      \"key\": \"P{C}}}}}}}}}}}\",\n      \"value\": \"P{C}}}}\"\n    },\n    {\n      \"key\": \"P{C}}}\",\n      \"value\": \"P{C\"\n    },\n    {\n      \"key\": \"P{C}}}}}}}}}\",\n      \"value\": \"P{C}}}}}}\"\n    },\n    {\n      \"key\": \"P{C}}}}}}}}\",\n      \"value\": \"P{C}}}}}}}}}}\"\n    },\n    {\n      \"key\": \"P{C}\",\n      \"value\": \"P{C\"\n    },\n    {\n      \"key\": \"P{C}}}}\",\n      \"value\": \"P{C}}}}}}}\"\n    },\n    {\n      \"key\": \"P{C}}}}}}}}}\",\n      \"value\": \"P{C}}}}}}\"\n    },\n    {\n      \"key\": \"P{C}}}}}\",\n      \"value\": \"P{C}}}}\"\n    },\n    {\n      \"key\": \"P{C}}}}}}}}\",\n      \"value\": \"P{C}}}}}}}}}\"\n    },\n    {\n      \"key\": \"P{C}}}}}}}}\",\n      \"value\": \"P{C\"\n    }\n  ]\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/v1/repository?domain=vrjbtz&domain-owner=556179601684&repository=G.I_K22Td7DF9fR6rlxDH48AcTTGl#domain&repository",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "v1",
+                        "repository"
+                      ],
+                      "query": [
+                        {
+                          "description": "(Required)  The name of the domain that contains the created repository. ",
+                          "key": "domain",
+                          "value": "vrjbtz"
+                        },
+                        {
+                          "description": " The 12-digit account number of the Amazon Web Services account that owns the domain. It does not include dashes or spaces. ",
+                          "key": "domain-owner",
+                          "value": "556179601684"
+                        },
+                        {
+                          "description": "(Required)  The name of the repository to create. ",
+                          "key": "repository",
+                          "value": "G.I_K22Td7DF9fR6rlxDH48AcTTGl"
+                        }
+                      ],
+                      "hash": "domain&repository"
+                    }
+                  },
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{}",
+                  "createdAt": "2026-07-28T10:09:45.000Z",
+                  "updatedAt": "2026-07-28T10:09:45.000Z",
+                  "uid": "35240-52efa641-8efb-4f52-ad79-31de194a9c0c"
+                },
+                {
+                  "id": "b779f239-62b7-4ca0-b95e-54ac2a4c85df",
+                  "name": "ResourceNotFoundException",
+                  "originalRequest": {
+                    "method": "POST",
+                    "header": [
+                      {
+                        "key": "X-Amz-Content-Sha256",
+                        "value": "<string>"
+                      },
+                      {
+                        "key": "X-Amz-Date",
+                        "value": "<string>"
+                      },
+                      {
+                        "key": "X-Amz-Algorithm",
+                        "value": "<string>"
+                      },
+                      {
+                        "key": "X-Amz-Credential",
+                        "value": "<string>"
+                      },
+                      {
+                        "key": "X-Amz-Security-Token",
+                        "value": "<string>"
+                      },
+                      {
+                        "key": "X-Amz-Signature",
+                        "value": "<string>"
+                      },
+                      {
+                        "key": "X-Amz-SignedHeaders",
+                        "value": "<string>"
+                      },
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: apikey",
+                        "key": "Authorization",
+                        "value": "<API Key>"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"description\": \"P{C}}}}}}}}\",\n  \"upstreams\": [\n    {\n      \"repositoryName\": \"3D2WhTe9JuzEbt9AdaLEtCGT8Gci4OGnTqmM4D88b1RvBZJwv4bQ8BZAuo5TH4ziBmM3X3kKX0sn\"\n    },\n    {\n      \"repositoryName\": \"nilh1kzP1.JhtO4oNu5Ghvk-QkzK0xbrSC264j-x\"\n    }\n  ],\n  \"tags\": [\n    {\n      \"key\": \"P{C}}}}}}}}}}}\",\n      \"value\": \"P{C}}\"\n    },\n    {\n      \"key\": \"P{C}}}}}}}}}}}\",\n      \"value\": \"P{C}}}}}}}}\"\n    },\n    {\n      \"key\": \"P{C}\",\n      \"value\": \"P{C}}\"\n    },\n    {\n      \"key\": \"P{C}}}\",\n      \"value\": \"P{C}}}}\"\n    },\n    {\n      \"key\": \"P{C}}}}}}}}}}}\",\n      \"value\": \"P{C}}}}}}}}\"\n    },\n    {\n      \"key\": \"P{C}}\",\n      \"value\": \"P{C\"\n    },\n    {\n      \"key\": \"P{C}}}}}}}}}\",\n      \"value\": \"P{C\"\n    },\n    {\n      \"key\": \"P{C}\",\n      \"value\": \"P{C}}}}}}}}}}\"\n    },\n    {\n      \"key\": \"P{C}}}}\",\n      \"value\": \"P{C}}}}}}\"\n    },\n    {\n      \"key\": \"P{C}}}}}}}}}\",\n      \"value\": \"P{C}}}}}}}}\"\n    },\n    {\n      \"key\": \"P{C}}}}}}}}}}}\",\n      \"value\": \"P{C}}}}\"\n    },\n    {\n      \"key\": \"P{C}}}\",\n      \"value\": \"P{C\"\n    },\n    {\n      \"key\": \"P{C}}}}}}}}}\",\n      \"value\": \"P{C}}}}}}\"\n    },\n    {\n      \"key\": \"P{C}}}}}}}}\",\n      \"value\": \"P{C}}}}}}}}}}\"\n    },\n    {\n      \"key\": \"P{C}\",\n      \"value\": \"P{C\"\n    },\n    {\n      \"key\": \"P{C}}}}\",\n      \"value\": \"P{C}}}}}}}\"\n    },\n    {\n      \"key\": \"P{C}}}}}}}}}\",\n      \"value\": \"P{C}}}}}}\"\n    },\n    {\n      \"key\": \"P{C}}}}}\",\n      \"value\": \"P{C}}}}\"\n    },\n    {\n      \"key\": \"P{C}}}}}}}}\",\n      \"value\": \"P{C}}}}}}}}}\"\n    },\n    {\n      \"key\": \"P{C}}}}}}}}\",\n      \"value\": \"P{C\"\n    }\n  ]\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/v1/repository?domain=vrjbtz&domain-owner=556179601684&repository=G.I_K22Td7DF9fR6rlxDH48AcTTGl#domain&repository",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "v1",
+                        "repository"
+                      ],
+                      "query": [
+                        {
+                          "description": "(Required)  The name of the domain that contains the created repository. ",
+                          "key": "domain",
+                          "value": "vrjbtz"
+                        },
+                        {
+                          "description": " The 12-digit account number of the Amazon Web Services account that owns the domain. It does not include dashes or spaces. ",
+                          "key": "domain-owner",
+                          "value": "556179601684"
+                        },
+                        {
+                          "description": "(Required)  The name of the repository to create. ",
+                          "key": "repository",
+                          "value": "G.I_K22Td7DF9fR6rlxDH48AcTTGl"
+                        }
+                      ],
+                      "hash": "domain&repository"
+                    }
+                  },
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{}",
+                  "createdAt": "2026-07-28T10:09:45.000Z",
+                  "updatedAt": "2026-07-28T10:09:45.000Z",
+                  "uid": "35240-b779f239-62b7-4ca0-b95e-54ac2a4c85df"
+                },
+                {
+                  "id": "866de75a-edc9-4a6b-ba8d-40f2efc838d8",
+                  "name": "ServiceQuotaExceededException",
+                  "originalRequest": {
+                    "method": "POST",
+                    "header": [
+                      {
+                        "key": "X-Amz-Content-Sha256",
+                        "value": "<string>"
+                      },
+                      {
+                        "key": "X-Amz-Date",
+                        "value": "<string>"
+                      },
+                      {
+                        "key": "X-Amz-Algorithm",
+                        "value": "<string>"
+                      },
+                      {
+                        "key": "X-Amz-Credential",
+                        "value": "<string>"
+                      },
+                      {
+                        "key": "X-Amz-Security-Token",
+                        "value": "<string>"
+                      },
+                      {
+                        "key": "X-Amz-Signature",
+                        "value": "<string>"
+                      },
+                      {
+                        "key": "X-Amz-SignedHeaders",
+                        "value": "<string>"
+                      },
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: apikey",
+                        "key": "Authorization",
+                        "value": "<API Key>"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"description\": \"P{C}}}}}}}}\",\n  \"upstreams\": [\n    {\n      \"repositoryName\": \"3D2WhTe9JuzEbt9AdaLEtCGT8Gci4OGnTqmM4D88b1RvBZJwv4bQ8BZAuo5TH4ziBmM3X3kKX0sn\"\n    },\n    {\n      \"repositoryName\": \"nilh1kzP1.JhtO4oNu5Ghvk-QkzK0xbrSC264j-x\"\n    }\n  ],\n  \"tags\": [\n    {\n      \"key\": \"P{C}}}}}}}}}}}\",\n      \"value\": \"P{C}}\"\n    },\n    {\n      \"key\": \"P{C}}}}}}}}}}}\",\n      \"value\": \"P{C}}}}}}}}\"\n    },\n    {\n      \"key\": \"P{C}\",\n      \"value\": \"P{C}}\"\n    },\n    {\n      \"key\": \"P{C}}}\",\n      \"value\": \"P{C}}}}\"\n    },\n    {\n      \"key\": \"P{C}}}}}}}}}}}\",\n      \"value\": \"P{C}}}}}}}}\"\n    },\n    {\n      \"key\": \"P{C}}\",\n      \"value\": \"P{C\"\n    },\n    {\n      \"key\": \"P{C}}}}}}}}}\",\n      \"value\": \"P{C\"\n    },\n    {\n      \"key\": \"P{C}\",\n      \"value\": \"P{C}}}}}}}}}}\"\n    },\n    {\n      \"key\": \"P{C}}}}\",\n      \"value\": \"P{C}}}}}}\"\n    },\n    {\n      \"key\": \"P{C}}}}}}}}}\",\n      \"value\": \"P{C}}}}}}}}\"\n    },\n    {\n      \"key\": \"P{C}}}}}}}}}}}\",\n      \"value\": \"P{C}}}}\"\n    },\n    {\n      \"key\": \"P{C}}}\",\n      \"value\": \"P{C\"\n    },\n    {\n      \"key\": \"P{C}}}}}}}}}\",\n      \"value\": \"P{C}}}}}}\"\n    },\n    {\n      \"key\": \"P{C}}}}}}}}\",\n      \"value\": \"P{C}}}}}}}}}}\"\n    },\n    {\n      \"key\": \"P{C}\",\n      \"value\": \"P{C\"\n    },\n    {\n      \"key\": \"P{C}}}}\",\n      \"value\": \"P{C}}}}}}}\"\n    },\n    {\n      \"key\": \"P{C}}}}}}}}}\",\n      \"value\": \"P{C}}}}}}\"\n    },\n    {\n      \"key\": \"P{C}}}}}\",\n      \"value\": \"P{C}}}}\"\n    },\n    {\n      \"key\": \"P{C}}}}}}}}\",\n      \"value\": \"P{C}}}}}}}}}\"\n    },\n    {\n      \"key\": \"P{C}}}}}}}}\",\n      \"value\": \"P{C\"\n    }\n  ]\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/v1/repository?domain=vrjbtz&domain-owner=556179601684&repository=G.I_K22Td7DF9fR6rlxDH48AcTTGl#domain&repository",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "v1",
+                        "repository"
+                      ],
+                      "query": [
+                        {
+                          "description": "(Required)  The name of the domain that contains the created repository. ",
+                          "key": "domain",
+                          "value": "vrjbtz"
+                        },
+                        {
+                          "description": " The 12-digit account number of the Amazon Web Services account that owns the domain. It does not include dashes or spaces. ",
+                          "key": "domain-owner",
+                          "value": "556179601684"
+                        },
+                        {
+                          "description": "(Required)  The name of the repository to create. ",
+                          "key": "repository",
+                          "value": "G.I_K22Td7DF9fR6rlxDH48AcTTGl"
+                        }
+                      ],
+                      "hash": "domain&repository"
+                    }
+                  },
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{}",
+                  "createdAt": "2026-07-28T10:09:45.000Z",
+                  "updatedAt": "2026-07-28T10:09:45.000Z",
+                  "uid": "35240-866de75a-edc9-4a6b-ba8d-40f2efc838d8"
+                },
+                {
+                  "id": "2cd5782f-36a1-4e77-951b-6803104e3e34",
+                  "name": "ThrottlingException",
+                  "originalRequest": {
+                    "method": "POST",
+                    "header": [
+                      {
+                        "key": "X-Amz-Content-Sha256",
+                        "value": "<string>"
+                      },
+                      {
+                        "key": "X-Amz-Date",
+                        "value": "<string>"
+                      },
+                      {
+                        "key": "X-Amz-Algorithm",
+                        "value": "<string>"
+                      },
+                      {
+                        "key": "X-Amz-Credential",
+                        "value": "<string>"
+                      },
+                      {
+                        "key": "X-Amz-Security-Token",
+                        "value": "<string>"
+                      },
+                      {
+                        "key": "X-Amz-Signature",
+                        "value": "<string>"
+                      },
+                      {
+                        "key": "X-Amz-SignedHeaders",
+                        "value": "<string>"
+                      },
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: apikey",
+                        "key": "Authorization",
+                        "value": "<API Key>"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"description\": \"P{C}}}}}}}}\",\n  \"upstreams\": [\n    {\n      \"repositoryName\": \"3D2WhTe9JuzEbt9AdaLEtCGT8Gci4OGnTqmM4D88b1RvBZJwv4bQ8BZAuo5TH4ziBmM3X3kKX0sn\"\n    },\n    {\n      \"repositoryName\": \"nilh1kzP1.JhtO4oNu5Ghvk-QkzK0xbrSC264j-x\"\n    }\n  ],\n  \"tags\": [\n    {\n      \"key\": \"P{C}}}}}}}}}}}\",\n      \"value\": \"P{C}}\"\n    },\n    {\n      \"key\": \"P{C}}}}}}}}}}}\",\n      \"value\": \"P{C}}}}}}}}\"\n    },\n    {\n      \"key\": \"P{C}\",\n      \"value\": \"P{C}}\"\n    },\n    {\n      \"key\": \"P{C}}}\",\n      \"value\": \"P{C}}}}\"\n    },\n    {\n      \"key\": \"P{C}}}}}}}}}}}\",\n      \"value\": \"P{C}}}}}}}}\"\n    },\n    {\n      \"key\": \"P{C}}\",\n      \"value\": \"P{C\"\n    },\n    {\n      \"key\": \"P{C}}}}}}}}}\",\n      \"value\": \"P{C\"\n    },\n    {\n      \"key\": \"P{C}\",\n      \"value\": \"P{C}}}}}}}}}}\"\n    },\n    {\n      \"key\": \"P{C}}}}\",\n      \"value\": \"P{C}}}}}}\"\n    },\n    {\n      \"key\": \"P{C}}}}}}}}}\",\n      \"value\": \"P{C}}}}}}}}\"\n    },\n    {\n      \"key\": \"P{C}}}}}}}}}}}\",\n      \"value\": \"P{C}}}}\"\n    },\n    {\n      \"key\": \"P{C}}}\",\n      \"value\": \"P{C\"\n    },\n    {\n      \"key\": \"P{C}}}}}}}}}\",\n      \"value\": \"P{C}}}}}}\"\n    },\n    {\n      \"key\": \"P{C}}}}}}}}\",\n      \"value\": \"P{C}}}}}}}}}}\"\n    },\n    {\n      \"key\": \"P{C}\",\n      \"value\": \"P{C\"\n    },\n    {\n      \"key\": \"P{C}}}}\",\n      \"value\": \"P{C}}}}}}}\"\n    },\n    {\n      \"key\": \"P{C}}}}}}}}}\",\n      \"value\": \"P{C}}}}}}\"\n    },\n    {\n      \"key\": \"P{C}}}}}\",\n      \"value\": \"P{C}}}}\"\n    },\n    {\n      \"key\": \"P{C}}}}}}}}\",\n      \"value\": \"P{C}}}}}}}}}\"\n    },\n    {\n      \"key\": \"P{C}}}}}}}}\",\n      \"value\": \"P{C\"\n    }\n  ]\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/v1/repository?domain=vrjbtz&domain-owner=556179601684&repository=G.I_K22Td7DF9fR6rlxDH48AcTTGl#domain&repository",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "v1",
+                        "repository"
+                      ],
+                      "query": [
+                        {
+                          "description": "(Required)  The name of the domain that contains the created repository. ",
+                          "key": "domain",
+                          "value": "vrjbtz"
+                        },
+                        {
+                          "description": " The 12-digit account number of the Amazon Web Services account that owns the domain. It does not include dashes or spaces. ",
+                          "key": "domain-owner",
+                          "value": "556179601684"
+                        },
+                        {
+                          "description": "(Required)  The name of the repository to create. ",
+                          "key": "repository",
+                          "value": "G.I_K22Td7DF9fR6rlxDH48AcTTGl"
+                        }
+                      ],
+                      "hash": "domain&repository"
+                    }
+                  },
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{}",
+                  "createdAt": "2026-07-28T10:09:45.000Z",
+                  "updatedAt": "2026-07-28T10:09:45.000Z",
+                  "uid": "35240-2cd5782f-36a1-4e77-951b-6803104e3e34"
+                },
+                {
+                  "id": "f0e49ecd-f011-42f7-ac34-fa38b7fb1144",
+                  "name": "ValidationException",
+                  "originalRequest": {
+                    "method": "POST",
+                    "header": [
+                      {
+                        "key": "X-Amz-Content-Sha256",
+                        "value": "<string>"
+                      },
+                      {
+                        "key": "X-Amz-Date",
+                        "value": "<string>"
+                      },
+                      {
+                        "key": "X-Amz-Algorithm",
+                        "value": "<string>"
+                      },
+                      {
+                        "key": "X-Amz-Credential",
+                        "value": "<string>"
+                      },
+                      {
+                        "key": "X-Amz-Security-Token",
+                        "value": "<string>"
+                      },
+                      {
+                        "key": "X-Amz-Signature",
+                        "value": "<string>"
+                      },
+                      {
+                        "key": "X-Amz-SignedHeaders",
+                        "value": "<string>"
+                      },
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: apikey",
+                        "key": "Authorization",
+                        "value": "<API Key>"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"description\": \"P{C}}}}}}}}\",\n  \"upstreams\": [\n    {\n      \"repositoryName\": \"3D2WhTe9JuzEbt9AdaLEtCGT8Gci4OGnTqmM4D88b1RvBZJwv4bQ8BZAuo5TH4ziBmM3X3kKX0sn\"\n    },\n    {\n      \"repositoryName\": \"nilh1kzP1.JhtO4oNu5Ghvk-QkzK0xbrSC264j-x\"\n    }\n  ],\n  \"tags\": [\n    {\n      \"key\": \"P{C}}}}}}}}}}}\",\n      \"value\": \"P{C}}\"\n    },\n    {\n      \"key\": \"P{C}}}}}}}}}}}\",\n      \"value\": \"P{C}}}}}}}}\"\n    },\n    {\n      \"key\": \"P{C}\",\n      \"value\": \"P{C}}\"\n    },\n    {\n      \"key\": \"P{C}}}\",\n      \"value\": \"P{C}}}}\"\n    },\n    {\n      \"key\": \"P{C}}}}}}}}}}}\",\n      \"value\": \"P{C}}}}}}}}\"\n    },\n    {\n      \"key\": \"P{C}}\",\n      \"value\": \"P{C\"\n    },\n    {\n      \"key\": \"P{C}}}}}}}}}\",\n      \"value\": \"P{C\"\n    },\n    {\n      \"key\": \"P{C}\",\n      \"value\": \"P{C}}}}}}}}}}\"\n    },\n    {\n      \"key\": \"P{C}}}}\",\n      \"value\": \"P{C}}}}}}\"\n    },\n    {\n      \"key\": \"P{C}}}}}}}}}\",\n      \"value\": \"P{C}}}}}}}}\"\n    },\n    {\n      \"key\": \"P{C}}}}}}}}}}}\",\n      \"value\": \"P{C}}}}\"\n    },\n    {\n      \"key\": \"P{C}}}\",\n      \"value\": \"P{C\"\n    },\n    {\n      \"key\": \"P{C}}}}}}}}}\",\n      \"value\": \"P{C}}}}}}\"\n    },\n    {\n      \"key\": \"P{C}}}}}}}}\",\n      \"value\": \"P{C}}}}}}}}}}\"\n    },\n    {\n      \"key\": \"P{C}\",\n      \"value\": \"P{C\"\n    },\n    {\n      \"key\": \"P{C}}}}\",\n      \"value\": \"P{C}}}}}}}\"\n    },\n    {\n      \"key\": \"P{C}}}}}}}}}\",\n      \"value\": \"P{C}}}}}}\"\n    },\n    {\n      \"key\": \"P{C}}}}}\",\n      \"value\": \"P{C}}}}\"\n    },\n    {\n      \"key\": \"P{C}}}}}}}}\",\n      \"value\": \"P{C}}}}}}}}}\"\n    },\n    {\n      \"key\": \"P{C}}}}}}}}\",\n      \"value\": \"P{C\"\n    }\n  ]\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/v1/repository?domain=vrjbtz&domain-owner=556179601684&repository=G.I_K22Td7DF9fR6rlxDH48AcTTGl#domain&repository",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "v1",
+                        "repository"
+                      ],
+                      "query": [
+                        {
+                          "description": "(Required)  The name of the domain that contains the created repository. ",
+                          "key": "domain",
+                          "value": "vrjbtz"
+                        },
+                        {
+                          "description": " The 12-digit account number of the Amazon Web Services account that owns the domain. It does not include dashes or spaces. ",
+                          "key": "domain-owner",
+                          "value": "556179601684"
+                        },
+                        {
+                          "description": "(Required)  The name of the repository to create. ",
+                          "key": "repository",
+                          "value": "G.I_K22Td7DF9fR6rlxDH48AcTTGl"
+                        }
+                      ],
+                      "hash": "domain&repository"
+                    }
+                  },
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{}",
+                  "createdAt": "2026-07-28T10:09:45.000Z",
+                  "updatedAt": "2026-07-28T10:09:45.000Z",
+                  "uid": "35240-f0e49ecd-f011-42f7-ac34-fa38b7fb1144"
+                }
+              ],
+              "createdAt": "2026-07-28T10:09:45.000Z",
+              "updatedAt": "2026-07-28T10:09:45.000Z",
+              "uid": "35240-ede23b0e-b8ac-4681-b577-2f00b0c39da4"
+            },
+            {
+              "name": "Amazon CodeArtifact Delete Repository",
+              "id": "952fd0fd-17f0-448b-b48d-baaf4108e4c4",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "method": "DELETE",
+                "header": [
+                  {
+                    "key": "X-Amz-Content-Sha256",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "X-Amz-Date",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "X-Amz-Algorithm",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "X-Amz-Credential",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "X-Amz-Security-Token",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "X-Amz-Signature",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "X-Amz-SignedHeaders",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/v1/repository?domain=vrjbtz&domain-owner=556179601684&repository=G.I_K22Td7DF9fR6rlxDH48AcTTGl#domain&repository",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "v1",
+                    "repository"
+                  ],
+                  "query": [
+                    {
+                      "description": "(Required)  The name of the domain that contains the repository to delete. ",
+                      "key": "domain",
+                      "value": "vrjbtz"
+                    },
+                    {
+                      "description": " The 12-digit account number of the Amazon Web Services account that owns the domain. It does not include dashes or spaces. ",
+                      "key": "domain-owner",
+                      "value": "556179601684"
+                    },
+                    {
+                      "description": "(Required)  The name of the repository to delete. ",
+                      "key": "repository",
+                      "value": "G.I_K22Td7DF9fR6rlxDH48AcTTGl"
+                    }
+                  ],
+                  "hash": "domain&repository"
+                },
+                "description": " Deletes a repository. "
+              },
+              "response": [
+                {
+                  "id": "1d94adcc-dcc1-4b87-9805-ff11caf49bd1",
+                  "name": "Success",
+                  "originalRequest": {
+                    "method": "DELETE",
+                    "header": [
+                      {
+                        "key": "X-Amz-Content-Sha256",
+                        "value": "<string>"
+                      },
+                      {
+                        "key": "X-Amz-Date",
+                        "value": "<string>"
+                      },
+                      {
+                        "key": "X-Amz-Algorithm",
+                        "value": "<string>"
+                      },
+                      {
+                        "key": "X-Amz-Credential",
+                        "value": "<string>"
+                      },
+                      {
+                        "key": "X-Amz-Security-Token",
+                        "value": "<string>"
+                      },
+                      {
+                        "key": "X-Amz-Signature",
+                        "value": "<string>"
+                      },
+                      {
+                        "key": "X-Amz-SignedHeaders",
+                        "value": "<string>"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: apikey",
+                        "key": "Authorization",
+                        "value": "<API Key>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/v1/repository?domain=vrjbtz&domain-owner=556179601684&repository=G.I_K22Td7DF9fR6rlxDH48AcTTGl#domain&repository",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "v1",
+                        "repository"
+                      ],
+                      "query": [
+                        {
+                          "description": "(Required)  The name of the domain that contains the repository to delete. ",
+                          "key": "domain",
+                          "value": "vrjbtz"
+                        },
+                        {
+                          "description": " The 12-digit account number of the Amazon Web Services account that owns the domain. It does not include dashes or spaces. ",
+                          "key": "domain-owner",
+                          "value": "556179601684"
+                        },
+                        {
+                          "description": "(Required)  The name of the repository to delete. ",
+                          "key": "repository",
+                          "value": "G.I_K22Td7DF9fR6rlxDH48AcTTGl"
+                        }
+                      ],
+                      "hash": "domain&repository"
+                    }
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"repository\": {\n    \"name\": \"SWfVLLzS4nyCzKM9hWvH4ATKDNcEZYm-uCr685kq0zqwYJztRdX6IbvamowNtQ6boVj50nBLv7zVMM28vR3ly8cGGl\",\n    \"administratorAccount\": \"469314347786\",\n    \"domainName\": \"l4dinogw5see5t\",\n    \"domainOwner\": \"605420209588\",\n    \"arn\": \"X{b5F\",\n    \"description\": \"P{C}}}}\",\n    \"upstreams\": [\n      {\n        \"repositoryName\": \"xQ36aZSo6_yw.ue-eoobrH4yf9BfjbH5eLF0iI3NFh2T.cMAQMzeMvbW9WT.zl2eCCtp_fUQkZhqMtWxVpL\"\n      },\n      {\n        \"repositoryName\": \"h.xPAvn9HhGr_jl-xK.CfTQcxeCO7hcvdd4yF_HKNLTj-pvx3s3bz1iwTOqsPc-bQ0dUDcxWTGFUdgFs-ntcSxAiJr-_DPsTDJ\"\n      }\n    ],\n    \"externalConnections\": [\n      {\n        \"externalConnectionName\": \"lzhyy\",\n        \"packageFormat\": \"generic\",\n        \"status\": \"Available\"\n      },\n      {\n        \"externalConnectionName\": \"jyMpbNob\",\n        \"packageFormat\": \"maven\",\n        \"status\": \"Available\"\n      }\n    ],\n    \"createdTime\": \"<dateTime>\"\n  }\n}",
+                  "createdAt": "2026-07-28T10:09:45.000Z",
+                  "updatedAt": "2026-07-28T10:09:45.000Z",
+                  "uid": "35240-1d94adcc-dcc1-4b87-9805-ff11caf49bd1"
+                },
+                {
+                  "id": "921af80e-350c-4233-a18e-92f877175bca",
+                  "name": "AccessDeniedException",
+                  "originalRequest": {
+                    "method": "DELETE",
+                    "header": [
+                      {
+                        "key": "X-Amz-Content-Sha256",
+                        "value": "<string>"
+                      },
+                      {
+                        "key": "X-Amz-Date",
+                        "value": "<string>"
+                      },
+                      {
+                        "key": "X-Amz-Algorithm",
+                        "value": "<string>"
+                      },
+                      {
+                        "key": "X-Amz-Credential",
+                        "value": "<string>"
+                      },
+                      {
+                        "key": "X-Amz-Security-Token",
+                        "value": "<string>"
+                      },
+                      {
+                        "key": "X-Amz-Signature",
+                        "value": "<string>"
+                      },
+                      {
+                        "key": "X-Amz-SignedHeaders",
+                        "value": "<string>"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: apikey",
+                        "key": "Authorization",
+                        "value": "<API Key>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/v1/repository?domain=vrjbtz&domain-owner=556179601684&repository=G.I_K22Td7DF9fR6rlxDH48AcTTGl#domain&repository",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "v1",
+                        "repository"
+                      ],
+                      "query": [
+                        {
+                          "description": "(Required)  The name of the domain that contains the repository to delete. ",
+                          "key": "domain",
+                          "value": "vrjbtz"
+                        },
+                        {
+                          "description": " The 12-digit account number of the Amazon Web Services account that owns the domain. It does not include dashes or spaces. ",
+                          "key": "domain-owner",
+                          "value": "556179601684"
+                        },
+                        {
+                          "description": "(Required)  The name of the repository to delete. ",
+                          "key": "repository",
+                          "value": "G.I_K22Td7DF9fR6rlxDH48AcTTGl"
+                        }
+                      ],
+                      "hash": "domain&repository"
+                    }
+                  },
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{}",
+                  "createdAt": "2026-07-28T10:09:45.000Z",
+                  "updatedAt": "2026-07-28T10:09:45.000Z",
+                  "uid": "35240-921af80e-350c-4233-a18e-92f877175bca"
+                },
+                {
+                  "id": "70405849-29fb-4013-b87c-6dfdbdaa59a4",
+                  "name": "ConflictException",
+                  "originalRequest": {
+                    "method": "DELETE",
+                    "header": [
+                      {
+                        "key": "X-Amz-Content-Sha256",
+                        "value": "<string>"
+                      },
+                      {
+                        "key": "X-Amz-Date",
+                        "value": "<string>"
+                      },
+                      {
+                        "key": "X-Amz-Algorithm",
+                        "value": "<string>"
+                      },
+                      {
+                        "key": "X-Amz-Credential",
+                        "value": "<string>"
+                      },
+                      {
+                        "key": "X-Amz-Security-Token",
+                        "value": "<string>"
+                      },
+                      {
+                        "key": "X-Amz-Signature",
+                        "value": "<string>"
+                      },
+                      {
+                        "key": "X-Amz-SignedHeaders",
+                        "value": "<string>"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: apikey",
+                        "key": "Authorization",
+                        "value": "<API Key>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/v1/repository?domain=vrjbtz&domain-owner=556179601684&repository=G.I_K22Td7DF9fR6rlxDH48AcTTGl#domain&repository",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "v1",
+                        "repository"
+                      ],
+                      "query": [
+                        {
+                          "description": "(Required)  The name of the domain that contains the repository to delete. ",
+                          "key": "domain",
+                          "value": "vrjbtz"
+                        },
+                        {
+                          "description": " The 12-digit account number of the Amazon Web Services account that owns the domain. It does not include dashes or spaces. ",
+                          "key": "domain-owner",
+                          "value": "556179601684"
+                        },
+                        {
+                          "description": "(Required)  The name of the repository to delete. ",
+                          "key": "repository",
+                          "value": "G.I_K22Td7DF9fR6rlxDH48AcTTGl"
+                        }
+                      ],
+                      "hash": "domain&repository"
+                    }
+                  },
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{}",
+                  "createdAt": "2026-07-28T10:09:45.000Z",
+                  "updatedAt": "2026-07-28T10:09:45.000Z",
+                  "uid": "35240-70405849-29fb-4013-b87c-6dfdbdaa59a4"
+                },
+                {
+                  "id": "88964f84-a0dc-4719-a3ad-bc71e5973392",
+                  "name": "InternalServerException",
+                  "originalRequest": {
+                    "method": "DELETE",
+                    "header": [
+                      {
+                        "key": "X-Amz-Content-Sha256",
+                        "value": "<string>"
+                      },
+                      {
+                        "key": "X-Amz-Date",
+                        "value": "<string>"
+                      },
+                      {
+                        "key": "X-Amz-Algorithm",
+                        "value": "<string>"
+                      },
+                      {
+                        "key": "X-Amz-Credential",
+                        "value": "<string>"
+                      },
+                      {
+                        "key": "X-Amz-Security-Token",
+                        "value": "<string>"
+                      },
+                      {
+                        "key": "X-Amz-Signature",
+                        "value": "<string>"
+                      },
+                      {
+                        "key": "X-Amz-SignedHeaders",
+                        "value": "<string>"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: apikey",
+                        "key": "Authorization",
+                        "value": "<API Key>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/v1/repository?domain=vrjbtz&domain-owner=556179601684&repository=G.I_K22Td7DF9fR6rlxDH48AcTTGl#domain&repository",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "v1",
+                        "repository"
+                      ],
+                      "query": [
+                        {
+                          "description": "(Required)  The name of the domain that contains the repository to delete. ",
+                          "key": "domain",
+                          "value": "vrjbtz"
+                        },
+                        {
+                          "description": " The 12-digit account number of the Amazon Web Services account that owns the domain. It does not include dashes or spaces. ",
+                          "key": "domain-owner",
+                          "value": "556179601684"
+                        },
+                        {
+                          "description": "(Required)  The name of the repository to delete. ",
+                          "key": "repository",
+                          "value": "G.I_K22Td7DF9fR6rlxDH48AcTTGl"
+                        }
+                      ],
+                      "hash": "domain&repository"
+                    }
+                  },
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{}",
+                  "createdAt": "2026-07-28T10:09:45.000Z",
+                  "updatedAt": "2026-07-28T10:09:45.000Z",
+                  "uid": "35240-88964f84-a0dc-4719-a3ad-bc71e5973392"
+                },
+                {
+                  "id": "5a773e77-0758-4430-b948-d45458f8c8ae",
+                  "name": "ResourceNotFoundException",
+                  "originalRequest": {
+                    "method": "DELETE",
+                    "header": [
+                      {
+                        "key": "X-Amz-Content-Sha256",
+                        "value": "<string>"
+                      },
+                      {
+                        "key": "X-Amz-Date",
+                        "value": "<string>"
+                      },
+                      {
+                        "key": "X-Amz-Algorithm",
+                        "value": "<string>"
+                      },
+                      {
+                        "key": "X-Amz-Credential",
+                        "value": "<string>"
+                      },
+                      {
+                        "key": "X-Amz-Security-Token",
+                        "value": "<string>"
+                      },
+                      {
+                        "key": "X-Amz-Signature",
+                        "value": "<string>"
+                      },
+                      {
+                        "key": "X-Amz-SignedHeaders",
+                        "value": "<string>"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: apikey",
+                        "key": "Authorization",
+                        "value": "<API Key>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/v1/repository?domain=vrjbtz&domain-owner=556179601684&repository=G.I_K22Td7DF9fR6rlxDH48AcTTGl#domain&repository",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "v1",
+                        "repository"
+                      ],
+                      "query": [
+                        {
+                          "description": "(Required)  The name of the domain that contains the repository to delete. ",
+                          "key": "domain",
+                          "value": "vrjbtz"
+                        },
+                        {
+                          "description": " The 12-digit account number of the Amazon Web Services account that owns the domain. It does not include dashes or spaces. ",
+                          "key": "domain-owner",
+                          "value": "556179601684"
+                        },
+                        {
+                          "description": "(Required)  The name of the repository to delete. ",
+                          "key": "repository",
+                          "value": "G.I_K22Td7DF9fR6rlxDH48AcTTGl"
+                        }
+                      ],
+                      "hash": "domain&repository"
+                    }
+                  },
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{}",
+                  "createdAt": "2026-07-28T10:09:45.000Z",
+                  "updatedAt": "2026-07-28T10:09:45.000Z",
+                  "uid": "35240-5a773e77-0758-4430-b948-d45458f8c8ae"
+                },
+                {
+                  "id": "dfec7019-d03b-47c2-bd8c-c75c08491922",
+                  "name": "ThrottlingException",
+                  "originalRequest": {
+                    "method": "DELETE",
+                    "header": [
+                      {
+                        "key": "X-Amz-Content-Sha256",
+                        "value": "<string>"
+                      },
+                      {
+                        "key": "X-Amz-Date",
+                        "value": "<string>"
+                      },
+                      {
+                        "key": "X-Amz-Algorithm",
+                        "value": "<string>"
+                      },
+                      {
+                        "key": "X-Amz-Credential",
+                        "value": "<string>"
+                      },
+                      {
+                        "key": "X-Amz-Security-Token",
+                        "value": "<string>"
+                      },
+                      {
+                        "key": "X-Amz-Signature",
+                        "value": "<string>"
+                      },
+                      {
+                        "key": "X-Amz-SignedHeaders",
+                        "value": "<string>"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: apikey",
+                        "key": "Authorization",
+                        "value": "<API Key>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/v1/repository?domain=vrjbtz&domain-owner=556179601684&repository=G.I_K22Td7DF9fR6rlxDH48AcTTGl#domain&repository",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "v1",
+                        "repository"
+                      ],
+                      "query": [
+                        {
+                          "description": "(Required)  The name of the domain that contains the repository to delete. ",
+                          "key": "domain",
+                          "value": "vrjbtz"
+                        },
+                        {
+                          "description": " The 12-digit account number of the Amazon Web Services account that owns the domain. It does not include dashes or spaces. ",
+                          "key": "domain-owner",
+                          "value": "556179601684"
+                        },
+                        {
+                          "description": "(Required)  The name of the repository to delete. ",
+                          "key": "repository",
+                          "value": "G.I_K22Td7DF9fR6rlxDH48AcTTGl"
+                        }
+                      ],
+                      "hash": "domain&repository"
+                    }
+                  },
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{}",
+                  "createdAt": "2026-07-28T10:09:45.000Z",
+                  "updatedAt": "2026-07-28T10:09:45.000Z",
+                  "uid": "35240-dfec7019-d03b-47c2-bd8c-c75c08491922"
+                },
+                {
+                  "id": "b288fca2-5c65-47f6-a411-ff3f8ab40774",
+                  "name": "ValidationException",
+                  "originalRequest": {
+                    "method": "DELETE",
+                    "header": [
+                      {
+                        "key": "X-Amz-Content-Sha256",
+                        "value": "<string>"
+                      },
+                      {
+                        "key": "X-Amz-Date",
+                        "value": "<string>"
+                      },
+                      {
+                        "key": "X-Amz-Algorithm",
+                        "value": "<string>"
+                      },
+                      {
+                        "key": "X-Amz-Credential",
+                        "value": "<string>"
+                      },
+                      {
+                        "key": "X-Amz-Security-Token",
+                        "value": "<string>"
+                      },
+                      {
+                        "key": "X-Amz-Signature",
+                        "value": "<string>"
+                      },
+                      {
+                        "key": "X-Amz-SignedHeaders",
+                        "value": "<string>"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: apikey",
+                        "key": "Authorization",
+                        "value": "<API Key>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/v1/repository?domain=vrjbtz&domain-owner=556179601684&repository=G.I_K22Td7DF9fR6rlxDH48AcTTGl#domain&repository",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "v1",
+                        "repository"
+                      ],
+                      "query": [
+                        {
+                          "description": "(Required)  The name of the domain that contains the repository to delete. ",
+                          "key": "domain",
+                          "value": "vrjbtz"
+                        },
+                        {
+                          "description": " The 12-digit account number of the Amazon Web Services account that owns the domain. It does not include dashes or spaces. ",
+                          "key": "domain-owner",
+                          "value": "556179601684"
+                        },
+                        {
+                          "description": "(Required)  The name of the repository to delete. ",
+                          "key": "repository",
+                          "value": "G.I_K22Td7DF9fR6rlxDH48AcTTGl"
+                        }
+                      ],
+                      "hash": "domain&repository"
+                    }
+                  },
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{}",
+                  "createdAt": "2026-07-28T10:09:45.000Z",
+                  "updatedAt": "2026-07-28T10:09:45.000Z",
+                  "uid": "35240-b288fca2-5c65-47f6-a411-ff3f8ab40774"
+                }
+              ],
+              "createdAt": "2026-07-28T10:09:45.000Z",
+              "updatedAt": "2026-07-28T10:09:45.000Z",
+              "uid": "35240-952fd0fd-17f0-448b-b48d-baaf4108e4c4"
+            },
+            {
+              "name": "Amazon CodeArtifact Describe Repository",
+              "id": "f764e6f2-86e9-438d-a33d-ebd70ce384aa",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "X-Amz-Content-Sha256",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "X-Amz-Date",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "X-Amz-Algorithm",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "X-Amz-Credential",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "X-Amz-Security-Token",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "X-Amz-Signature",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "X-Amz-SignedHeaders",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/v1/repository?domain=vrjbtz&domain-owner=556179601684&repository=G.I_K22Td7DF9fR6rlxDH48AcTTGl#domain&repository",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "v1",
+                    "repository"
+                  ],
+                  "query": [
+                    {
+                      "description": "(Required)  The name of the domain that contains the repository to describe. ",
+                      "key": "domain",
+                      "value": "vrjbtz"
+                    },
+                    {
+                      "description": " The 12-digit account number of the Amazon Web Services account that owns the domain. It does not include dashes or spaces. ",
+                      "key": "domain-owner",
+                      "value": "556179601684"
+                    },
+                    {
+                      "description": "(Required)  A string that specifies the name of the requested repository. ",
+                      "key": "repository",
+                      "value": "G.I_K22Td7DF9fR6rlxDH48AcTTGl"
+                    }
+                  ],
+                  "hash": "domain&repository"
+                },
+                "description": " Returns a <code>RepositoryDescription</code> object that contains detailed information about the requested repository. "
+              },
+              "response": [
+                {
+                  "id": "8433fede-83a9-42ef-9600-7458c52ecf70",
+                  "name": "Success",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "X-Amz-Content-Sha256",
+                        "value": "<string>"
+                      },
+                      {
+                        "key": "X-Amz-Date",
+                        "value": "<string>"
+                      },
+                      {
+                        "key": "X-Amz-Algorithm",
+                        "value": "<string>"
+                      },
+                      {
+                        "key": "X-Amz-Credential",
+                        "value": "<string>"
+                      },
+                      {
+                        "key": "X-Amz-Security-Token",
+                        "value": "<string>"
+                      },
+                      {
+                        "key": "X-Amz-Signature",
+                        "value": "<string>"
+                      },
+                      {
+                        "key": "X-Amz-SignedHeaders",
+                        "value": "<string>"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: apikey",
+                        "key": "Authorization",
+                        "value": "<API Key>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/v1/repository?domain=vrjbtz&domain-owner=556179601684&repository=G.I_K22Td7DF9fR6rlxDH48AcTTGl#domain&repository",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "v1",
+                        "repository"
+                      ],
+                      "query": [
+                        {
+                          "description": "(Required)  The name of the domain that contains the repository to describe. ",
+                          "key": "domain",
+                          "value": "vrjbtz"
+                        },
+                        {
+                          "description": " The 12-digit account number of the Amazon Web Services account that owns the domain. It does not include dashes or spaces. ",
+                          "key": "domain-owner",
+                          "value": "556179601684"
+                        },
+                        {
+                          "description": "(Required)  A string that specifies the name of the requested repository. ",
+                          "key": "repository",
+                          "value": "G.I_K22Td7DF9fR6rlxDH48AcTTGl"
+                        }
+                      ],
+                      "hash": "domain&repository"
+                    }
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"repository\": {\n    \"name\": \"SWfVLLzS4nyCzKM9hWvH4ATKDNcEZYm-uCr685kq0zqwYJztRdX6IbvamowNtQ6boVj50nBLv7zVMM28vR3ly8cGGl\",\n    \"administratorAccount\": \"469314347786\",\n    \"domainName\": \"l4dinogw5see5t\",\n    \"domainOwner\": \"605420209588\",\n    \"arn\": \"X{b5F\",\n    \"description\": \"P{C}}}}\",\n    \"upstreams\": [\n      {\n        \"repositoryName\": \"xQ36aZSo6_yw.ue-eoobrH4yf9BfjbH5eLF0iI3NFh2T.cMAQMzeMvbW9WT.zl2eCCtp_fUQkZhqMtWxVpL\"\n      },\n      {\n        \"repositoryName\": \"h.xPAvn9HhGr_jl-xK.CfTQcxeCO7hcvdd4yF_HKNLTj-pvx3s3bz1iwTOqsPc-bQ0dUDcxWTGFUdgFs-ntcSxAiJr-_DPsTDJ\"\n      }\n    ],\n    \"externalConnections\": [\n      {\n        \"externalConnectionName\": \"lzhyy\",\n        \"packageFormat\": \"generic\",\n        \"status\": \"Available\"\n      },\n      {\n        \"externalConnectionName\": \"jyMpbNob\",\n        \"packageFormat\": \"maven\",\n        \"status\": \"Available\"\n      }\n    ],\n    \"createdTime\": \"<dateTime>\"\n  }\n}",
+                  "createdAt": "2026-07-28T10:09:45.000Z",
+                  "updatedAt": "2026-07-28T10:09:45.000Z",
+                  "uid": "35240-8433fede-83a9-42ef-9600-7458c52ecf70"
+                },
+                {
+                  "id": "6ab39b62-d062-4e4c-b212-4e1adc9534f5",
+                  "name": "AccessDeniedException",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "X-Amz-Content-Sha256",
+                        "value": "<string>"
+                      },
+                      {
+                        "key": "X-Amz-Date",
+                        "value": "<string>"
+                      },
+                      {
+                        "key": "X-Amz-Algorithm",
+                        "value": "<string>"
+                      },
+                      {
+                        "key": "X-Amz-Credential",
+                        "value": "<string>"
+                      },
+                      {
+                        "key": "X-Amz-Security-Token",
+                        "value": "<string>"
+                      },
+                      {
+                        "key": "X-Amz-Signature",
+                        "value": "<string>"
+                      },
+                      {
+                        "key": "X-Amz-SignedHeaders",
+                        "value": "<string>"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: apikey",
+                        "key": "Authorization",
+                        "value": "<API Key>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/v1/repository?domain=vrjbtz&domain-owner=556179601684&repository=G.I_K22Td7DF9fR6rlxDH48AcTTGl#domain&repository",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "v1",
+                        "repository"
+                      ],
+                      "query": [
+                        {
+                          "description": "(Required)  The name of the domain that contains the repository to describe. ",
+                          "key": "domain",
+                          "value": "vrjbtz"
+                        },
+                        {
+                          "description": " The 12-digit account number of the Amazon Web Services account that owns the domain. It does not include dashes or spaces. ",
+                          "key": "domain-owner",
+                          "value": "556179601684"
+                        },
+                        {
+                          "description": "(Required)  A string that specifies the name of the requested repository. ",
+                          "key": "repository",
+                          "value": "G.I_K22Td7DF9fR6rlxDH48AcTTGl"
+                        }
+                      ],
+                      "hash": "domain&repository"
+                    }
+                  },
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{}",
+                  "createdAt": "2026-07-28T10:09:45.000Z",
+                  "updatedAt": "2026-07-28T10:09:45.000Z",
+                  "uid": "35240-6ab39b62-d062-4e4c-b212-4e1adc9534f5"
+                },
+                {
+                  "id": "51dd1c6a-7036-4950-845c-74944b74a87d",
+                  "name": "InternalServerException",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "X-Amz-Content-Sha256",
+                        "value": "<string>"
+                      },
+                      {
+                        "key": "X-Amz-Date",
+                        "value": "<string>"
+                      },
+                      {
+                        "key": "X-Amz-Algorithm",
+                        "value": "<string>"
+                      },
+                      {
+                        "key": "X-Amz-Credential",
+                        "value": "<string>"
+                      },
+                      {
+                        "key": "X-Amz-Security-Token",
+                        "value": "<string>"
+                      },
+                      {
+                        "key": "X-Amz-Signature",
+                        "value": "<string>"
+                      },
+                      {
+                        "key": "X-Amz-SignedHeaders",
+                        "value": "<string>"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: apikey",
+                        "key": "Authorization",
+                        "value": "<API Key>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/v1/repository?domain=vrjbtz&domain-owner=556179601684&repository=G.I_K22Td7DF9fR6rlxDH48AcTTGl#domain&repository",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "v1",
+                        "repository"
+                      ],
+                      "query": [
+                        {
+                          "description": "(Required)  The name of the domain that contains the repository to describe. ",
+                          "key": "domain",
+                          "value": "vrjbtz"
+                        },
+                        {
+                          "description": " The 12-digit account number of the Amazon Web Services account that owns the domain. It does not include dashes or spaces. ",
+                          "key": "domain-owner",
+                          "value": "556179601684"
+                        },
+                        {
+                          "description": "(Required)  A string that specifies the name of the requested repository. ",
+                          "key": "repository",
+                          "value": "G.I_K22Td7DF9fR6rlxDH48AcTTGl"
+                        }
+                      ],
+                      "hash": "domain&repository"
+                    }
+                  },
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{}",
+                  "createdAt": "2026-07-28T10:09:45.000Z",
+                  "updatedAt": "2026-07-28T10:09:45.000Z",
+                  "uid": "35240-51dd1c6a-7036-4950-845c-74944b74a87d"
+                },
+                {
+                  "id": "68b518b9-0b37-439a-80c3-5b3909fad2e2",
+                  "name": "ResourceNotFoundException",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "X-Amz-Content-Sha256",
+                        "value": "<string>"
+                      },
+                      {
+                        "key": "X-Amz-Date",
+                        "value": "<string>"
+                      },
+                      {
+                        "key": "X-Amz-Algorithm",
+                        "value": "<string>"
+                      },
+                      {
+                        "key": "X-Amz-Credential",
+                        "value": "<string>"
+                      },
+                      {
+                        "key": "X-Amz-Security-Token",
+                        "value": "<string>"
+                      },
+                      {
+                        "key": "X-Amz-Signature",
+                        "value": "<string>"
+                      },
+                      {
+                        "key": "X-Amz-SignedHeaders",
+                        "value": "<string>"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: apikey",
+                        "key": "Authorization",
+                        "value": "<API Key>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/v1/repository?domain=vrjbtz&domain-owner=556179601684&repository=G.I_K22Td7DF9fR6rlxDH48AcTTGl#domain&repository",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "v1",
+                        "repository"
+                      ],
+                      "query": [
+                        {
+                          "description": "(Required)  The name of the domain that contains the repository to describe. ",
+                          "key": "domain",
+                          "value": "vrjbtz"
+                        },
+                        {
+                          "description": " The 12-digit account number of the Amazon Web Services account that owns the domain. It does not include dashes or spaces. ",
+                          "key": "domain-owner",
+                          "value": "556179601684"
+                        },
+                        {
+                          "description": "(Required)  A string that specifies the name of the requested repository. ",
+                          "key": "repository",
+                          "value": "G.I_K22Td7DF9fR6rlxDH48AcTTGl"
+                        }
+                      ],
+                      "hash": "domain&repository"
+                    }
+                  },
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{}",
+                  "createdAt": "2026-07-28T10:09:45.000Z",
+                  "updatedAt": "2026-07-28T10:09:45.000Z",
+                  "uid": "35240-68b518b9-0b37-439a-80c3-5b3909fad2e2"
+                },
+                {
+                  "id": "11f384b9-fc05-4ef1-b928-24f182cbbf44",
+                  "name": "ThrottlingException",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "X-Amz-Content-Sha256",
+                        "value": "<string>"
+                      },
+                      {
+                        "key": "X-Amz-Date",
+                        "value": "<string>"
+                      },
+                      {
+                        "key": "X-Amz-Algorithm",
+                        "value": "<string>"
+                      },
+                      {
+                        "key": "X-Amz-Credential",
+                        "value": "<string>"
+                      },
+                      {
+                        "key": "X-Amz-Security-Token",
+                        "value": "<string>"
+                      },
+                      {
+                        "key": "X-Amz-Signature",
+                        "value": "<string>"
+                      },
+                      {
+                        "key": "X-Amz-SignedHeaders",
+                        "value": "<string>"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: apikey",
+                        "key": "Authorization",
+                        "value": "<API Key>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/v1/repository?domain=vrjbtz&domain-owner=556179601684&repository=G.I_K22Td7DF9fR6rlxDH48AcTTGl#domain&repository",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "v1",
+                        "repository"
+                      ],
+                      "query": [
+                        {
+                          "description": "(Required)  The name of the domain that contains the repository to describe. ",
+                          "key": "domain",
+                          "value": "vrjbtz"
+                        },
+                        {
+                          "description": " The 12-digit account number of the Amazon Web Services account that owns the domain. It does not include dashes or spaces. ",
+                          "key": "domain-owner",
+                          "value": "556179601684"
+                        },
+                        {
+                          "description": "(Required)  A string that specifies the name of the requested repository. ",
+                          "key": "repository",
+                          "value": "G.I_K22Td7DF9fR6rlxDH48AcTTGl"
+                        }
+                      ],
+                      "hash": "domain&repository"
+                    }
+                  },
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{}",
+                  "createdAt": "2026-07-28T10:09:45.000Z",
+                  "updatedAt": "2026-07-28T10:09:45.000Z",
+                  "uid": "35240-11f384b9-fc05-4ef1-b928-24f182cbbf44"
+                },
+                {
+                  "id": "d24da497-43af-4584-aa2f-43d31311f4d7",
+                  "name": "ValidationException",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "X-Amz-Content-Sha256",
+                        "value": "<string>"
+                      },
+                      {
+                        "key": "X-Amz-Date",
+                        "value": "<string>"
+                      },
+                      {
+                        "key": "X-Amz-Algorithm",
+                        "value": "<string>"
+                      },
+                      {
+                        "key": "X-Amz-Credential",
+                        "value": "<string>"
+                      },
+                      {
+                        "key": "X-Amz-Security-Token",
+                        "value": "<string>"
+                      },
+                      {
+                        "key": "X-Amz-Signature",
+                        "value": "<string>"
+                      },
+                      {
+                        "key": "X-Amz-SignedHeaders",
+                        "value": "<string>"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: apikey",
+                        "key": "Authorization",
+                        "value": "<API Key>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/v1/repository?domain=vrjbtz&domain-owner=556179601684&repository=G.I_K22Td7DF9fR6rlxDH48AcTTGl#domain&repository",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "v1",
+                        "repository"
+                      ],
+                      "query": [
+                        {
+                          "description": "(Required)  The name of the domain that contains the repository to describe. ",
+                          "key": "domain",
+                          "value": "vrjbtz"
+                        },
+                        {
+                          "description": " The 12-digit account number of the Amazon Web Services account that owns the domain. It does not include dashes or spaces. ",
+                          "key": "domain-owner",
+                          "value": "556179601684"
+                        },
+                        {
+                          "description": "(Required)  A string that specifies the name of the requested repository. ",
+                          "key": "repository",
+                          "value": "G.I_K22Td7DF9fR6rlxDH48AcTTGl"
+                        }
+                      ],
+                      "hash": "domain&repository"
+                    }
+                  },
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{}",
+                  "createdAt": "2026-07-28T10:09:45.000Z",
+                  "updatedAt": "2026-07-28T10:09:45.000Z",
+                  "uid": "35240-d24da497-43af-4584-aa2f-43d31311f4d7"
+                }
+              ],
+              "createdAt": "2026-07-28T10:09:45.000Z",
+              "updatedAt": "2026-07-28T10:09:45.000Z",
+              "uid": "35240-f764e6f2-86e9-438d-a33d-ebd70ce384aa"
+            },
+            {
+              "name": "Amazon CodeArtifact Update Repository",
+              "id": "1c640784-0825-49c9-b825-1545a8e35ce7",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "method": "PUT",
+                "header": [
+                  {
+                    "key": "X-Amz-Content-Sha256",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "X-Amz-Date",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "X-Amz-Algorithm",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "X-Amz-Credential",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "X-Amz-Security-Token",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "X-Amz-Signature",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "X-Amz-SignedHeaders",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"description\": \"P{C}}}}}}}\",\n  \"upstreams\": [\n    {\n      \"repositoryName\": \"Z0Gx.y5hanMDNYbmAvhd8m2ql2.9Areh8MpaB\"\n    },\n    {\n      \"repositoryName\": \"BtAInsJXoA.7GHEkr62sYWoG5T3Zp3VX3.vKcSLAmS3u2_bb8xUtAjuc0UjMAT3av\"\n    }\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/v1/repository?domain=vrjbtz&domain-owner=556179601684&repository=G.I_K22Td7DF9fR6rlxDH48AcTTGl#domain&repository",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "v1",
+                    "repository"
+                  ],
+                  "query": [
+                    {
+                      "description": "(Required)  The name of the domain associated with the repository to update. ",
+                      "key": "domain",
+                      "value": "vrjbtz"
+                    },
+                    {
+                      "description": " The 12-digit account number of the Amazon Web Services account that owns the domain. It does not include dashes or spaces. ",
+                      "key": "domain-owner",
+                      "value": "556179601684"
+                    },
+                    {
+                      "description": "(Required)  The name of the repository to update. ",
+                      "key": "repository",
+                      "value": "G.I_K22Td7DF9fR6rlxDH48AcTTGl"
+                    }
+                  ],
+                  "hash": "domain&repository"
+                },
+                "description": " Update the properties of a repository. "
+              },
+              "response": [
+                {
+                  "id": "709bb6e9-237d-473b-b583-017372a80ebb",
+                  "name": "Success",
+                  "originalRequest": {
+                    "method": "PUT",
+                    "header": [
+                      {
+                        "key": "X-Amz-Content-Sha256",
+                        "value": "<string>"
+                      },
+                      {
+                        "key": "X-Amz-Date",
+                        "value": "<string>"
+                      },
+                      {
+                        "key": "X-Amz-Algorithm",
+                        "value": "<string>"
+                      },
+                      {
+                        "key": "X-Amz-Credential",
+                        "value": "<string>"
+                      },
+                      {
+                        "key": "X-Amz-Security-Token",
+                        "value": "<string>"
+                      },
+                      {
+                        "key": "X-Amz-Signature",
+                        "value": "<string>"
+                      },
+                      {
+                        "key": "X-Amz-SignedHeaders",
+                        "value": "<string>"
+                      },
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: apikey",
+                        "key": "Authorization",
+                        "value": "<API Key>"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"description\": \"P{C}}}}}}}\",\n  \"upstreams\": [\n    {\n      \"repositoryName\": \"Z0Gx.y5hanMDNYbmAvhd8m2ql2.9Areh8MpaB\"\n    },\n    {\n      \"repositoryName\": \"BtAInsJXoA.7GHEkr62sYWoG5T3Zp3VX3.vKcSLAmS3u2_bb8xUtAjuc0UjMAT3av\"\n    }\n  ]\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/v1/repository?domain=vrjbtz&domain-owner=556179601684&repository=G.I_K22Td7DF9fR6rlxDH48AcTTGl#domain&repository",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "v1",
+                        "repository"
+                      ],
+                      "query": [
+                        {
+                          "description": "(Required)  The name of the domain associated with the repository to update. ",
+                          "key": "domain",
+                          "value": "vrjbtz"
+                        },
+                        {
+                          "description": " The 12-digit account number of the Amazon Web Services account that owns the domain. It does not include dashes or spaces. ",
+                          "key": "domain-owner",
+                          "value": "556179601684"
+                        },
+                        {
+                          "description": "(Required)  The name of the repository to update. ",
+                          "key": "repository",
+                          "value": "G.I_K22Td7DF9fR6rlxDH48AcTTGl"
+                        }
+                      ],
+                      "hash": "domain&repository"
+                    }
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"repository\": {\n    \"name\": \"SWfVLLzS4nyCzKM9hWvH4ATKDNcEZYm-uCr685kq0zqwYJztRdX6IbvamowNtQ6boVj50nBLv7zVMM28vR3ly8cGGl\",\n    \"administratorAccount\": \"469314347786\",\n    \"domainName\": \"l4dinogw5see5t\",\n    \"domainOwner\": \"605420209588\",\n    \"arn\": \"X{b5F\",\n    \"description\": \"P{C}}}}\",\n    \"upstreams\": [\n      {\n        \"repositoryName\": \"xQ36aZSo6_yw.ue-eoobrH4yf9BfjbH5eLF0iI3NFh2T.cMAQMzeMvbW9WT.zl2eCCtp_fUQkZhqMtWxVpL\"\n      },\n      {\n        \"repositoryName\": \"h.xPAvn9HhGr_jl-xK.CfTQcxeCO7hcvdd4yF_HKNLTj-pvx3s3bz1iwTOqsPc-bQ0dUDcxWTGFUdgFs-ntcSxAiJr-_DPsTDJ\"\n      }\n    ],\n    \"externalConnections\": [\n      {\n        \"externalConnectionName\": \"lzhyy\",\n        \"packageFormat\": \"generic\",\n        \"status\": \"Available\"\n      },\n      {\n        \"externalConnectionName\": \"jyMpbNob\",\n        \"packageFormat\": \"maven\",\n        \"status\": \"Available\"\n      }\n    ],\n    \"createdTime\": \"<dateTime>\"\n  }\n}",
+                  "createdAt": "2026-07-28T10:09:45.000Z",
+                  "updatedAt": "2026-07-28T10:09:45.000Z",
+                  "uid": "35240-709bb6e9-237d-473b-b583-017372a80ebb"
+                },
+                {
+                  "id": "9d5cc1a1-819c-418c-8c00-83d4b090f3ea",
+                  "name": "AccessDeniedException",
+                  "originalRequest": {
+                    "method": "PUT",
+                    "header": [
+                      {
+                        "key": "X-Amz-Content-Sha256",
+                        "value": "<string>"
+                      },
+                      {
+                        "key": "X-Amz-Date",
+                        "value": "<string>"
+                      },
+                      {
+                        "key": "X-Amz-Algorithm",
+                        "value": "<string>"
+                      },
+                      {
+                        "key": "X-Amz-Credential",
+                        "value": "<string>"
+                      },
+                      {
+                        "key": "X-Amz-Security-Token",
+                        "value": "<string>"
+                      },
+                      {
+                        "key": "X-Amz-Signature",
+                        "value": "<string>"
+                      },
+                      {
+                        "key": "X-Amz-SignedHeaders",
+                        "value": "<string>"
+                      },
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: apikey",
+                        "key": "Authorization",
+                        "value": "<API Key>"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"description\": \"P{C}}}}}}}\",\n  \"upstreams\": [\n    {\n      \"repositoryName\": \"Z0Gx.y5hanMDNYbmAvhd8m2ql2.9Areh8MpaB\"\n    },\n    {\n      \"repositoryName\": \"BtAInsJXoA.7GHEkr62sYWoG5T3Zp3VX3.vKcSLAmS3u2_bb8xUtAjuc0UjMAT3av\"\n    }\n  ]\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/v1/repository?domain=vrjbtz&domain-owner=556179601684&repository=G.I_K22Td7DF9fR6rlxDH48AcTTGl#domain&repository",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "v1",
+                        "repository"
+                      ],
+                      "query": [
+                        {
+                          "description": "(Required)  The name of the domain associated with the repository to update. ",
+                          "key": "domain",
+                          "value": "vrjbtz"
+                        },
+                        {
+                          "description": " The 12-digit account number of the Amazon Web Services account that owns the domain. It does not include dashes or spaces. ",
+                          "key": "domain-owner",
+                          "value": "556179601684"
+                        },
+                        {
+                          "description": "(Required)  The name of the repository to update. ",
+                          "key": "repository",
+                          "value": "G.I_K22Td7DF9fR6rlxDH48AcTTGl"
+                        }
+                      ],
+                      "hash": "domain&repository"
+                    }
+                  },
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{}",
+                  "createdAt": "2026-07-28T10:09:45.000Z",
+                  "updatedAt": "2026-07-28T10:09:45.000Z",
+                  "uid": "35240-9d5cc1a1-819c-418c-8c00-83d4b090f3ea"
+                },
+                {
+                  "id": "eb3407a8-60d4-487c-aa3d-aa8e86077de6",
+                  "name": "ConflictException",
+                  "originalRequest": {
+                    "method": "PUT",
+                    "header": [
+                      {
+                        "key": "X-Amz-Content-Sha256",
+                        "value": "<string>"
+                      },
+                      {
+                        "key": "X-Amz-Date",
+                        "value": "<string>"
+                      },
+                      {
+                        "key": "X-Amz-Algorithm",
+                        "value": "<string>"
+                      },
+                      {
+                        "key": "X-Amz-Credential",
+                        "value": "<string>"
+                      },
+                      {
+                        "key": "X-Amz-Security-Token",
+                        "value": "<string>"
+                      },
+                      {
+                        "key": "X-Amz-Signature",
+                        "value": "<string>"
+                      },
+                      {
+                        "key": "X-Amz-SignedHeaders",
+                        "value": "<string>"
+                      },
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: apikey",
+                        "key": "Authorization",
+                        "value": "<API Key>"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"description\": \"P{C}}}}}}}\",\n  \"upstreams\": [\n    {\n      \"repositoryName\": \"Z0Gx.y5hanMDNYbmAvhd8m2ql2.9Areh8MpaB\"\n    },\n    {\n      \"repositoryName\": \"BtAInsJXoA.7GHEkr62sYWoG5T3Zp3VX3.vKcSLAmS3u2_bb8xUtAjuc0UjMAT3av\"\n    }\n  ]\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/v1/repository?domain=vrjbtz&domain-owner=556179601684&repository=G.I_K22Td7DF9fR6rlxDH48AcTTGl#domain&repository",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "v1",
+                        "repository"
+                      ],
+                      "query": [
+                        {
+                          "description": "(Required)  The name of the domain associated with the repository to update. ",
+                          "key": "domain",
+                          "value": "vrjbtz"
+                        },
+                        {
+                          "description": " The 12-digit account number of the Amazon Web Services account that owns the domain. It does not include dashes or spaces. ",
+                          "key": "domain-owner",
+                          "value": "556179601684"
+                        },
+                        {
+                          "description": "(Required)  The name of the repository to update. ",
+                          "key": "repository",
+                          "value": "G.I_K22Td7DF9fR6rlxDH48AcTTGl"
+                        }
+                      ],
+                      "hash": "domain&repository"
+                    }
+                  },
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{}",
+                  "createdAt": "2026-07-28T10:09:45.000Z",
+                  "updatedAt": "2026-07-28T10:09:45.000Z",
+                  "uid": "35240-eb3407a8-60d4-487c-aa3d-aa8e86077de6"
+                },
+                {
+                  "id": "04443e73-a3f1-4cc1-86c5-4dcd9daf4693",
+                  "name": "InternalServerException",
+                  "originalRequest": {
+                    "method": "PUT",
+                    "header": [
+                      {
+                        "key": "X-Amz-Content-Sha256",
+                        "value": "<string>"
+                      },
+                      {
+                        "key": "X-Amz-Date",
+                        "value": "<string>"
+                      },
+                      {
+                        "key": "X-Amz-Algorithm",
+                        "value": "<string>"
+                      },
+                      {
+                        "key": "X-Amz-Credential",
+                        "value": "<string>"
+                      },
+                      {
+                        "key": "X-Amz-Security-Token",
+                        "value": "<string>"
+                      },
+                      {
+                        "key": "X-Amz-Signature",
+                        "value": "<string>"
+                      },
+                      {
+                        "key": "X-Amz-SignedHeaders",
+                        "value": "<string>"
+                      },
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: apikey",
+                        "key": "Authorization",
+                        "value": "<API Key>"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"description\": \"P{C}}}}}}}\",\n  \"upstreams\": [\n    {\n      \"repositoryName\": \"Z0Gx.y5hanMDNYbmAvhd8m2ql2.9Areh8MpaB\"\n    },\n    {\n      \"repositoryName\": \"BtAInsJXoA.7GHEkr62sYWoG5T3Zp3VX3.vKcSLAmS3u2_bb8xUtAjuc0UjMAT3av\"\n    }\n  ]\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/v1/repository?domain=vrjbtz&domain-owner=556179601684&repository=G.I_K22Td7DF9fR6rlxDH48AcTTGl#domain&repository",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "v1",
+                        "repository"
+                      ],
+                      "query": [
+                        {
+                          "description": "(Required)  The name of the domain associated with the repository to update. ",
+                          "key": "domain",
+                          "value": "vrjbtz"
+                        },
+                        {
+                          "description": " The 12-digit account number of the Amazon Web Services account that owns the domain. It does not include dashes or spaces. ",
+                          "key": "domain-owner",
+                          "value": "556179601684"
+                        },
+                        {
+                          "description": "(Required)  The name of the repository to update. ",
+                          "key": "repository",
+                          "value": "G.I_K22Td7DF9fR6rlxDH48AcTTGl"
+                        }
+                      ],
+                      "hash": "domain&repository"
+                    }
+                  },
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{}",
+                  "createdAt": "2026-07-28T10:09:45.000Z",
+                  "updatedAt": "2026-07-28T10:09:45.000Z",
+                  "uid": "35240-04443e73-a3f1-4cc1-86c5-4dcd9daf4693"
+                },
+                {
+                  "id": "9ef2232c-a5ac-4f18-a174-98a0ad35a406",
+                  "name": "ResourceNotFoundException",
+                  "originalRequest": {
+                    "method": "PUT",
+                    "header": [
+                      {
+                        "key": "X-Amz-Content-Sha256",
+                        "value": "<string>"
+                      },
+                      {
+                        "key": "X-Amz-Date",
+                        "value": "<string>"
+                      },
+                      {
+                        "key": "X-Amz-Algorithm",
+                        "value": "<string>"
+                      },
+                      {
+                        "key": "X-Amz-Credential",
+                        "value": "<string>"
+                      },
+                      {
+                        "key": "X-Amz-Security-Token",
+                        "value": "<string>"
+                      },
+                      {
+                        "key": "X-Amz-Signature",
+                        "value": "<string>"
+                      },
+                      {
+                        "key": "X-Amz-SignedHeaders",
+                        "value": "<string>"
+                      },
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: apikey",
+                        "key": "Authorization",
+                        "value": "<API Key>"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"description\": \"P{C}}}}}}}\",\n  \"upstreams\": [\n    {\n      \"repositoryName\": \"Z0Gx.y5hanMDNYbmAvhd8m2ql2.9Areh8MpaB\"\n    },\n    {\n      \"repositoryName\": \"BtAInsJXoA.7GHEkr62sYWoG5T3Zp3VX3.vKcSLAmS3u2_bb8xUtAjuc0UjMAT3av\"\n    }\n  ]\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/v1/repository?domain=vrjbtz&domain-owner=556179601684&repository=G.I_K22Td7DF9fR6rlxDH48AcTTGl#domain&repository",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "v1",
+                        "repository"
+                      ],
+                      "query": [
+                        {
+                          "description": "(Required)  The name of the domain associated with the repository to update. ",
+                          "key": "domain",
+                          "value": "vrjbtz"
+                        },
+                        {
+                          "description": " The 12-digit account number of the Amazon Web Services account that owns the domain. It does not include dashes or spaces. ",
+                          "key": "domain-owner",
+                          "value": "556179601684"
+                        },
+                        {
+                          "description": "(Required)  The name of the repository to update. ",
+                          "key": "repository",
+                          "value": "G.I_K22Td7DF9fR6rlxDH48AcTTGl"
+                        }
+                      ],
+                      "hash": "domain&repository"
+                    }
+                  },
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{}",
+                  "createdAt": "2026-07-28T10:09:45.000Z",
+                  "updatedAt": "2026-07-28T10:09:45.000Z",
+                  "uid": "35240-9ef2232c-a5ac-4f18-a174-98a0ad35a406"
+                },
+                {
+                  "id": "599db0be-64ee-401e-9680-d2a09848b833",
+                  "name": "ServiceQuotaExceededException",
+                  "originalRequest": {
+                    "method": "PUT",
+                    "header": [
+                      {
+                        "key": "X-Amz-Content-Sha256",
+                        "value": "<string>"
+                      },
+                      {
+                        "key": "X-Amz-Date",
+                        "value": "<string>"
+                      },
+                      {
+                        "key": "X-Amz-Algorithm",
+                        "value": "<string>"
+                      },
+                      {
+                        "key": "X-Amz-Credential",
+                        "value": "<string>"
+                      },
+                      {
+                        "key": "X-Amz-Security-Token",
+                        "value": "<string>"
+                      },
+                      {
+                        "key": "X-Amz-Signature",
+                        "value": "<string>"
+                      },
+                      {
+                        "key": "X-Amz-SignedHeaders",
+                        "value": "<string>"
+                      },
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: apikey",
+                        "key": "Authorization",
+                        "value": "<API Key>"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"description\": \"P{C}}}}}}}\",\n  \"upstreams\": [\n    {\n      \"repositoryName\": \"Z0Gx.y5hanMDNYbmAvhd8m2ql2.9Areh8MpaB\"\n    },\n    {\n      \"repositoryName\": \"BtAInsJXoA.7GHEkr62sYWoG5T3Zp3VX3.vKcSLAmS3u2_bb8xUtAjuc0UjMAT3av\"\n    }\n  ]\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/v1/repository?domain=vrjbtz&domain-owner=556179601684&repository=G.I_K22Td7DF9fR6rlxDH48AcTTGl#domain&repository",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "v1",
+                        "repository"
+                      ],
+                      "query": [
+                        {
+                          "description": "(Required)  The name of the domain associated with the repository to update. ",
+                          "key": "domain",
+                          "value": "vrjbtz"
+                        },
+                        {
+                          "description": " The 12-digit account number of the Amazon Web Services account that owns the domain. It does not include dashes or spaces. ",
+                          "key": "domain-owner",
+                          "value": "556179601684"
+                        },
+                        {
+                          "description": "(Required)  The name of the repository to update. ",
+                          "key": "repository",
+                          "value": "G.I_K22Td7DF9fR6rlxDH48AcTTGl"
+                        }
+                      ],
+                      "hash": "domain&repository"
+                    }
+                  },
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{}",
+                  "createdAt": "2026-07-28T10:09:45.000Z",
+                  "updatedAt": "2026-07-28T10:09:45.000Z",
+                  "uid": "35240-599db0be-64ee-401e-9680-d2a09848b833"
+                },
+                {
+                  "id": "cfca1b63-0d8c-496a-b5f1-a2a9d22c04ca",
+                  "name": "ThrottlingException",
+                  "originalRequest": {
+                    "method": "PUT",
+                    "header": [
+                      {
+                        "key": "X-Amz-Content-Sha256",
+                        "value": "<string>"
+                      },
+                      {
+                        "key": "X-Amz-Date",
+                        "value": "<string>"
+                      },
+                      {
+                        "key": "X-Amz-Algorithm",
+                        "value": "<string>"
+                      },
+                      {
+                        "key": "X-Amz-Credential",
+                        "value": "<string>"
+                      },
+                      {
+                        "key": "X-Amz-Security-Token",
+                        "value": "<string>"
+                      },
+                      {
+                        "key": "X-Amz-Signature",
+                        "value": "<string>"
+                      },
+                      {
+                        "key": "X-Amz-SignedHeaders",
+                        "value": "<string>"
+                      },
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: apikey",
+                        "key": "Authorization",
+                        "value": "<API Key>"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"description\": \"P{C}}}}}}}\",\n  \"upstreams\": [\n    {\n      \"repositoryName\": \"Z0Gx.y5hanMDNYbmAvhd8m2ql2.9Areh8MpaB\"\n    },\n    {\n      \"repositoryName\": \"BtAInsJXoA.7GHEkr62sYWoG5T3Zp3VX3.vKcSLAmS3u2_bb8xUtAjuc0UjMAT3av\"\n    }\n  ]\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/v1/repository?domain=vrjbtz&domain-owner=556179601684&repository=G.I_K22Td7DF9fR6rlxDH48AcTTGl#domain&repository",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "v1",
+                        "repository"
+                      ],
+                      "query": [
+                        {
+                          "description": "(Required)  The name of the domain associated with the repository to update. ",
+                          "key": "domain",
+                          "value": "vrjbtz"
+                        },
+                        {
+                          "description": " The 12-digit account number of the Amazon Web Services account that owns the domain. It does not include dashes or spaces. ",
+                          "key": "domain-owner",
+                          "value": "556179601684"
+                        },
+                        {
+                          "description": "(Required)  The name of the repository to update. ",
+                          "key": "repository",
+                          "value": "G.I_K22Td7DF9fR6rlxDH48AcTTGl"
+                        }
+                      ],
+                      "hash": "domain&repository"
+                    }
+                  },
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{}",
+                  "createdAt": "2026-07-28T10:09:45.000Z",
+                  "updatedAt": "2026-07-28T10:09:45.000Z",
+                  "uid": "35240-cfca1b63-0d8c-496a-b5f1-a2a9d22c04ca"
+                },
+                {
+                  "id": "d3be2d6b-09cb-4efe-b3ca-e403387ebdbd",
+                  "name": "ValidationException",
+                  "originalRequest": {
+                    "method": "PUT",
+                    "header": [
+                      {
+                        "key": "X-Amz-Content-Sha256",
+                        "value": "<string>"
+                      },
+                      {
+                        "key": "X-Amz-Date",
+                        "value": "<string>"
+                      },
+                      {
+                        "key": "X-Amz-Algorithm",
+                        "value": "<string>"
+                      },
+                      {
+                        "key": "X-Amz-Credential",
+                        "value": "<string>"
+                      },
+                      {
+                        "key": "X-Amz-Security-Token",
+                        "value": "<string>"
+                      },
+                      {
+                        "key": "X-Amz-Signature",
+                        "value": "<string>"
+                      },
+                      {
+                        "key": "X-Amz-SignedHeaders",
+                        "value": "<string>"
+                      },
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: apikey",
+                        "key": "Authorization",
+                        "value": "<API Key>"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"description\": \"P{C}}}}}}}\",\n  \"upstreams\": [\n    {\n      \"repositoryName\": \"Z0Gx.y5hanMDNYbmAvhd8m2ql2.9Areh8MpaB\"\n    },\n    {\n      \"repositoryName\": \"BtAInsJXoA.7GHEkr62sYWoG5T3Zp3VX3.vKcSLAmS3u2_bb8xUtAjuc0UjMAT3av\"\n    }\n  ]\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/v1/repository?domain=vrjbtz&domain-owner=556179601684&repository=G.I_K22Td7DF9fR6rlxDH48AcTTGl#domain&repository",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "v1",
+                        "repository"
+                      ],
+                      "query": [
+                        {
+                          "description": "(Required)  The name of the domain associated with the repository to update. ",
+                          "key": "domain",
+                          "value": "vrjbtz"
+                        },
+                        {
+                          "description": " The 12-digit account number of the Amazon Web Services account that owns the domain. It does not include dashes or spaces. ",
+                          "key": "domain-owner",
+                          "value": "556179601684"
+                        },
+                        {
+                          "description": "(Required)  The name of the repository to update. ",
+                          "key": "repository",
+                          "value": "G.I_K22Td7DF9fR6rlxDH48AcTTGl"
+                        }
+                      ],
+                      "hash": "domain&repository"
+                    }
+                  },
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{}",
+                  "createdAt": "2026-07-28T10:09:45.000Z",
+                  "updatedAt": "2026-07-28T10:09:45.000Z",
+                  "uid": "35240-d3be2d6b-09cb-4efe-b3ca-e403387ebdbd"
+                }
+              ],
+              "createdAt": "2026-07-28T10:09:45.000Z",
+              "updatedAt": "2026-07-28T10:09:45.000Z",
+              "uid": "35240-1c640784-0825-49c9-b825-1545a8e35ce7"
+            }
+          ],
+          "id": "a1dd6f31-4aab-4855-8186-77937ae842d6",
+          "createdAt": "2026-07-28T10:09:45.000Z",
+          "updatedAt": "2026-07-28T10:09:45.000Z",
+          "uid": "35240-a1dd6f31-4aab-4855-8186-77937ae842d6"
+        }
+      ],
+      "id": "8254ff30-a952-4ae7-a897-477b054e94c4",
+      "createdAt": "2026-07-28T10:09:45.000Z",
+      "updatedAt": "2026-07-28T10:09:45.000Z",
+      "uid": "35240-8254ff30-a952-4ae7-a897-477b054e94c4"
+    }
+  ],
+  "auth": {
+    "type": "apikey",
+    "apikey": [
+      {
+        "key": "key",
+        "value": "Authorization",
+        "type": "string"
+      },
+      {
+        "key": "value",
+        "value": "{{apiKey}}",
+        "type": "string"
+      },
+      {
+        "key": "in",
+        "value": "header",
+        "type": "string"
+      }
+    ]
+  },
+  "variable": [
+    {
+      "key": "region",
+      "value": "us-east-1"
+    },
+    {
+      "key": "baseUrl",
+      "value": "http://codeartifact.{{region}}.amazonaws.com"
+    }
+  ]
+}

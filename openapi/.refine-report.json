@@ -1,0 +1,38 @@
+{
+  "provider": "amazon-codeartifact",
+  "sources": [
+    "amazon-codeartifact-authorization-token-domain-api-openapi.yml",
+    "amazon-codeartifact-domain-api-openapi.yml",
+    "amazon-codeartifact-domain-domain-api-openapi.yml",
+    "amazon-codeartifact-domains-api-openapi.yml",
+    "amazon-codeartifact-package-api-openapi.yml",
+    "amazon-codeartifact-package-domain-repository-format-package-api-openapi.yml",
+    "amazon-codeartifact-packages-domain-repository-api-openapi.yml",
+    "amazon-codeartifact-repositories-api-openapi.yml",
+    "amazon-codeartifact-repository-api-openapi.yml",
+    "amazon-codeartifact-repository-domain-repository-api-openapi.yml",
+    "amazon-codeartifact-tag-resourcearn-api-openapi.yml",
+    "amazon-codeartifact-tags-resourcearn-api-openapi.yml",
+    "amazon-codeartifact-untag-resourcearn-api-openapi.yml"
+  ],
+  "outputs": [
+    "amazon-codeartifact-authorization-token-domain-api-openapi.yml",
+    "amazon-codeartifact-domain-api-openapi.yml",
+    "amazon-codeartifact-domain-domain-api-openapi.yml",
+    "amazon-codeartifact-domains-api-openapi.yml",
+    "amazon-codeartifact-package-api-openapi.yml",
+    "amazon-codeartifact-package-domain-repository-format-package-api-openapi.yml",
+    "amazon-codeartifact-packages-domain-repository-api-openapi.yml",
+    "amazon-codeartifact-repositories-api-openapi.yml",
+    "amazon-codeartifact-repository-api-openapi.yml",
+    "amazon-codeartifact-repository-domain-repository-api-openapi.yml",
+    "amazon-codeartifact-tag-resourcearn-api-openapi.yml",
+    "amazon-codeartifact-tags-resourcearn-api-openapi.yml",
+    "amazon-codeartifact-untag-resourcearn-api-openapi.yml"
+  ],
+  "archived": [],
+  "errors": [],
+  "warnings": [],
+  "notes": [],
+  "skipped": []
+}

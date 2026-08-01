@@ -1,0 +1,2008 @@
+{
+  "info": {
+    "_postman_id": "d8f0a123-080e-4965-b5c5-e3658d6e504c",
+    "name": "CodeArtifact Authorization Token#domain Domain#domain API",
+    "description": "<p> CodeArtifact is a fully managed artifact repository compatible with language-native package managers and build tools such as npm, Apache Maven, pip, and dotnet. You can use CodeArtifact to share packages with development teams and pull packages. Packages can be pulled from both public and CodeArtifact repositories. You can also create an upstream relationship between a CodeArtifact repository and another repository, which effectively merges their contents from the point of view of a package manager client. </p> <p> <b>CodeArtifact Components</b> </p> <p>Use the information in this guide to help you work with the following CodeArtifact components:</p> <ul> <li> <p> <b>Repository</b>: A CodeArtifact repository contains a set of <a href=\"https://docs.aws.amazon.com/codeartifact/latest/ug/welcome.html#welcome-concepts-package-version\">package versions</a>, each of which maps to a set of assets, or files. Repositories are polyglot, so a single repository can contain packages of any supported type. Each repository exposes endpoints for fetching and publishing packages using tools like the <b> <code>npm</code> </b> CLI, the Maven CLI (<b> <code>mvn</code> </b>), Python CLIs (<b> <code>pip</code> </b> and <code>twine</code>), and NuGet CLIs (<code>nuget</code> and <code>dotnet</code>).</p> </li> <li> <p> <b>Domain</b>: Repositories are aggregated into a higher-level entity known as a <i>domain</i>. All package assets and metadata are stored in the domain, but are consumed through repositories. A given package asset, such as a Maven JAR file, is stored once per domain, no matter how many repositories it's present in. All of the assets and metadata in a domain are encrypted with the same customer master key (CMK) stored in Key Management Service (KMS).</p> <p>Each repository is a member of a single domain and can't be moved to a different domain.</p> <p>The domain allows organizational policy to be applied across multiple repositories, such as which accounts can access repositories in the domain, and which public repositories can be used as sources of packages.</p> <p>Although an organization can have multiple domains, we recommend a single production domain that contains all published artifacts so that teams can find and share packages across their organization.</p> </li> <li> <p> <b>Package</b>: A <i>package</i> is a bundle of software and the metadata required to resolve dependencies and install the software. CodeArtifact supports <a href=\"https://docs.aws.amazon.com/codeartifact/latest/ug/using-npm.html\">npm</a>, <a href=\"https://docs.aws.amazon.com/codeartifact/latest/ug/using-python.html\">PyPI</a>, <a href=\"https://docs.aws.amazon.com/codeartifact/latest/ug/using-maven\">Maven</a>, and <a href=\"https://docs.aws.amazon.com/codeartifact/latest/ug/using-nuget\">NuGet</a> package formats.</p> <p>In CodeArtifact, a package consists of:</p> <ul> <li> <p>A <i>name</i> (for example, <code>webpack</code> is the name of a popular npm package)</p> </li> <li> <p>An optional namespace (for example, <code>@types</code> in <code>@types/node</code>)</p> </li> <li> <p>A set of versions (for example, <code>1.0.0</code>, <code>1.0.1</code>, <code>1.0.2</code>, etc.)</p> </li> <li> <p> Package-level metadata (for example, npm tags)</p> </li> </ul> </li> <li> <p> <b>Package version</b>: A version of a package, such as <code>@types/node 12.6.9</code>. The version number format and semantics vary for different package formats. For example, npm package versions must conform to the <a href=\"https://semver.org/\">Semantic Versioning specification</a>. In CodeArtifact, a package version consists of the version identifier, metadata at the package version level, and a set of assets.</p> </li> <li> <p> <b>Upstream repository</b>: One repository is <i>upstream</i> of another when the package versions in it can be accessed from the repository endpoint of the downstream repository, effectively merging the contents of the two repositories from the point of view of a client. CodeArtifact allows creating an upstream relationship between two repositories.</p> </li> <li> <p> <b>Asset</b>: An individual file stored in CodeArtifact associated with a package version, such as an npm <code>.tgz</code> file or Maven POM and JAR files.</p> </li> </ul> <p>CodeArtifact supports these operations:</p> <ul> <li> <p> <code>AssociateExternalConnection</code>: Adds an existing external connection to a repository. </p> </li> <li> <p> <code>CopyPackageVersions</code>: Copies package versions from one repository to another repository in the same domain.</p> </li> <li> <p> <code>CreateDomain</code>: Creates a domain</p> </li> <li> <p> <code>CreateRepository</code>: Creates a CodeArtifact repository in a domain. </p> </li> <li> <p> <code>DeleteDomain</code>: Deletes a domain. You cannot delete a domain that contains repositories. </p> </li> <li> <p> <code>DeleteDomainPermissionsPolicy</code>: Deletes the resource policy that is set on a domain.</p> </li> <li> <p> <code>DeletePackage</code>: Deletes a package and all associated package versions.</p> </li> <li> <p> <code>DeletePackageVersions</code>: Deletes versions of a package. After a package has been deleted, it can be republished, but its assets and metadata cannot be restored because they have been permanently removed from storage.</p> </li> <li> <p> <code>DeleteRepository</code>: Deletes a repository. </p> </li> <li> <p> <code>DeleteRepositoryPermissionsPolicy</code>: Deletes the resource policy that is set on a repository.</p> </li> <li> <p> <code>DescribeDomain</code>: Returns a <code>DomainDescription</code> object that contains information about the requested domain.</p> </li> <li> <p> <code>DescribePackage</code>: Returns a <a href=\"https://docs.aws.amazon.com/codeartifact/latest/APIReference/API_PackageDescription.html\">PackageDescription</a> object that contains details about a package. </p> </li> <li> <p> <code>DescribePackageVersion</code>: Returns a <a href=\"https://docs.aws.amazon.com/codeartifact/latest/APIReference/API_PackageVersionDescription.html\">PackageVersionDescription</a> object that contains details about a package version. </p> </li> <li> <p> <code>DescribeRepository</code>: Returns a <code>RepositoryDescription</code> object that contains detailed information about the requested repository. </p> </li> <li> <p> <code>DisposePackageVersions</code>: Disposes versions of a package. A package version with the status <code>Disposed</code> cannot be restored because they have been permanently removed from storage.</p> </li> <li> <p> <code>DisassociateExternalConnection</code>: Removes an existing external connection from a repository. </p> </li> <li> <p> <code>GetAuthorizationToken</code>: Generates a temporary authorization token for accessing repositories in the domain. The token expires the authorization period has passed. The default authorization period is 12 hours and can be customized to any length with a maximum of 12 hours.</p> </li> <li> <p> <code>GetDomainPermissionsPolicy</code>: Returns the policy of a resource that is attached to the specified domain. </p> </li> <li> <p> <code>GetPackageVersionAsset</code>: Returns the contents of an asset that is in a package version. </p> </li> <li> <p> <code>GetPackageVersionReadme</code>: Gets the readme file or descriptive text for a package version.</p> </li> <li> <p> <code>GetRepositoryEndpoint</code>: Returns the endpoint of a repository for a specific package format. A repository has one endpoint for each package format: </p> <ul> <li> <p> <code>maven</code> </p> </li> <li> <p> <code>npm</code> </p> </li> <li> <p> <code>nuget</code> </p> </li> <li> <p> <code>pypi</code> </p> </li> </ul> </li> <li> <p> <code>GetRepositoryPermissionsPolicy</code>: Returns the resource policy that is set on a repository. </p> </li> <li> <p> <code>ListDomains</code>: Returns a list of <code>DomainSummary</code> objects. Each returned <code>DomainSummary</code> object contains information about a domain.</p> </li> <li> <p> <code>ListPackages</code>: Lists the packages in a repository.</p> </li> <li> <p> <code>ListPackageVersionAssets</code>: Lists the assets for a given package version.</p> </li> <li> <p> <code>ListPackageVersionDependencies</code>: Returns a list of the direct dependencies for a package version. </p> </li> <li> <p> <code>ListPackageVersions</code>: Returns a list of package versions for a specified package in a repository.</p> </li> <li> <p> <code>ListRepositories</code>: Returns a list of repositories owned by the Amazon Web Services account that called this method.</p> </li> <li> <p> <code>ListRepositoriesInDomain</code>: Returns a list of the repositories in a domain.</p> </li> <li> <p> <code>PublishPackageVersion</code>: Creates a new package version containing one or more assets.</p> </li> <li> <p> <code>PutDomainPermissionsPolicy</code>: Attaches a resource policy to a domain.</p> </li> <li> <p> <code>PutPackageOriginConfiguration</code>: Sets the package origin configuration for a package, which determine how new versions of the package can be added to a specific repository.</p> </li> <li> <p> <code>PutRepositoryPermissionsPolicy</code>: Sets the resource policy on a repository that specifies permissions to access it. </p> </li> <li> <p> <code>UpdatePackageVersionsStatus</code>: Updates the status of one or more versions of a package.</p> </li> <li> <p> <code>UpdateRepository</code>: Updates the properties of a repository.</p> </li> </ul>\n\nContact Support:\n Name: Mike Ralphson\n Email: mike.ralphson@gmail.com",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "createdAt": "2026-07-28T10:09:30.000Z",
+    "updatedAt": "2026-07-28T10:09:31.000Z",
+    "lastUpdatedBy": "35240",
+    "uid": "35240-d8f0a123-080e-4965-b5c5-e3658d6e504c"
+  },
+  "item": [
+    {
+      "name": "v1",
+      "item": [
+        {
+          "name": "domain#domain",
+          "item": [
+            {
+              "name": "Amazon CodeArtifact Create Domain",
+              "id": "06ae84ca-993e-4c21-b5e7-bfb8088f1e59",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "X-Amz-Content-Sha256",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "X-Amz-Date",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "X-Amz-Algorithm",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "X-Amz-Credential",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "X-Amz-Security-Token",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "X-Amz-Signature",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "X-Amz-SignedHeaders",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"encryptionKey\": \"cfWmYP\",\n  \"tags\": [\n    {\n      \"key\": \"P{C}\",\n      \"value\": \"P{C}}}}}}\"\n    },\n    {\n      \"key\": \"P{C}}}}}\",\n      \"value\": \"P{C}}}}}\"\n    },\n    {\n      \"key\": \"P{C}}}}}}}}}}\",\n      \"value\": \"P{C}}}}}}\"\n    },\n    {\n      \"key\": \"P{C}}}}}}}}}}\",\n      \"value\": \"P{C}}}}\"\n    },\n    {\n      \"key\": \"P{C}}}}\",\n      \"value\": \"P{C}}}\"\n    },\n    {\n      \"key\": \"P{C}}}}\",\n      \"value\": \"P{C}}\"\n    },\n    {\n      \"key\": \"P{C}}}}}}}}}\",\n      \"value\": \"P{C}}}}}}}}\"\n    },\n    {\n      \"key\": \"P{C}}}}}\",\n      \"value\": \"P{C}}}}}}\"\n    },\n    {\n      \"key\": \"P{C}}}}}\",\n      \"value\": \"P{C}}\"\n    },\n    {\n      \"key\": \"P{C}\",\n      \"value\": \"P{C}}}}}}}}\"\n    },\n    {\n      \"key\": \"P{C}}}}}}}}}}\",\n      \"value\": \"P{C}\"\n    },\n    {\n      \"key\": \"P{C}}}}}}}\",\n      \"value\": \"P{C}}}}}}\"\n    },\n    {\n      \"key\": \"P{C}\",\n      \"value\": \"P{C}}\"\n    },\n    {\n      \"key\": \"P{C}}}\",\n      \"value\": \"P{C}}}}}}}}}\"\n    },\n    {\n      \"key\": \"P{C}}}}}}}}}}}\",\n      \"value\": \"P{C}}}\"\n    },\n    {\n      \"key\": \"P{C}}}}}}}\",\n      \"value\": \"P{C}}}}\"\n    },\n    {\n      \"key\": \"P{C}}}\",\n      \"value\": \"P{C}}}}}}\"\n    },\n    {\n      \"key\": \"P{C}}}}}}}}}\",\n      \"value\": \"P{C}}}}}}}\"\n    },\n    {\n      \"key\": \"P{C}}}}}}}}}\",\n      \"value\": \"P{C}}\"\n    },\n    {\n      \"key\": \"P{C}}}\",\n      \"value\": \"P{C}\"\n    }\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/v1/domain?domain=dqftn8ws2rn9i2ylzpm2bldoeqdwhwjn1pnl-b805i22-7#domain",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "v1",
+                    "domain"
+                  ],
+                  "query": [
+                    {
+                      "description": "(Required)  The name of the domain to create. All domain names in an Amazon Web Services Region that are in the same Amazon Web Services account must be unique. The domain name is used as the prefix in DNS hostnames. Do not use sensitive information in a domain name because it is publicly discoverable. ",
+                      "key": "domain",
+                      "value": "dqftn8ws2rn9i2ylzpm2bldoeqdwhwjn1pnl-b805i22-7"
+                    }
+                  ],
+                  "hash": "domain"
+                },
+                "description": "<p> Creates a domain. CodeArtifact <i>domains</i> make it easier to manage multiple repositories across an organization. You can use a domain to apply permissions across many repositories owned by different Amazon Web Services accounts. An asset is stored only once in a domain, even if it's in multiple repositories. </p> <p>Although you can have multiple domains, we recommend a single production domain that contains all published artifacts so that your development teams can find and share packages. You can use a second pre-production domain to test changes to the production domain configuration. </p>"
+              },
+              "response": [
+                {
+                  "id": "1022a51f-6438-465c-8677-ec25de6837cc",
+                  "name": "Success",
+                  "originalRequest": {
+                    "method": "POST",
+                    "header": [
+                      {
+                        "key": "X-Amz-Content-Sha256",
+                        "value": "<string>"
+                      },
+                      {
+                        "key": "X-Amz-Date",
+                        "value": "<string>"
+                      },
+                      {
+                        "key": "X-Amz-Algorithm",
+                        "value": "<string>"
+                      },
+                      {
+                        "key": "X-Amz-Credential",
+                        "value": "<string>"
+                      },
+                      {
+                        "key": "X-Amz-Security-Token",
+                        "value": "<string>"
+                      },
+                      {
+                        "key": "X-Amz-Signature",
+                        "value": "<string>"
+                      },
+                      {
+                        "key": "X-Amz-SignedHeaders",
+                        "value": "<string>"
+                      },
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: apikey",
+                        "key": "Authorization",
+                        "value": "<API Key>"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"encryptionKey\": \"cfWmYP\",\n  \"tags\": [\n    {\n      \"key\": \"P{C}\",\n      \"value\": \"P{C}}}}}}\"\n    },\n    {\n      \"key\": \"P{C}}}}}\",\n      \"value\": \"P{C}}}}}\"\n    },\n    {\n      \"key\": \"P{C}}}}}}}}}}\",\n      \"value\": \"P{C}}}}}}\"\n    },\n    {\n      \"key\": \"P{C}}}}}}}}}}\",\n      \"value\": \"P{C}}}}\"\n    },\n    {\n      \"key\": \"P{C}}}}\",\n      \"value\": \"P{C}}}\"\n    },\n    {\n      \"key\": \"P{C}}}}\",\n      \"value\": \"P{C}}\"\n    },\n    {\n      \"key\": \"P{C}}}}}}}}}\",\n      \"value\": \"P{C}}}}}}}}\"\n    },\n    {\n      \"key\": \"P{C}}}}}\",\n      \"value\": \"P{C}}}}}}\"\n    },\n    {\n      \"key\": \"P{C}}}}}\",\n      \"value\": \"P{C}}\"\n    },\n    {\n      \"key\": \"P{C}\",\n      \"value\": \"P{C}}}}}}}}\"\n    },\n    {\n      \"key\": \"P{C}}}}}}}}}}\",\n      \"value\": \"P{C}\"\n    },\n    {\n      \"key\": \"P{C}}}}}}}\",\n      \"value\": \"P{C}}}}}}\"\n    },\n    {\n      \"key\": \"P{C}\",\n      \"value\": \"P{C}}\"\n    },\n    {\n      \"key\": \"P{C}}}\",\n      \"value\": \"P{C}}}}}}}}}\"\n    },\n    {\n      \"key\": \"P{C}}}}}}}}}}}\",\n      \"value\": \"P{C}}}\"\n    },\n    {\n      \"key\": \"P{C}}}}}}}\",\n      \"value\": \"P{C}}}}\"\n    },\n    {\n      \"key\": \"P{C}}}\",\n      \"value\": \"P{C}}}}}}\"\n    },\n    {\n      \"key\": \"P{C}}}}}}}}}\",\n      \"value\": \"P{C}}}}}}}\"\n    },\n    {\n      \"key\": \"P{C}}}}}}}}}\",\n      \"value\": \"P{C}}\"\n    },\n    {\n      \"key\": \"P{C}}}\",\n      \"value\": \"P{C}\"\n    }\n  ]\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/v1/domain?domain=dqftn8ws2rn9i2ylzpm2bldoeqdwhwjn1pnl-b805i22-7#domain",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "v1",
+                        "domain"
+                      ],
+                      "query": [
+                        {
+                          "description": "(Required)  The name of the domain to create. All domain names in an Amazon Web Services Region that are in the same Amazon Web Services account must be unique. The domain name is used as the prefix in DNS hostnames. Do not use sensitive information in a domain name because it is publicly discoverable. ",
+                          "key": "domain",
+                          "value": "dqftn8ws2rn9i2ylzpm2bldoeqdwhwjn1pnl-b805i22-7"
+                        }
+                      ],
+                      "hash": "domain"
+                    }
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"domain\": {\n    \"name\": \"orx9fgid1f3o20vxdgn09b7k5l\",\n    \"owner\": \"264916998453\",\n    \"arn\": \"(hwslJ\",\n    \"status\": \"Deleted\",\n    \"createdTime\": \"<dateTime>\",\n    \"encryptionKey\": \"15(v\",\n    \"repositoryCount\": \"<integer>\",\n    \"assetSizeBytes\": \"<integer>\",\n    \"s3BucketArn\": \"NwfZg!K03J+\"\n  }\n}",
+                  "createdAt": "2026-07-28T10:09:31.000Z",
+                  "updatedAt": "2026-07-28T10:09:31.000Z",
+                  "uid": "35240-1022a51f-6438-465c-8677-ec25de6837cc"
+                },
+                {
+                  "id": "337619f2-4449-4946-b7da-eefa705c2e94",
+                  "name": "AccessDeniedException",
+                  "originalRequest": {
+                    "method": "POST",
+                    "header": [
+                      {
+                        "key": "X-Amz-Content-Sha256",
+                        "value": "<string>"
+                      },
+                      {
+                        "key": "X-Amz-Date",
+                        "value": "<string>"
+                      },
+                      {
+                        "key": "X-Amz-Algorithm",
+                        "value": "<string>"
+                      },
+                      {
+                        "key": "X-Amz-Credential",
+                        "value": "<string>"
+                      },
+                      {
+                        "key": "X-Amz-Security-Token",
+                        "value": "<string>"
+                      },
+                      {
+                        "key": "X-Amz-Signature",
+                        "value": "<string>"
+                      },
+                      {
+                        "key": "X-Amz-SignedHeaders",
+                        "value": "<string>"
+                      },
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: apikey",
+                        "key": "Authorization",
+                        "value": "<API Key>"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"encryptionKey\": \"cfWmYP\",\n  \"tags\": [\n    {\n      \"key\": \"P{C}\",\n      \"value\": \"P{C}}}}}}\"\n    },\n    {\n      \"key\": \"P{C}}}}}\",\n      \"value\": \"P{C}}}}}\"\n    },\n    {\n      \"key\": \"P{C}}}}}}}}}}\",\n      \"value\": \"P{C}}}}}}\"\n    },\n    {\n      \"key\": \"P{C}}}}}}}}}}\",\n      \"value\": \"P{C}}}}\"\n    },\n    {\n      \"key\": \"P{C}}}}\",\n      \"value\": \"P{C}}}\"\n    },\n    {\n      \"key\": \"P{C}}}}\",\n      \"value\": \"P{C}}\"\n    },\n    {\n      \"key\": \"P{C}}}}}}}}}\",\n      \"value\": \"P{C}}}}}}}}\"\n    },\n    {\n      \"key\": \"P{C}}}}}\",\n      \"value\": \"P{C}}}}}}\"\n    },\n    {\n      \"key\": \"P{C}}}}}\",\n      \"value\": \"P{C}}\"\n    },\n    {\n      \"key\": \"P{C}\",\n      \"value\": \"P{C}}}}}}}}\"\n    },\n    {\n      \"key\": \"P{C}}}}}}}}}}\",\n      \"value\": \"P{C}\"\n    },\n    {\n      \"key\": \"P{C}}}}}}}\",\n      \"value\": \"P{C}}}}}}\"\n    },\n    {\n      \"key\": \"P{C}\",\n      \"value\": \"P{C}}\"\n    },\n    {\n      \"key\": \"P{C}}}\",\n      \"value\": \"P{C}}}}}}}}}\"\n    },\n    {\n      \"key\": \"P{C}}}}}}}}}}}\",\n      \"value\": \"P{C}}}\"\n    },\n    {\n      \"key\": \"P{C}}}}}}}\",\n      \"value\": \"P{C}}}}\"\n    },\n    {\n      \"key\": \"P{C}}}\",\n      \"value\": \"P{C}}}}}}\"\n    },\n    {\n      \"key\": \"P{C}}}}}}}}}\",\n      \"value\": \"P{C}}}}}}}\"\n    },\n    {\n      \"key\": \"P{C}}}}}}}}}\",\n      \"value\": \"P{C}}\"\n    },\n    {\n      \"key\": \"P{C}}}\",\n      \"value\": \"P{C}\"\n    }\n  ]\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/v1/domain?domain=dqftn8ws2rn9i2ylzpm2bldoeqdwhwjn1pnl-b805i22-7#domain",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "v1",
+                        "domain"
+                      ],
+                      "query": [
+                        {
+                          "description": "(Required)  The name of the domain to create. All domain names in an Amazon Web Services Region that are in the same Amazon Web Services account must be unique. The domain name is used as the prefix in DNS hostnames. Do not use sensitive information in a domain name because it is publicly discoverable. ",
+                          "key": "domain",
+                          "value": "dqftn8ws2rn9i2ylzpm2bldoeqdwhwjn1pnl-b805i22-7"
+                        }
+                      ],
+                      "hash": "domain"
+                    }
+                  },
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{}",
+                  "createdAt": "2026-07-28T10:09:31.000Z",
+                  "updatedAt": "2026-07-28T10:09:31.000Z",
+                  "uid": "35240-337619f2-4449-4946-b7da-eefa705c2e94"
+                },
+                {
+                  "id": "baf8e699-82fe-4867-bc85-fcdbea1bcbea",
+                  "name": "ConflictException",
+                  "originalRequest": {
+                    "method": "POST",
+                    "header": [
+                      {
+                        "key": "X-Amz-Content-Sha256",
+                        "value": "<string>"
+                      },
+                      {
+                        "key": "X-Amz-Date",
+                        "value": "<string>"
+                      },
+                      {
+                        "key": "X-Amz-Algorithm",
+                        "value": "<string>"
+                      },
+                      {
+                        "key": "X-Amz-Credential",
+                        "value": "<string>"
+                      },
+                      {
+                        "key": "X-Amz-Security-Token",
+                        "value": "<string>"
+                      },
+                      {
+                        "key": "X-Amz-Signature",
+                        "value": "<string>"
+                      },
+                      {
+                        "key": "X-Amz-SignedHeaders",
+                        "value": "<string>"
+                      },
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: apikey",
+                        "key": "Authorization",
+                        "value": "<API Key>"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"encryptionKey\": \"cfWmYP\",\n  \"tags\": [\n    {\n      \"key\": \"P{C}\",\n      \"value\": \"P{C}}}}}}\"\n    },\n    {\n      \"key\": \"P{C}}}}}\",\n      \"value\": \"P{C}}}}}\"\n    },\n    {\n      \"key\": \"P{C}}}}}}}}}}\",\n      \"value\": \"P{C}}}}}}\"\n    },\n    {\n      \"key\": \"P{C}}}}}}}}}}\",\n      \"value\": \"P{C}}}}\"\n    },\n    {\n      \"key\": \"P{C}}}}\",\n      \"value\": \"P{C}}}\"\n    },\n    {\n      \"key\": \"P{C}}}}\",\n      \"value\": \"P{C}}\"\n    },\n    {\n      \"key\": \"P{C}}}}}}}}}\",\n      \"value\": \"P{C}}}}}}}}\"\n    },\n    {\n      \"key\": \"P{C}}}}}\",\n      \"value\": \"P{C}}}}}}\"\n    },\n    {\n      \"key\": \"P{C}}}}}\",\n      \"value\": \"P{C}}\"\n    },\n    {\n      \"key\": \"P{C}\",\n      \"value\": \"P{C}}}}}}}}\"\n    },\n    {\n      \"key\": \"P{C}}}}}}}}}}\",\n      \"value\": \"P{C}\"\n    },\n    {\n      \"key\": \"P{C}}}}}}}\",\n      \"value\": \"P{C}}}}}}\"\n    },\n    {\n      \"key\": \"P{C}\",\n      \"value\": \"P{C}}\"\n    },\n    {\n      \"key\": \"P{C}}}\",\n      \"value\": \"P{C}}}}}}}}}\"\n    },\n    {\n      \"key\": \"P{C}}}}}}}}}}}\",\n      \"value\": \"P{C}}}\"\n    },\n    {\n      \"key\": \"P{C}}}}}}}\",\n      \"value\": \"P{C}}}}\"\n    },\n    {\n      \"key\": \"P{C}}}\",\n      \"value\": \"P{C}}}}}}\"\n    },\n    {\n      \"key\": \"P{C}}}}}}}}}\",\n      \"value\": \"P{C}}}}}}}\"\n    },\n    {\n      \"key\": \"P{C}}}}}}}}}\",\n      \"value\": \"P{C}}\"\n    },\n    {\n      \"key\": \"P{C}}}\",\n      \"value\": \"P{C}\"\n    }\n  ]\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/v1/domain?domain=dqftn8ws2rn9i2ylzpm2bldoeqdwhwjn1pnl-b805i22-7#domain",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "v1",
+                        "domain"
+                      ],
+                      "query": [
+                        {
+                          "description": "(Required)  The name of the domain to create. All domain names in an Amazon Web Services Region that are in the same Amazon Web Services account must be unique. The domain name is used as the prefix in DNS hostnames. Do not use sensitive information in a domain name because it is publicly discoverable. ",
+                          "key": "domain",
+                          "value": "dqftn8ws2rn9i2ylzpm2bldoeqdwhwjn1pnl-b805i22-7"
+                        }
+                      ],
+                      "hash": "domain"
+                    }
+                  },
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{}",
+                  "createdAt": "2026-07-28T10:09:31.000Z",
+                  "updatedAt": "2026-07-28T10:09:31.000Z",
+                  "uid": "35240-baf8e699-82fe-4867-bc85-fcdbea1bcbea"
+                },
+                {
+                  "id": "6bed8fd0-d781-48b7-9928-2ee7abedbd3a",
+                  "name": "InternalServerException",
+                  "originalRequest": {
+                    "method": "POST",
+                    "header": [
+                      {
+                        "key": "X-Amz-Content-Sha256",
+                        "value": "<string>"
+                      },
+                      {
+                        "key": "X-Amz-Date",
+                        "value": "<string>"
+                      },
+                      {
+                        "key": "X-Amz-Algorithm",
+                        "value": "<string>"
+                      },
+                      {
+                        "key": "X-Amz-Credential",
+                        "value": "<string>"
+                      },
+                      {
+                        "key": "X-Amz-Security-Token",
+                        "value": "<string>"
+                      },
+                      {
+                        "key": "X-Amz-Signature",
+                        "value": "<string>"
+                      },
+                      {
+                        "key": "X-Amz-SignedHeaders",
+                        "value": "<string>"
+                      },
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: apikey",
+                        "key": "Authorization",
+                        "value": "<API Key>"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"encryptionKey\": \"cfWmYP\",\n  \"tags\": [\n    {\n      \"key\": \"P{C}\",\n      \"value\": \"P{C}}}}}}\"\n    },\n    {\n      \"key\": \"P{C}}}}}\",\n      \"value\": \"P{C}}}}}\"\n    },\n    {\n      \"key\": \"P{C}}}}}}}}}}\",\n      \"value\": \"P{C}}}}}}\"\n    },\n    {\n      \"key\": \"P{C}}}}}}}}}}\",\n      \"value\": \"P{C}}}}\"\n    },\n    {\n      \"key\": \"P{C}}}}\",\n      \"value\": \"P{C}}}\"\n    },\n    {\n      \"key\": \"P{C}}}}\",\n      \"value\": \"P{C}}\"\n    },\n    {\n      \"key\": \"P{C}}}}}}}}}\",\n      \"value\": \"P{C}}}}}}}}\"\n    },\n    {\n      \"key\": \"P{C}}}}}\",\n      \"value\": \"P{C}}}}}}\"\n    },\n    {\n      \"key\": \"P{C}}}}}\",\n      \"value\": \"P{C}}\"\n    },\n    {\n      \"key\": \"P{C}\",\n      \"value\": \"P{C}}}}}}}}\"\n    },\n    {\n      \"key\": \"P{C}}}}}}}}}}\",\n      \"value\": \"P{C}\"\n    },\n    {\n      \"key\": \"P{C}}}}}}}\",\n      \"value\": \"P{C}}}}}}\"\n    },\n    {\n      \"key\": \"P{C}\",\n      \"value\": \"P{C}}\"\n    },\n    {\n      \"key\": \"P{C}}}\",\n      \"value\": \"P{C}}}}}}}}}\"\n    },\n    {\n      \"key\": \"P{C}}}}}}}}}}}\",\n      \"value\": \"P{C}}}\"\n    },\n    {\n      \"key\": \"P{C}}}}}}}\",\n      \"value\": \"P{C}}}}\"\n    },\n    {\n      \"key\": \"P{C}}}\",\n      \"value\": \"P{C}}}}}}\"\n    },\n    {\n      \"key\": \"P{C}}}}}}}}}\",\n      \"value\": \"P{C}}}}}}}\"\n    },\n    {\n      \"key\": \"P{C}}}}}}}}}\",\n      \"value\": \"P{C}}\"\n    },\n    {\n      \"key\": \"P{C}}}\",\n      \"value\": \"P{C}\"\n    }\n  ]\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/v1/domain?domain=dqftn8ws2rn9i2ylzpm2bldoeqdwhwjn1pnl-b805i22-7#domain",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "v1",
+                        "domain"
+                      ],
+                      "query": [
+                        {
+                          "description": "(Required)  The name of the domain to create. All domain names in an Amazon Web Services Region that are in the same Amazon Web Services account must be unique. The domain name is used as the prefix in DNS hostnames. Do not use sensitive information in a domain name because it is publicly discoverable. ",
+                          "key": "domain",
+                          "value": "dqftn8ws2rn9i2ylzpm2bldoeqdwhwjn1pnl-b805i22-7"
+                        }
+                      ],
+                      "hash": "domain"
+                    }
+                  },
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{}",
+                  "createdAt": "2026-07-28T10:09:31.000Z",
+                  "updatedAt": "2026-07-28T10:09:31.000Z",
+                  "uid": "35240-6bed8fd0-d781-48b7-9928-2ee7abedbd3a"
+                },
+                {
+                  "id": "c0adcd63-1bcd-4dc4-ab9d-d940fecd933a",
+                  "name": "ResourceNotFoundException",
+                  "originalRequest": {
+                    "method": "POST",
+                    "header": [
+                      {
+                        "key": "X-Amz-Content-Sha256",
+                        "value": "<string>"
+                      },
+                      {
+                        "key": "X-Amz-Date",
+                        "value": "<string>"
+                      },
+                      {
+                        "key": "X-Amz-Algorithm",
+                        "value": "<string>"
+                      },
+                      {
+                        "key": "X-Amz-Credential",
+                        "value": "<string>"
+                      },
+                      {
+                        "key": "X-Amz-Security-Token",
+                        "value": "<string>"
+                      },
+                      {
+                        "key": "X-Amz-Signature",
+                        "value": "<string>"
+                      },
+                      {
+                        "key": "X-Amz-SignedHeaders",
+                        "value": "<string>"
+                      },
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: apikey",
+                        "key": "Authorization",
+                        "value": "<API Key>"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"encryptionKey\": \"cfWmYP\",\n  \"tags\": [\n    {\n      \"key\": \"P{C}\",\n      \"value\": \"P{C}}}}}}\"\n    },\n    {\n      \"key\": \"P{C}}}}}\",\n      \"value\": \"P{C}}}}}\"\n    },\n    {\n      \"key\": \"P{C}}}}}}}}}}\",\n      \"value\": \"P{C}}}}}}\"\n    },\n    {\n      \"key\": \"P{C}}}}}}}}}}\",\n      \"value\": \"P{C}}}}\"\n    },\n    {\n      \"key\": \"P{C}}}}\",\n      \"value\": \"P{C}}}\"\n    },\n    {\n      \"key\": \"P{C}}}}\",\n      \"value\": \"P{C}}\"\n    },\n    {\n      \"key\": \"P{C}}}}}}}}}\",\n      \"value\": \"P{C}}}}}}}}\"\n    },\n    {\n      \"key\": \"P{C}}}}}\",\n      \"value\": \"P{C}}}}}}\"\n    },\n    {\n      \"key\": \"P{C}}}}}\",\n      \"value\": \"P{C}}\"\n    },\n    {\n      \"key\": \"P{C}\",\n      \"value\": \"P{C}}}}}}}}\"\n    },\n    {\n      \"key\": \"P{C}}}}}}}}}}\",\n      \"value\": \"P{C}\"\n    },\n    {\n      \"key\": \"P{C}}}}}}}\",\n      \"value\": \"P{C}}}}}}\"\n    },\n    {\n      \"key\": \"P{C}\",\n      \"value\": \"P{C}}\"\n    },\n    {\n      \"key\": \"P{C}}}\",\n      \"value\": \"P{C}}}}}}}}}\"\n    },\n    {\n      \"key\": \"P{C}}}}}}}}}}}\",\n      \"value\": \"P{C}}}\"\n    },\n    {\n      \"key\": \"P{C}}}}}}}\",\n      \"value\": \"P{C}}}}\"\n    },\n    {\n      \"key\": \"P{C}}}\",\n      \"value\": \"P{C}}}}}}\"\n    },\n    {\n      \"key\": \"P{C}}}}}}}}}\",\n      \"value\": \"P{C}}}}}}}\"\n    },\n    {\n      \"key\": \"P{C}}}}}}}}}\",\n      \"value\": \"P{C}}\"\n    },\n    {\n      \"key\": \"P{C}}}\",\n      \"value\": \"P{C}\"\n    }\n  ]\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/v1/domain?domain=dqftn8ws2rn9i2ylzpm2bldoeqdwhwjn1pnl-b805i22-7#domain",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "v1",
+                        "domain"
+                      ],
+                      "query": [
+                        {
+                          "description": "(Required)  The name of the domain to create. All domain names in an Amazon Web Services Region that are in the same Amazon Web Services account must be unique. The domain name is used as the prefix in DNS hostnames. Do not use sensitive information in a domain name because it is publicly discoverable. ",
+                          "key": "domain",
+                          "value": "dqftn8ws2rn9i2ylzpm2bldoeqdwhwjn1pnl-b805i22-7"
+                        }
+                      ],
+                      "hash": "domain"
+                    }
+                  },
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{}",
+                  "createdAt": "2026-07-28T10:09:31.000Z",
+                  "updatedAt": "2026-07-28T10:09:31.000Z",
+                  "uid": "35240-c0adcd63-1bcd-4dc4-ab9d-d940fecd933a"
+                },
+                {
+                  "id": "4a15faf3-b56d-45a1-a9c3-c4476b0ffe8c",
+                  "name": "ServiceQuotaExceededException",
+                  "originalRequest": {
+                    "method": "POST",
+                    "header": [
+                      {
+                        "key": "X-Amz-Content-Sha256",
+                        "value": "<string>"
+                      },
+                      {
+                        "key": "X-Amz-Date",
+                        "value": "<string>"
+                      },
+                      {
+                        "key": "X-Amz-Algorithm",
+                        "value": "<string>"
+                      },
+                      {
+                        "key": "X-Amz-Credential",
+                        "value": "<string>"
+                      },
+                      {
+                        "key": "X-Amz-Security-Token",
+                        "value": "<string>"
+                      },
+                      {
+                        "key": "X-Amz-Signature",
+                        "value": "<string>"
+                      },
+                      {
+                        "key": "X-Amz-SignedHeaders",
+                        "value": "<string>"
+                      },
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: apikey",
+                        "key": "Authorization",
+                        "value": "<API Key>"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"encryptionKey\": \"cfWmYP\",\n  \"tags\": [\n    {\n      \"key\": \"P{C}\",\n      \"value\": \"P{C}}}}}}\"\n    },\n    {\n      \"key\": \"P{C}}}}}\",\n      \"value\": \"P{C}}}}}\"\n    },\n    {\n      \"key\": \"P{C}}}}}}}}}}\",\n      \"value\": \"P{C}}}}}}\"\n    },\n    {\n      \"key\": \"P{C}}}}}}}}}}\",\n      \"value\": \"P{C}}}}\"\n    },\n    {\n      \"key\": \"P{C}}}}\",\n      \"value\": \"P{C}}}\"\n    },\n    {\n      \"key\": \"P{C}}}}\",\n      \"value\": \"P{C}}\"\n    },\n    {\n      \"key\": \"P{C}}}}}}}}}\",\n      \"value\": \"P{C}}}}}}}}\"\n    },\n    {\n      \"key\": \"P{C}}}}}\",\n      \"value\": \"P{C}}}}}}\"\n    },\n    {\n      \"key\": \"P{C}}}}}\",\n      \"value\": \"P{C}}\"\n    },\n    {\n      \"key\": \"P{C}\",\n      \"value\": \"P{C}}}}}}}}\"\n    },\n    {\n      \"key\": \"P{C}}}}}}}}}}\",\n      \"value\": \"P{C}\"\n    },\n    {\n      \"key\": \"P{C}}}}}}}\",\n      \"value\": \"P{C}}}}}}\"\n    },\n    {\n      \"key\": \"P{C}\",\n      \"value\": \"P{C}}\"\n    },\n    {\n      \"key\": \"P{C}}}\",\n      \"value\": \"P{C}}}}}}}}}\"\n    },\n    {\n      \"key\": \"P{C}}}}}}}}}}}\",\n      \"value\": \"P{C}}}\"\n    },\n    {\n      \"key\": \"P{C}}}}}}}\",\n      \"value\": \"P{C}}}}\"\n    },\n    {\n      \"key\": \"P{C}}}\",\n      \"value\": \"P{C}}}}}}\"\n    },\n    {\n      \"key\": \"P{C}}}}}}}}}\",\n      \"value\": \"P{C}}}}}}}\"\n    },\n    {\n      \"key\": \"P{C}}}}}}}}}\",\n      \"value\": \"P{C}}\"\n    },\n    {\n      \"key\": \"P{C}}}\",\n      \"value\": \"P{C}\"\n    }\n  ]\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/v1/domain?domain=dqftn8ws2rn9i2ylzpm2bldoeqdwhwjn1pnl-b805i22-7#domain",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "v1",
+                        "domain"
+                      ],
+                      "query": [
+                        {
+                          "description": "(Required)  The name of the domain to create. All domain names in an Amazon Web Services Region that are in the same Amazon Web Services account must be unique. The domain name is used as the prefix in DNS hostnames. Do not use sensitive information in a domain name because it is publicly discoverable. ",
+                          "key": "domain",
+                          "value": "dqftn8ws2rn9i2ylzpm2bldoeqdwhwjn1pnl-b805i22-7"
+                        }
+                      ],
+                      "hash": "domain"
+                    }
+                  },
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{}",
+                  "createdAt": "2026-07-28T10:09:31.000Z",
+                  "updatedAt": "2026-07-28T10:09:31.000Z",
+                  "uid": "35240-4a15faf3-b56d-45a1-a9c3-c4476b0ffe8c"
+                },
+                {
+                  "id": "4ba48a53-81bf-420d-8530-1ede64d1a491",
+                  "name": "ThrottlingException",
+                  "originalRequest": {
+                    "method": "POST",
+                    "header": [
+                      {
+                        "key": "X-Amz-Content-Sha256",
+                        "value": "<string>"
+                      },
+                      {
+                        "key": "X-Amz-Date",
+                        "value": "<string>"
+                      },
+                      {
+                        "key": "X-Amz-Algorithm",
+                        "value": "<string>"
+                      },
+                      {
+                        "key": "X-Amz-Credential",
+                        "value": "<string>"
+                      },
+                      {
+                        "key": "X-Amz-Security-Token",
+                        "value": "<string>"
+                      },
+                      {
+                        "key": "X-Amz-Signature",
+                        "value": "<string>"
+                      },
+                      {
+                        "key": "X-Amz-SignedHeaders",
+                        "value": "<string>"
+                      },
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: apikey",
+                        "key": "Authorization",
+                        "value": "<API Key>"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"encryptionKey\": \"cfWmYP\",\n  \"tags\": [\n    {\n      \"key\": \"P{C}\",\n      \"value\": \"P{C}}}}}}\"\n    },\n    {\n      \"key\": \"P{C}}}}}\",\n      \"value\": \"P{C}}}}}\"\n    },\n    {\n      \"key\": \"P{C}}}}}}}}}}\",\n      \"value\": \"P{C}}}}}}\"\n    },\n    {\n      \"key\": \"P{C}}}}}}}}}}\",\n      \"value\": \"P{C}}}}\"\n    },\n    {\n      \"key\": \"P{C}}}}\",\n      \"value\": \"P{C}}}\"\n    },\n    {\n      \"key\": \"P{C}}}}\",\n      \"value\": \"P{C}}\"\n    },\n    {\n      \"key\": \"P{C}}}}}}}}}\",\n      \"value\": \"P{C}}}}}}}}\"\n    },\n    {\n      \"key\": \"P{C}}}}}\",\n      \"value\": \"P{C}}}}}}\"\n    },\n    {\n      \"key\": \"P{C}}}}}\",\n      \"value\": \"P{C}}\"\n    },\n    {\n      \"key\": \"P{C}\",\n      \"value\": \"P{C}}}}}}}}\"\n    },\n    {\n      \"key\": \"P{C}}}}}}}}}}\",\n      \"value\": \"P{C}\"\n    },\n    {\n      \"key\": \"P{C}}}}}}}\",\n      \"value\": \"P{C}}}}}}\"\n    },\n    {\n      \"key\": \"P{C}\",\n      \"value\": \"P{C}}\"\n    },\n    {\n      \"key\": \"P{C}}}\",\n      \"value\": \"P{C}}}}}}}}}\"\n    },\n    {\n      \"key\": \"P{C}}}}}}}}}}}\",\n      \"value\": \"P{C}}}\"\n    },\n    {\n      \"key\": \"P{C}}}}}}}\",\n      \"value\": \"P{C}}}}\"\n    },\n    {\n      \"key\": \"P{C}}}\",\n      \"value\": \"P{C}}}}}}\"\n    },\n    {\n      \"key\": \"P{C}}}}}}}}}\",\n      \"value\": \"P{C}}}}}}}\"\n    },\n    {\n      \"key\": \"P{C}}}}}}}}}\",\n      \"value\": \"P{C}}\"\n    },\n    {\n      \"key\": \"P{C}}}\",\n      \"value\": \"P{C}\"\n    }\n  ]\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/v1/domain?domain=dqftn8ws2rn9i2ylzpm2bldoeqdwhwjn1pnl-b805i22-7#domain",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "v1",
+                        "domain"
+                      ],
+                      "query": [
+                        {
+                          "description": "(Required)  The name of the domain to create. All domain names in an Amazon Web Services Region that are in the same Amazon Web Services account must be unique. The domain name is used as the prefix in DNS hostnames. Do not use sensitive information in a domain name because it is publicly discoverable. ",
+                          "key": "domain",
+                          "value": "dqftn8ws2rn9i2ylzpm2bldoeqdwhwjn1pnl-b805i22-7"
+                        }
+                      ],
+                      "hash": "domain"
+                    }
+                  },
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{}",
+                  "createdAt": "2026-07-28T10:09:31.000Z",
+                  "updatedAt": "2026-07-28T10:09:31.000Z",
+                  "uid": "35240-4ba48a53-81bf-420d-8530-1ede64d1a491"
+                },
+                {
+                  "id": "e1238658-7259-4f59-888f-85f710323202",
+                  "name": "ValidationException",
+                  "originalRequest": {
+                    "method": "POST",
+                    "header": [
+                      {
+                        "key": "X-Amz-Content-Sha256",
+                        "value": "<string>"
+                      },
+                      {
+                        "key": "X-Amz-Date",
+                        "value": "<string>"
+                      },
+                      {
+                        "key": "X-Amz-Algorithm",
+                        "value": "<string>"
+                      },
+                      {
+                        "key": "X-Amz-Credential",
+                        "value": "<string>"
+                      },
+                      {
+                        "key": "X-Amz-Security-Token",
+                        "value": "<string>"
+                      },
+                      {
+                        "key": "X-Amz-Signature",
+                        "value": "<string>"
+                      },
+                      {
+                        "key": "X-Amz-SignedHeaders",
+                        "value": "<string>"
+                      },
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: apikey",
+                        "key": "Authorization",
+                        "value": "<API Key>"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"encryptionKey\": \"cfWmYP\",\n  \"tags\": [\n    {\n      \"key\": \"P{C}\",\n      \"value\": \"P{C}}}}}}\"\n    },\n    {\n      \"key\": \"P{C}}}}}\",\n      \"value\": \"P{C}}}}}\"\n    },\n    {\n      \"key\": \"P{C}}}}}}}}}}\",\n      \"value\": \"P{C}}}}}}\"\n    },\n    {\n      \"key\": \"P{C}}}}}}}}}}\",\n      \"value\": \"P{C}}}}\"\n    },\n    {\n      \"key\": \"P{C}}}}\",\n      \"value\": \"P{C}}}\"\n    },\n    {\n      \"key\": \"P{C}}}}\",\n      \"value\": \"P{C}}\"\n    },\n    {\n      \"key\": \"P{C}}}}}}}}}\",\n      \"value\": \"P{C}}}}}}}}\"\n    },\n    {\n      \"key\": \"P{C}}}}}\",\n      \"value\": \"P{C}}}}}}\"\n    },\n    {\n      \"key\": \"P{C}}}}}\",\n      \"value\": \"P{C}}\"\n    },\n    {\n      \"key\": \"P{C}\",\n      \"value\": \"P{C}}}}}}}}\"\n    },\n    {\n      \"key\": \"P{C}}}}}}}}}}\",\n      \"value\": \"P{C}\"\n    },\n    {\n      \"key\": \"P{C}}}}}}}\",\n      \"value\": \"P{C}}}}}}\"\n    },\n    {\n      \"key\": \"P{C}\",\n      \"value\": \"P{C}}\"\n    },\n    {\n      \"key\": \"P{C}}}\",\n      \"value\": \"P{C}}}}}}}}}\"\n    },\n    {\n      \"key\": \"P{C}}}}}}}}}}}\",\n      \"value\": \"P{C}}}\"\n    },\n    {\n      \"key\": \"P{C}}}}}}}\",\n      \"value\": \"P{C}}}}\"\n    },\n    {\n      \"key\": \"P{C}}}\",\n      \"value\": \"P{C}}}}}}\"\n    },\n    {\n      \"key\": \"P{C}}}}}}}}}\",\n      \"value\": \"P{C}}}}}}}\"\n    },\n    {\n      \"key\": \"P{C}}}}}}}}}\",\n      \"value\": \"P{C}}\"\n    },\n    {\n      \"key\": \"P{C}}}\",\n      \"value\": \"P{C}\"\n    }\n  ]\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/v1/domain?domain=dqftn8ws2rn9i2ylzpm2bldoeqdwhwjn1pnl-b805i22-7#domain",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "v1",
+                        "domain"
+                      ],
+                      "query": [
+                        {
+                          "description": "(Required)  The name of the domain to create. All domain names in an Amazon Web Services Region that are in the same Amazon Web Services account must be unique. The domain name is used as the prefix in DNS hostnames. Do not use sensitive information in a domain name because it is publicly discoverable. ",
+                          "key": "domain",
+                          "value": "dqftn8ws2rn9i2ylzpm2bldoeqdwhwjn1pnl-b805i22-7"
+                        }
+                      ],
+                      "hash": "domain"
+                    }
+                  },
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{}",
+                  "createdAt": "2026-07-28T10:09:31.000Z",
+                  "updatedAt": "2026-07-28T10:09:31.000Z",
+                  "uid": "35240-e1238658-7259-4f59-888f-85f710323202"
+                }
+              ],
+              "createdAt": "2026-07-28T10:09:31.000Z",
+              "updatedAt": "2026-07-28T10:09:31.000Z",
+              "uid": "35240-06ae84ca-993e-4c21-b5e7-bfb8088f1e59"
+            },
+            {
+              "name": "Amazon CodeArtifact Delete Domain",
+              "id": "69b03567-3794-4afc-b3ec-b1559d0634dd",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "method": "DELETE",
+                "header": [
+                  {
+                    "key": "X-Amz-Content-Sha256",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "X-Amz-Date",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "X-Amz-Algorithm",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "X-Amz-Credential",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "X-Amz-Security-Token",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "X-Amz-Signature",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "X-Amz-SignedHeaders",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/v1/domain?domain=dqftn8ws2rn9i2ylzpm2bldoeqdwhwjn1pnl-b805i22-7&domain-owner=831243020999#domain",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "v1",
+                    "domain"
+                  ],
+                  "query": [
+                    {
+                      "description": "(Required)  The name of the domain to delete. ",
+                      "key": "domain",
+                      "value": "dqftn8ws2rn9i2ylzpm2bldoeqdwhwjn1pnl-b805i22-7"
+                    },
+                    {
+                      "description": " The 12-digit account number of the Amazon Web Services account that owns the domain. It does not include dashes or spaces. ",
+                      "key": "domain-owner",
+                      "value": "831243020999"
+                    }
+                  ],
+                  "hash": "domain"
+                },
+                "description": " Deletes a domain. You cannot delete a domain that contains repositories. If you want to delete a domain with repositories, first delete its repositories. "
+              },
+              "response": [
+                {
+                  "id": "5f5241f6-b095-4c6e-8fc1-367ca586198e",
+                  "name": "Success",
+                  "originalRequest": {
+                    "method": "DELETE",
+                    "header": [
+                      {
+                        "key": "X-Amz-Content-Sha256",
+                        "value": "<string>"
+                      },
+                      {
+                        "key": "X-Amz-Date",
+                        "value": "<string>"
+                      },
+                      {
+                        "key": "X-Amz-Algorithm",
+                        "value": "<string>"
+                      },
+                      {
+                        "key": "X-Amz-Credential",
+                        "value": "<string>"
+                      },
+                      {
+                        "key": "X-Amz-Security-Token",
+                        "value": "<string>"
+                      },
+                      {
+                        "key": "X-Amz-Signature",
+                        "value": "<string>"
+                      },
+                      {
+                        "key": "X-Amz-SignedHeaders",
+                        "value": "<string>"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: apikey",
+                        "key": "Authorization",
+                        "value": "<API Key>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/v1/domain?domain=dqftn8ws2rn9i2ylzpm2bldoeqdwhwjn1pnl-b805i22-7&domain-owner=831243020999#domain",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "v1",
+                        "domain"
+                      ],
+                      "query": [
+                        {
+                          "description": "(Required)  The name of the domain to delete. ",
+                          "key": "domain",
+                          "value": "dqftn8ws2rn9i2ylzpm2bldoeqdwhwjn1pnl-b805i22-7"
+                        },
+                        {
+                          "description": " The 12-digit account number of the Amazon Web Services account that owns the domain. It does not include dashes or spaces. ",
+                          "key": "domain-owner",
+                          "value": "831243020999"
+                        }
+                      ],
+                      "hash": "domain"
+                    }
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"domain\": {\n    \"name\": \"orx9fgid1f3o20vxdgn09b7k5l\",\n    \"owner\": \"264916998453\",\n    \"arn\": \"(hwslJ\",\n    \"status\": \"Deleted\",\n    \"createdTime\": \"<dateTime>\",\n    \"encryptionKey\": \"15(v\",\n    \"repositoryCount\": \"<integer>\",\n    \"assetSizeBytes\": \"<integer>\",\n    \"s3BucketArn\": \"NwfZg!K03J+\"\n  }\n}",
+                  "createdAt": "2026-07-28T10:09:31.000Z",
+                  "updatedAt": "2026-07-28T10:09:31.000Z",
+                  "uid": "35240-5f5241f6-b095-4c6e-8fc1-367ca586198e"
+                },
+                {
+                  "id": "628075c4-91a2-4819-b846-471d9c566cb8",
+                  "name": "AccessDeniedException",
+                  "originalRequest": {
+                    "method": "DELETE",
+                    "header": [
+                      {
+                        "key": "X-Amz-Content-Sha256",
+                        "value": "<string>"
+                      },
+                      {
+                        "key": "X-Amz-Date",
+                        "value": "<string>"
+                      },
+                      {
+                        "key": "X-Amz-Algorithm",
+                        "value": "<string>"
+                      },
+                      {
+                        "key": "X-Amz-Credential",
+                        "value": "<string>"
+                      },
+                      {
+                        "key": "X-Amz-Security-Token",
+                        "value": "<string>"
+                      },
+                      {
+                        "key": "X-Amz-Signature",
+                        "value": "<string>"
+                      },
+                      {
+                        "key": "X-Amz-SignedHeaders",
+                        "value": "<string>"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: apikey",
+                        "key": "Authorization",
+                        "value": "<API Key>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/v1/domain?domain=dqftn8ws2rn9i2ylzpm2bldoeqdwhwjn1pnl-b805i22-7&domain-owner=831243020999#domain",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "v1",
+                        "domain"
+                      ],
+                      "query": [
+                        {
+                          "description": "(Required)  The name of the domain to delete. ",
+                          "key": "domain",
+                          "value": "dqftn8ws2rn9i2ylzpm2bldoeqdwhwjn1pnl-b805i22-7"
+                        },
+                        {
+                          "description": " The 12-digit account number of the Amazon Web Services account that owns the domain. It does not include dashes or spaces. ",
+                          "key": "domain-owner",
+                          "value": "831243020999"
+                        }
+                      ],
+                      "hash": "domain"
+                    }
+                  },
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{}",
+                  "createdAt": "2026-07-28T10:09:31.000Z",
+                  "updatedAt": "2026-07-28T10:09:31.000Z",
+                  "uid": "35240-628075c4-91a2-4819-b846-471d9c566cb8"
+                },
+                {
+                  "id": "a5c32375-94d8-4086-abff-df893a4d7269",
+                  "name": "ConflictException",
+                  "originalRequest": {
+                    "method": "DELETE",
+                    "header": [
+                      {
+                        "key": "X-Amz-Content-Sha256",
+                        "value": "<string>"
+                      },
+                      {
+                        "key": "X-Amz-Date",
+                        "value": "<string>"
+                      },
+                      {
+                        "key": "X-Amz-Algorithm",
+                        "value": "<string>"
+                      },
+                      {
+                        "key": "X-Amz-Credential",
+                        "value": "<string>"
+                      },
+                      {
+                        "key": "X-Amz-Security-Token",
+                        "value": "<string>"
+                      },
+                      {
+                        "key": "X-Amz-Signature",
+                        "value": "<string>"
+                      },
+                      {
+                        "key": "X-Amz-SignedHeaders",
+                        "value": "<string>"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: apikey",
+                        "key": "Authorization",
+                        "value": "<API Key>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/v1/domain?domain=dqftn8ws2rn9i2ylzpm2bldoeqdwhwjn1pnl-b805i22-7&domain-owner=831243020999#domain",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "v1",
+                        "domain"
+                      ],
+                      "query": [
+                        {
+                          "description": "(Required)  The name of the domain to delete. ",
+                          "key": "domain",
+                          "value": "dqftn8ws2rn9i2ylzpm2bldoeqdwhwjn1pnl-b805i22-7"
+                        },
+                        {
+                          "description": " The 12-digit account number of the Amazon Web Services account that owns the domain. It does not include dashes or spaces. ",
+                          "key": "domain-owner",
+                          "value": "831243020999"
+                        }
+                      ],
+                      "hash": "domain"
+                    }
+                  },
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{}",
+                  "createdAt": "2026-07-28T10:09:31.000Z",
+                  "updatedAt": "2026-07-28T10:09:31.000Z",
+                  "uid": "35240-a5c32375-94d8-4086-abff-df893a4d7269"
+                },
+                {
+                  "id": "bc9ac040-8832-47c9-bca4-2e83d86d6a96",
+                  "name": "InternalServerException",
+                  "originalRequest": {
+                    "method": "DELETE",
+                    "header": [
+                      {
+                        "key": "X-Amz-Content-Sha256",
+                        "value": "<string>"
+                      },
+                      {
+                        "key": "X-Amz-Date",
+                        "value": "<string>"
+                      },
+                      {
+                        "key": "X-Amz-Algorithm",
+                        "value": "<string>"
+                      },
+                      {
+                        "key": "X-Amz-Credential",
+                        "value": "<string>"
+                      },
+                      {
+                        "key": "X-Amz-Security-Token",
+                        "value": "<string>"
+                      },
+                      {
+                        "key": "X-Amz-Signature",
+                        "value": "<string>"
+                      },
+                      {
+                        "key": "X-Amz-SignedHeaders",
+                        "value": "<string>"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: apikey",
+                        "key": "Authorization",
+                        "value": "<API Key>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/v1/domain?domain=dqftn8ws2rn9i2ylzpm2bldoeqdwhwjn1pnl-b805i22-7&domain-owner=831243020999#domain",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "v1",
+                        "domain"
+                      ],
+                      "query": [
+                        {
+                          "description": "(Required)  The name of the domain to delete. ",
+                          "key": "domain",
+                          "value": "dqftn8ws2rn9i2ylzpm2bldoeqdwhwjn1pnl-b805i22-7"
+                        },
+                        {
+                          "description": " The 12-digit account number of the Amazon Web Services account that owns the domain. It does not include dashes or spaces. ",
+                          "key": "domain-owner",
+                          "value": "831243020999"
+                        }
+                      ],
+                      "hash": "domain"
+                    }
+                  },
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{}",
+                  "createdAt": "2026-07-28T10:09:31.000Z",
+                  "updatedAt": "2026-07-28T10:09:31.000Z",
+                  "uid": "35240-bc9ac040-8832-47c9-bca4-2e83d86d6a96"
+                },
+                {
+                  "id": "1ba678d5-b5e2-4f73-b891-60b2ac846fec",
+                  "name": "ThrottlingException",
+                  "originalRequest": {
+                    "method": "DELETE",
+                    "header": [
+                      {
+                        "key": "X-Amz-Content-Sha256",
+                        "value": "<string>"
+                      },
+                      {
+                        "key": "X-Amz-Date",
+                        "value": "<string>"
+                      },
+                      {
+                        "key": "X-Amz-Algorithm",
+                        "value": "<string>"
+                      },
+                      {
+                        "key": "X-Amz-Credential",
+                        "value": "<string>"
+                      },
+                      {
+                        "key": "X-Amz-Security-Token",
+                        "value": "<string>"
+                      },
+                      {
+                        "key": "X-Amz-Signature",
+                        "value": "<string>"
+                      },
+                      {
+                        "key": "X-Amz-SignedHeaders",
+                        "value": "<string>"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: apikey",
+                        "key": "Authorization",
+                        "value": "<API Key>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/v1/domain?domain=dqftn8ws2rn9i2ylzpm2bldoeqdwhwjn1pnl-b805i22-7&domain-owner=831243020999#domain",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "v1",
+                        "domain"
+                      ],
+                      "query": [
+                        {
+                          "description": "(Required)  The name of the domain to delete. ",
+                          "key": "domain",
+                          "value": "dqftn8ws2rn9i2ylzpm2bldoeqdwhwjn1pnl-b805i22-7"
+                        },
+                        {
+                          "description": " The 12-digit account number of the Amazon Web Services account that owns the domain. It does not include dashes or spaces. ",
+                          "key": "domain-owner",
+                          "value": "831243020999"
+                        }
+                      ],
+                      "hash": "domain"
+                    }
+                  },
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{}",
+                  "createdAt": "2026-07-28T10:09:31.000Z",
+                  "updatedAt": "2026-07-28T10:09:31.000Z",
+                  "uid": "35240-1ba678d5-b5e2-4f73-b891-60b2ac846fec"
+                },
+                {
+                  "id": "de44dcc3-7951-453e-a0b4-54c4caaa1f60",
+                  "name": "ValidationException",
+                  "originalRequest": {
+                    "method": "DELETE",
+                    "header": [
+                      {
+                        "key": "X-Amz-Content-Sha256",
+                        "value": "<string>"
+                      },
+                      {
+                        "key": "X-Amz-Date",
+                        "value": "<string>"
+                      },
+                      {
+                        "key": "X-Amz-Algorithm",
+                        "value": "<string>"
+                      },
+                      {
+                        "key": "X-Amz-Credential",
+                        "value": "<string>"
+                      },
+                      {
+                        "key": "X-Amz-Security-Token",
+                        "value": "<string>"
+                      },
+                      {
+                        "key": "X-Amz-Signature",
+                        "value": "<string>"
+                      },
+                      {
+                        "key": "X-Amz-SignedHeaders",
+                        "value": "<string>"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: apikey",
+                        "key": "Authorization",
+                        "value": "<API Key>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/v1/domain?domain=dqftn8ws2rn9i2ylzpm2bldoeqdwhwjn1pnl-b805i22-7&domain-owner=831243020999#domain",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "v1",
+                        "domain"
+                      ],
+                      "query": [
+                        {
+                          "description": "(Required)  The name of the domain to delete. ",
+                          "key": "domain",
+                          "value": "dqftn8ws2rn9i2ylzpm2bldoeqdwhwjn1pnl-b805i22-7"
+                        },
+                        {
+                          "description": " The 12-digit account number of the Amazon Web Services account that owns the domain. It does not include dashes or spaces. ",
+                          "key": "domain-owner",
+                          "value": "831243020999"
+                        }
+                      ],
+                      "hash": "domain"
+                    }
+                  },
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{}",
+                  "createdAt": "2026-07-28T10:09:31.000Z",
+                  "updatedAt": "2026-07-28T10:09:31.000Z",
+                  "uid": "35240-de44dcc3-7951-453e-a0b4-54c4caaa1f60"
+                }
+              ],
+              "createdAt": "2026-07-28T10:09:31.000Z",
+              "updatedAt": "2026-07-28T10:09:31.000Z",
+              "uid": "35240-69b03567-3794-4afc-b3ec-b1559d0634dd"
+            },
+            {
+              "name": "Amazon CodeArtifact Describe Domain",
+              "id": "ef956490-e3da-4293-8b54-5c3db035ed8f",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "X-Amz-Content-Sha256",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "X-Amz-Date",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "X-Amz-Algorithm",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "X-Amz-Credential",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "X-Amz-Security-Token",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "X-Amz-Signature",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "X-Amz-SignedHeaders",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/v1/domain?domain=dqftn8ws2rn9i2ylzpm2bldoeqdwhwjn1pnl-b805i22-7&domain-owner=831243020999#domain",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "v1",
+                    "domain"
+                  ],
+                  "query": [
+                    {
+                      "description": "(Required)  A string that specifies the name of the requested domain. ",
+                      "key": "domain",
+                      "value": "dqftn8ws2rn9i2ylzpm2bldoeqdwhwjn1pnl-b805i22-7"
+                    },
+                    {
+                      "description": " The 12-digit account number of the Amazon Web Services account that owns the domain. It does not include dashes or spaces. ",
+                      "key": "domain-owner",
+                      "value": "831243020999"
+                    }
+                  ],
+                  "hash": "domain"
+                },
+                "description": " Returns a <a href=\"https://docs.aws.amazon.com/codeartifact/latest/APIReference/API_DomainDescription.html\">DomainDescription</a> object that contains information about the requested domain. "
+              },
+              "response": [
+                {
+                  "id": "c037b748-5fda-4092-a640-8f903fa0fb9f",
+                  "name": "Success",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "X-Amz-Content-Sha256",
+                        "value": "<string>"
+                      },
+                      {
+                        "key": "X-Amz-Date",
+                        "value": "<string>"
+                      },
+                      {
+                        "key": "X-Amz-Algorithm",
+                        "value": "<string>"
+                      },
+                      {
+                        "key": "X-Amz-Credential",
+                        "value": "<string>"
+                      },
+                      {
+                        "key": "X-Amz-Security-Token",
+                        "value": "<string>"
+                      },
+                      {
+                        "key": "X-Amz-Signature",
+                        "value": "<string>"
+                      },
+                      {
+                        "key": "X-Amz-SignedHeaders",
+                        "value": "<string>"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: apikey",
+                        "key": "Authorization",
+                        "value": "<API Key>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/v1/domain?domain=dqftn8ws2rn9i2ylzpm2bldoeqdwhwjn1pnl-b805i22-7&domain-owner=831243020999#domain",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "v1",
+                        "domain"
+                      ],
+                      "query": [
+                        {
+                          "description": "(Required)  A string that specifies the name of the requested domain. ",
+                          "key": "domain",
+                          "value": "dqftn8ws2rn9i2ylzpm2bldoeqdwhwjn1pnl-b805i22-7"
+                        },
+                        {
+                          "description": " The 12-digit account number of the Amazon Web Services account that owns the domain. It does not include dashes or spaces. ",
+                          "key": "domain-owner",
+                          "value": "831243020999"
+                        }
+                      ],
+                      "hash": "domain"
+                    }
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"domain\": {\n    \"name\": \"s72e774a3c2yj-qou7bqjww73jlw22ftpkpm6v2vo\",\n    \"owner\": \"874991899466\",\n    \"arn\": \"Ph]E^Zb3{Y\",\n    \"status\": \"Active\",\n    \"createdTime\": \"<dateTime>\",\n    \"encryptionKey\": \"2efO5Y/\",\n    \"repositoryCount\": \"<integer>\",\n    \"assetSizeBytes\": \"<integer>\",\n    \"s3BucketArn\": \"lX9)T\"\n  }\n}",
+                  "createdAt": "2026-07-28T10:09:31.000Z",
+                  "updatedAt": "2026-07-28T10:09:31.000Z",
+                  "uid": "35240-c037b748-5fda-4092-a640-8f903fa0fb9f"
+                },
+                {
+                  "id": "141a4425-7fc7-439b-805b-366daef2a865",
+                  "name": "AccessDeniedException",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "X-Amz-Content-Sha256",
+                        "value": "<string>"
+                      },
+                      {
+                        "key": "X-Amz-Date",
+                        "value": "<string>"
+                      },
+                      {
+                        "key": "X-Amz-Algorithm",
+                        "value": "<string>"
+                      },
+                      {
+                        "key": "X-Amz-Credential",
+                        "value": "<string>"
+                      },
+                      {
+                        "key": "X-Amz-Security-Token",
+                        "value": "<string>"
+                      },
+                      {
+                        "key": "X-Amz-Signature",
+                        "value": "<string>"
+                      },
+                      {
+                        "key": "X-Amz-SignedHeaders",
+                        "value": "<string>"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: apikey",
+                        "key": "Authorization",
+                        "value": "<API Key>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/v1/domain?domain=dqftn8ws2rn9i2ylzpm2bldoeqdwhwjn1pnl-b805i22-7&domain-owner=831243020999#domain",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "v1",
+                        "domain"
+                      ],
+                      "query": [
+                        {
+                          "description": "(Required)  A string that specifies the name of the requested domain. ",
+                          "key": "domain",
+                          "value": "dqftn8ws2rn9i2ylzpm2bldoeqdwhwjn1pnl-b805i22-7"
+                        },
+                        {
+                          "description": " The 12-digit account number of the Amazon Web Services account that owns the domain. It does not include dashes or spaces. ",
+                          "key": "domain-owner",
+                          "value": "831243020999"
+                        }
+                      ],
+                      "hash": "domain"
+                    }
+                  },
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{}",
+                  "createdAt": "2026-07-28T10:09:31.000Z",
+                  "updatedAt": "2026-07-28T10:09:31.000Z",
+                  "uid": "35240-141a4425-7fc7-439b-805b-366daef2a865"
+                },
+                {
+                  "id": "f76fc4a8-c5c1-4ed5-8b35-32f47ec5833f",
+                  "name": "InternalServerException",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "X-Amz-Content-Sha256",
+                        "value": "<string>"
+                      },
+                      {
+                        "key": "X-Amz-Date",
+                        "value": "<string>"
+                      },
+                      {
+                        "key": "X-Amz-Algorithm",
+                        "value": "<string>"
+                      },
+                      {
+                        "key": "X-Amz-Credential",
+                        "value": "<string>"
+                      },
+                      {
+                        "key": "X-Amz-Security-Token",
+                        "value": "<string>"
+                      },
+                      {
+                        "key": "X-Amz-Signature",
+                        "value": "<string>"
+                      },
+                      {
+                        "key": "X-Amz-SignedHeaders",
+                        "value": "<string>"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: apikey",
+                        "key": "Authorization",
+                        "value": "<API Key>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/v1/domain?domain=dqftn8ws2rn9i2ylzpm2bldoeqdwhwjn1pnl-b805i22-7&domain-owner=831243020999#domain",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "v1",
+                        "domain"
+                      ],
+                      "query": [
+                        {
+                          "description": "(Required)  A string that specifies the name of the requested domain. ",
+                          "key": "domain",
+                          "value": "dqftn8ws2rn9i2ylzpm2bldoeqdwhwjn1pnl-b805i22-7"
+                        },
+                        {
+                          "description": " The 12-digit account number of the Amazon Web Services account that owns the domain. It does not include dashes or spaces. ",
+                          "key": "domain-owner",
+                          "value": "831243020999"
+                        }
+                      ],
+                      "hash": "domain"
+                    }
+                  },
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{}",
+                  "createdAt": "2026-07-28T10:09:31.000Z",
+                  "updatedAt": "2026-07-28T10:09:31.000Z",
+                  "uid": "35240-f76fc4a8-c5c1-4ed5-8b35-32f47ec5833f"
+                },
+                {
+                  "id": "a99b8dae-bb8b-4cf2-ae21-7845bfcb977d",
+                  "name": "ResourceNotFoundException",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "X-Amz-Content-Sha256",
+                        "value": "<string>"
+                      },
+                      {
+                        "key": "X-Amz-Date",
+                        "value": "<string>"
+                      },
+                      {
+                        "key": "X-Amz-Algorithm",
+                        "value": "<string>"
+                      },
+                      {
+                        "key": "X-Amz-Credential",
+                        "value": "<string>"
+                      },
+                      {
+                        "key": "X-Amz-Security-Token",
+                        "value": "<string>"
+                      },
+                      {
+                        "key": "X-Amz-Signature",
+                        "value": "<string>"
+                      },
+                      {
+                        "key": "X-Amz-SignedHeaders",
+                        "value": "<string>"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: apikey",
+                        "key": "Authorization",
+                        "value": "<API Key>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/v1/domain?domain=dqftn8ws2rn9i2ylzpm2bldoeqdwhwjn1pnl-b805i22-7&domain-owner=831243020999#domain",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "v1",
+                        "domain"
+                      ],
+                      "query": [
+                        {
+                          "description": "(Required)  A string that specifies the name of the requested domain. ",
+                          "key": "domain",
+                          "value": "dqftn8ws2rn9i2ylzpm2bldoeqdwhwjn1pnl-b805i22-7"
+                        },
+                        {
+                          "description": " The 12-digit account number of the Amazon Web Services account that owns the domain. It does not include dashes or spaces. ",
+                          "key": "domain-owner",
+                          "value": "831243020999"
+                        }
+                      ],
+                      "hash": "domain"
+                    }
+                  },
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{}",
+                  "createdAt": "2026-07-28T10:09:31.000Z",
+                  "updatedAt": "2026-07-28T10:09:31.000Z",
+                  "uid": "35240-a99b8dae-bb8b-4cf2-ae21-7845bfcb977d"
+                },
+                {
+                  "id": "69e4909c-c38c-4fce-bd69-e3ffdeefaa3f",
+                  "name": "ThrottlingException",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "X-Amz-Content-Sha256",
+                        "value": "<string>"
+                      },
+                      {
+                        "key": "X-Amz-Date",
+                        "value": "<string>"
+                      },
+                      {
+                        "key": "X-Amz-Algorithm",
+                        "value": "<string>"
+                      },
+                      {
+                        "key": "X-Amz-Credential",
+                        "value": "<string>"
+                      },
+                      {
+                        "key": "X-Amz-Security-Token",
+                        "value": "<string>"
+                      },
+                      {
+                        "key": "X-Amz-Signature",
+                        "value": "<string>"
+                      },
+                      {
+                        "key": "X-Amz-SignedHeaders",
+                        "value": "<string>"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: apikey",
+                        "key": "Authorization",
+                        "value": "<API Key>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/v1/domain?domain=dqftn8ws2rn9i2ylzpm2bldoeqdwhwjn1pnl-b805i22-7&domain-owner=831243020999#domain",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "v1",
+                        "domain"
+                      ],
+                      "query": [
+                        {
+                          "description": "(Required)  A string that specifies the name of the requested domain. ",
+                          "key": "domain",
+                          "value": "dqftn8ws2rn9i2ylzpm2bldoeqdwhwjn1pnl-b805i22-7"
+                        },
+                        {
+                          "description": " The 12-digit account number of the Amazon Web Services account that owns the domain. It does not include dashes or spaces. ",
+                          "key": "domain-owner",
+                          "value": "831243020999"
+                        }
+                      ],
+                      "hash": "domain"
+                    }
+                  },
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{}",
+                  "createdAt": "2026-07-28T10:09:31.000Z",
+                  "updatedAt": "2026-07-28T10:09:31.000Z",
+                  "uid": "35240-69e4909c-c38c-4fce-bd69-e3ffdeefaa3f"
+                },
+                {
+                  "id": "3f840c9b-824f-4843-8079-924fad609268",
+                  "name": "ValidationException",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "X-Amz-Content-Sha256",
+                        "value": "<string>"
+                      },
+                      {
+                        "key": "X-Amz-Date",
+                        "value": "<string>"
+                      },
+                      {
+                        "key": "X-Amz-Algorithm",
+                        "value": "<string>"
+                      },
+                      {
+                        "key": "X-Amz-Credential",
+                        "value": "<string>"
+                      },
+                      {
+                        "key": "X-Amz-Security-Token",
+                        "value": "<string>"
+                      },
+                      {
+                        "key": "X-Amz-Signature",
+                        "value": "<string>"
+                      },
+                      {
+                        "key": "X-Amz-SignedHeaders",
+                        "value": "<string>"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: apikey",
+                        "key": "Authorization",
+                        "value": "<API Key>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/v1/domain?domain=dqftn8ws2rn9i2ylzpm2bldoeqdwhwjn1pnl-b805i22-7&domain-owner=831243020999#domain",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "v1",
+                        "domain"
+                      ],
+                      "query": [
+                        {
+                          "description": "(Required)  A string that specifies the name of the requested domain. ",
+                          "key": "domain",
+                          "value": "dqftn8ws2rn9i2ylzpm2bldoeqdwhwjn1pnl-b805i22-7"
+                        },
+                        {
+                          "description": " The 12-digit account number of the Amazon Web Services account that owns the domain. It does not include dashes or spaces. ",
+                          "key": "domain-owner",
+                          "value": "831243020999"
+                        }
+                      ],
+                      "hash": "domain"
+                    }
+                  },
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{}",
+                  "createdAt": "2026-07-28T10:09:31.000Z",
+                  "updatedAt": "2026-07-28T10:09:31.000Z",
+                  "uid": "35240-3f840c9b-824f-4843-8079-924fad609268"
+                }
+              ],
+              "createdAt": "2026-07-28T10:09:31.000Z",
+              "updatedAt": "2026-07-28T10:09:31.000Z",
+              "uid": "35240-ef956490-e3da-4293-8b54-5c3db035ed8f"
+            }
+          ],
+          "id": "744397b3-ca81-497f-8efb-69461f328a22",
+          "createdAt": "2026-07-28T10:09:31.000Z",
+          "updatedAt": "2026-07-28T10:09:31.000Z",
+          "uid": "35240-744397b3-ca81-497f-8efb-69461f328a22"
+        }
+      ],
+      "id": "b0fe6585-e235-4c3d-b4b6-fab51e9bd4fa",
+      "createdAt": "2026-07-28T10:09:31.000Z",
+      "updatedAt": "2026-07-28T10:09:31.000Z",
+      "uid": "35240-b0fe6585-e235-4c3d-b4b6-fab51e9bd4fa"
+    }
+  ],
+  "auth": {
+    "type": "apikey",
+    "apikey": [
+      {
+        "key": "key",
+        "value": "Authorization",
+        "type": "string"
+      },
+      {
+        "key": "value",
+        "value": "{{apiKey}}",
+        "type": "string"
+      },
+      {
+        "key": "in",
+        "value": "header",
+        "type": "string"
+      }
+    ]
+  },
+  "variable": [
+    {
+      "key": "region",
+      "value": "us-east-1"
+    },
+    {
+      "key": "baseUrl",
+      "value": "http://codeartifact.{{region}}.amazonaws.com"
+    }
+  ]
+}
