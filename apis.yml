@@ -381,6 +381,10 @@ apis:
   - type: Lifecycle
     url: lifecycle/amazon-codeartifact-lifecycle.yml
 common:
+  - type: MCPServer
+    url: mcp/amazon-codeartifact-mcp.yml
+  - type: Overlay
+    url: overlays/amazon-codeartifact-api-overlay.yaml
   - type: PostmanWorkspace
     url: https://www.postman.com/kinlaneapi/amazon-codeartifact/overview
   - type: AgenticAccess
