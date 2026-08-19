@@ -1,0 +1,141 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "CodeArtifact Authorization Token#domain Packages#domain&repository API",
+    "version": "1.0.0"
+  },
+  "request": {
+    "auth": {
+      "type": "apikey",
+      "key": "Authorization",
+      "value": "{{Authorization}}",
+      "placement": "header"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Packages#domain&repository",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Amazon CodeArtifact List Packages",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "http://codeartifact.{region}.amazonaws.com/v1/packages#domain&repository",
+            "headers": [
+              {
+                "name": "X-Amz-Content-Sha256",
+                "value": ""
+              },
+              {
+                "name": "X-Amz-Date",
+                "value": ""
+              },
+              {
+                "name": "X-Amz-Algorithm",
+                "value": ""
+              },
+              {
+                "name": "X-Amz-Credential",
+                "value": ""
+              },
+              {
+                "name": "X-Amz-Security-Token",
+                "value": ""
+              },
+              {
+                "name": "X-Amz-Signature",
+                "value": ""
+              },
+              {
+                "name": "X-Amz-SignedHeaders",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "domain",
+                "value": "",
+                "type": "query",
+                "description": " The name of the domain that contains the repository that contains the requested packages. "
+              },
+              {
+                "name": "domain-owner",
+                "value": "",
+                "type": "query",
+                "description": " The 12-digit account number of the Amazon Web Services account that owns the domain. It does not include dashes or spaces. "
+              },
+              {
+                "name": "repository",
+                "value": "",
+                "type": "query",
+                "description": " The name of the repository that contains the requested packages. "
+              },
+              {
+                "name": "format",
+                "value": "",
+                "type": "query",
+                "description": "The format used to filter requested packages. Only packages from the provided format will be returned."
+              },
+              {
+                "name": "namespace",
+                "value": "",
+                "type": "query",
+                "description": "<p>The namespace prefix used to filter requested packages. Only packages with a namespace that starts with the provided string value are returned. Note that although this option is called <code>--namespace</code> and not <code>--namespace-prefix</code>, it has prefix-matching behavior.</p> <p>Each package format uses namespace as follows:</p> <ul> <li> <p> The namespace of a Maven package is its <code>groupId</code>. </p> </li> <li> <p> The namespace of an npm package is its <code>scope</code>. </p> </li> <li> <p> Python and NuGet packages do not contain a corresponding component, packages of those formats do not have a namespace. </p> </li> <li> <p> The namespace of a generic package is its <code>namespace</code>. </p> </li> </ul>"
+              },
+              {
+                "name": "package-prefix",
+                "value": "",
+                "type": "query",
+                "description": " A prefix used to filter requested packages. Only packages with names that start with <code>packagePrefix</code> are returned. "
+              },
+              {
+                "name": "max-results",
+                "value": "",
+                "type": "query",
+                "description": " The maximum number of results to return per page. "
+              },
+              {
+                "name": "next-token",
+                "value": "",
+                "type": "query",
+                "description": " The token for the next set of results. Use the value returned in the previous response in the next request to retrieve the next set of results. "
+              },
+              {
+                "name": "publish",
+                "value": "",
+                "type": "query",
+                "description": "The value of the <code>Publish</code> package origin control restriction used to filter requested packages. Only packages with the provided restriction are returned. For more information, see <a href=\"https://docs.aws.amazon.com/codeartifact/latest/APIReference/API_PackageOriginRestrictions.html\">PackageOriginRestrictions</a>."
+              },
+              {
+                "name": "upstream",
+                "value": "",
+                "type": "query",
+                "description": "The value of the <code>Upstream</code> package origin control restriction used to filter requested packages. Only packages with the provided restriction are returned. For more information, see <a href=\"https://docs.aws.amazon.com/codeartifact/latest/APIReference/API_PackageOriginRestrictions.html\">PackageOriginRestrictions</a>."
+              },
+              {
+                "name": "maxResults",
+                "value": "",
+                "type": "query",
+                "description": "Pagination limit"
+              },
+              {
+                "name": "nextToken",
+                "value": "",
+                "type": "query",
+                "description": "Pagination token"
+              }
+            ]
+          },
+          "docs": " Returns a list of <a href=\"https://docs.aws.amazon.com/codeartifact/latest/APIReference/API_PackageSummary.html\">PackageSummary</a> objects for packages in a repository that match the request parameters. "
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

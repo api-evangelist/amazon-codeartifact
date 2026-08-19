@@ -1,0 +1,278 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "CodeArtifact Authorization Token# Domain API",
+    "version": "1.0.0"
+  },
+  "request": {
+    "auth": {
+      "type": "apikey",
+      "key": "Authorization",
+      "value": "{{Authorization}}",
+      "placement": "header"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Domain",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Amazon CodeArtifact Get Domain Permissions Policy",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "http://codeartifact.{region}.amazonaws.com/v1/domain/permissions/policy#domain",
+            "headers": [
+              {
+                "name": "X-Amz-Content-Sha256",
+                "value": ""
+              },
+              {
+                "name": "X-Amz-Date",
+                "value": ""
+              },
+              {
+                "name": "X-Amz-Algorithm",
+                "value": ""
+              },
+              {
+                "name": "X-Amz-Credential",
+                "value": ""
+              },
+              {
+                "name": "X-Amz-Security-Token",
+                "value": ""
+              },
+              {
+                "name": "X-Amz-Signature",
+                "value": ""
+              },
+              {
+                "name": "X-Amz-SignedHeaders",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "domain",
+                "value": "",
+                "type": "query",
+                "description": " The name of the domain to which the resource policy is attached. "
+              },
+              {
+                "name": "domain-owner",
+                "value": "",
+                "type": "query",
+                "description": " The 12-digit account number of the Amazon Web Services account that owns the domain. It does not include dashes or spaces. "
+              }
+            ]
+          },
+          "docs": "<p> Returns the resource policy attached to the specified domain. </p> <note> <p> The policy is a resource-based policy, not an identity-based policy. For more information, see <a href=\"https://docs.aws.amazon.com/IAM/latest/UserGuide/access_policies_identity-vs-resource.html\">Identity-based policies and resource-based policies </a> in the <i>IAM User Guide</i>. </p> </note>"
+        },
+        {
+          "info": {
+            "name": "Amazon CodeArtifact Delete Domain Permissions Policy",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "http://codeartifact.{region}.amazonaws.com/v1/domain/permissions/policy#domain",
+            "headers": [
+              {
+                "name": "X-Amz-Content-Sha256",
+                "value": ""
+              },
+              {
+                "name": "X-Amz-Date",
+                "value": ""
+              },
+              {
+                "name": "X-Amz-Algorithm",
+                "value": ""
+              },
+              {
+                "name": "X-Amz-Credential",
+                "value": ""
+              },
+              {
+                "name": "X-Amz-Security-Token",
+                "value": ""
+              },
+              {
+                "name": "X-Amz-Signature",
+                "value": ""
+              },
+              {
+                "name": "X-Amz-SignedHeaders",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "domain",
+                "value": "",
+                "type": "query",
+                "description": " The name of the domain associated with the resource policy to be deleted. "
+              },
+              {
+                "name": "domain-owner",
+                "value": "",
+                "type": "query",
+                "description": " The 12-digit account number of the Amazon Web Services account that owns the domain. It does not include dashes or spaces. "
+              },
+              {
+                "name": "policy-revision",
+                "value": "",
+                "type": "query",
+                "description": " The current revision of the resource policy to be deleted. This revision is used for optimistic locking, which prevents others from overwriting your changes to the domain's resource policy. "
+              }
+            ]
+          },
+          "docs": " Deletes the resource policy set on a domain. "
+        },
+        {
+          "info": {
+            "name": "Amazon CodeArtifact List Repositories in Domain",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "http://codeartifact.{region}.amazonaws.com/v1/domain/repositories#domain",
+            "headers": [
+              {
+                "name": "X-Amz-Content-Sha256",
+                "value": ""
+              },
+              {
+                "name": "X-Amz-Date",
+                "value": ""
+              },
+              {
+                "name": "X-Amz-Algorithm",
+                "value": ""
+              },
+              {
+                "name": "X-Amz-Credential",
+                "value": ""
+              },
+              {
+                "name": "X-Amz-Security-Token",
+                "value": ""
+              },
+              {
+                "name": "X-Amz-Signature",
+                "value": ""
+              },
+              {
+                "name": "X-Amz-SignedHeaders",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "domain",
+                "value": "",
+                "type": "query",
+                "description": " The name of the domain that contains the returned list of repositories. "
+              },
+              {
+                "name": "domain-owner",
+                "value": "",
+                "type": "query",
+                "description": " The 12-digit account number of the Amazon Web Services account that owns the domain. It does not include dashes or spaces. "
+              },
+              {
+                "name": "administrator-account",
+                "value": "",
+                "type": "query",
+                "description": " Filter the list of repositories to only include those that are managed by the Amazon Web Services account ID. "
+              },
+              {
+                "name": "repository-prefix",
+                "value": "",
+                "type": "query",
+                "description": " A prefix used to filter returned repositories. Only repositories with names that start with <code>repositoryPrefix</code> are returned. "
+              },
+              {
+                "name": "max-results",
+                "value": "",
+                "type": "query",
+                "description": " The maximum number of results to return per page. "
+              },
+              {
+                "name": "next-token",
+                "value": "",
+                "type": "query",
+                "description": " The token for the next set of results. Use the value returned in the previous response in the next request to retrieve the next set of results. "
+              },
+              {
+                "name": "maxResults",
+                "value": "",
+                "type": "query",
+                "description": "Pagination limit"
+              },
+              {
+                "name": "nextToken",
+                "value": "",
+                "type": "query",
+                "description": "Pagination token"
+              }
+            ]
+          },
+          "docs": " Returns a list of <a href=\"https://docs.aws.amazon.com/codeartifact/latest/APIReference/API_RepositorySummary.html\">RepositorySummary</a> objects. Each <code>RepositorySummary</code> contains information about a repository in the specified domain and that matches the input parameters. "
+        },
+        {
+          "info": {
+            "name": "Amazon CodeArtifact Put Domain Permissions Policy",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "http://codeartifact.{region}.amazonaws.com/v1/domain/permissions/policy",
+            "headers": [
+              {
+                "name": "X-Amz-Content-Sha256",
+                "value": ""
+              },
+              {
+                "name": "X-Amz-Date",
+                "value": ""
+              },
+              {
+                "name": "X-Amz-Algorithm",
+                "value": ""
+              },
+              {
+                "name": "X-Amz-Credential",
+                "value": ""
+              },
+              {
+                "name": "X-Amz-Security-Token",
+                "value": ""
+              },
+              {
+                "name": "X-Amz-Signature",
+                "value": ""
+              },
+              {
+                "name": "X-Amz-SignedHeaders",
+                "value": ""
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "<p> Sets a resource policy on a domain that specifies permissions to access it. </p> <p> When you call <code>PutDomainPermissionsPolicy</code>, the resource policy on the domain is ignored when evaluting permissions. This ensures that the owner of a domain cannot lock themselves out of the domain, which would prevent them from being able to update the resource policy. </p>"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

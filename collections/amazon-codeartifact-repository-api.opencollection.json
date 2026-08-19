@@ -1,0 +1,420 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "CodeArtifact Authorization Token#domain Repository API",
+    "version": "1.0.0"
+  },
+  "request": {
+    "auth": {
+      "type": "apikey",
+      "key": "Authorization",
+      "value": "{{Authorization}}",
+      "placement": "header"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Repository",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Amazon CodeArtifact Associate External Connection",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "http://codeartifact.{region}.amazonaws.com/v1/repository/external-connection#domain&repository&external-connection",
+            "headers": [
+              {
+                "name": "X-Amz-Content-Sha256",
+                "value": ""
+              },
+              {
+                "name": "X-Amz-Date",
+                "value": ""
+              },
+              {
+                "name": "X-Amz-Algorithm",
+                "value": ""
+              },
+              {
+                "name": "X-Amz-Credential",
+                "value": ""
+              },
+              {
+                "name": "X-Amz-Security-Token",
+                "value": ""
+              },
+              {
+                "name": "X-Amz-Signature",
+                "value": ""
+              },
+              {
+                "name": "X-Amz-SignedHeaders",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "domain",
+                "value": "",
+                "type": "query",
+                "description": "The name of the domain that contains the repository."
+              },
+              {
+                "name": "domain-owner",
+                "value": "",
+                "type": "query",
+                "description": " The 12-digit account number of the Amazon Web Services account that owns the domain. It does not include dashes or spaces. "
+              },
+              {
+                "name": "repository",
+                "value": "",
+                "type": "query",
+                "description": " The name of the repository to which the external connection is added. "
+              },
+              {
+                "name": "external-connection",
+                "value": "",
+                "type": "query",
+                "description": "<p> The name of the external connection to add to the repository. The following values are supported: </p> <ul> <li> <p> <code>public:npmjs</code> - for the npm public repository. </p> </li> <li> <p> <code>public:nuget-org</code> - for the NuGet Gallery. </p> </li> <li> <p> <code>public:pypi</code> - for the Python Package Index. </p> </li> <li> <p> <code>public:maven-central</code> - for Maven Central. </p> </li> <li> <p> <code>public:maven-googleandroid</code> - for the Google Android repository. </p> </li> <li> <p> <code>public:maven-gradleplugins</code> - for the Gradle plugins repository. </p> </li> <li> <p> <code>public:maven-commonsware</code> - for the CommonsWare Android repository. </p> </li> <li> <p> <code>public:maven-clojars</code> - for the Clojars repository. </p> </li> </ul>"
+              }
+            ]
+          },
+          "docs": "<p>Adds an existing external connection to a repository. One external connection is allowed per repository.</p> <note> <p>A repository can have one or more upstream repositories, or an external connection.</p> </note>"
+        },
+        {
+          "info": {
+            "name": "Amazon CodeArtifact Disassociate External Connection",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "http://codeartifact.{region}.amazonaws.com/v1/repository/external-connection#domain&repository&external-connection",
+            "headers": [
+              {
+                "name": "X-Amz-Content-Sha256",
+                "value": ""
+              },
+              {
+                "name": "X-Amz-Date",
+                "value": ""
+              },
+              {
+                "name": "X-Amz-Algorithm",
+                "value": ""
+              },
+              {
+                "name": "X-Amz-Credential",
+                "value": ""
+              },
+              {
+                "name": "X-Amz-Security-Token",
+                "value": ""
+              },
+              {
+                "name": "X-Amz-Signature",
+                "value": ""
+              },
+              {
+                "name": "X-Amz-SignedHeaders",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "domain",
+                "value": "",
+                "type": "query",
+                "description": "The name of the domain that contains the repository from which to remove the external repository. "
+              },
+              {
+                "name": "domain-owner",
+                "value": "",
+                "type": "query",
+                "description": " The 12-digit account number of the Amazon Web Services account that owns the domain. It does not include dashes or spaces. "
+              },
+              {
+                "name": "repository",
+                "value": "",
+                "type": "query",
+                "description": "The name of the repository from which the external connection will be removed. "
+              },
+              {
+                "name": "external-connection",
+                "value": "",
+                "type": "query",
+                "description": "The name of the external connection to be removed from the repository. "
+              }
+            ]
+          },
+          "docs": " Removes an existing external connection from a repository. "
+        },
+        {
+          "info": {
+            "name": "Amazon CodeArtifact Delete Repository Permissions Policy",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "http://codeartifact.{region}.amazonaws.com/v1/repository/permissions/policies#domain&repository",
+            "headers": [
+              {
+                "name": "X-Amz-Content-Sha256",
+                "value": ""
+              },
+              {
+                "name": "X-Amz-Date",
+                "value": ""
+              },
+              {
+                "name": "X-Amz-Algorithm",
+                "value": ""
+              },
+              {
+                "name": "X-Amz-Credential",
+                "value": ""
+              },
+              {
+                "name": "X-Amz-Security-Token",
+                "value": ""
+              },
+              {
+                "name": "X-Amz-Signature",
+                "value": ""
+              },
+              {
+                "name": "X-Amz-SignedHeaders",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "domain",
+                "value": "",
+                "type": "query",
+                "description": " The name of the domain that contains the repository associated with the resource policy to be deleted. "
+              },
+              {
+                "name": "domain-owner",
+                "value": "",
+                "type": "query",
+                "description": " The 12-digit account number of the Amazon Web Services account that owns the domain. It does not include dashes or spaces. "
+              },
+              {
+                "name": "repository",
+                "value": "",
+                "type": "query",
+                "description": " The name of the repository that is associated with the resource policy to be deleted "
+              },
+              {
+                "name": "policy-revision",
+                "value": "",
+                "type": "query",
+                "description": " The revision of the repository's resource policy to be deleted. This revision is used for optimistic locking, which prevents others from accidentally overwriting your changes to the repository's resource policy. "
+              }
+            ]
+          },
+          "docs": "<p> Deletes the resource policy that is set on a repository. After a resource policy is deleted, the permissions allowed and denied by the deleted policy are removed. The effect of deleting a resource policy might not be immediate. </p> <important> <p> Use <code>DeleteRepositoryPermissionsPolicy</code> with caution. After a policy is deleted, Amazon Web Services users, roles, and accounts lose permissions to perform the repository actions granted by the deleted policy. </p> </important>"
+        },
+        {
+          "info": {
+            "name": "Amazon CodeArtifact Get Repository Endpoint",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "http://codeartifact.{region}.amazonaws.com/v1/repository/endpoint#domain&repository&format",
+            "headers": [
+              {
+                "name": "X-Amz-Content-Sha256",
+                "value": ""
+              },
+              {
+                "name": "X-Amz-Date",
+                "value": ""
+              },
+              {
+                "name": "X-Amz-Algorithm",
+                "value": ""
+              },
+              {
+                "name": "X-Amz-Credential",
+                "value": ""
+              },
+              {
+                "name": "X-Amz-Security-Token",
+                "value": ""
+              },
+              {
+                "name": "X-Amz-Signature",
+                "value": ""
+              },
+              {
+                "name": "X-Amz-SignedHeaders",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "domain",
+                "value": "",
+                "type": "query",
+                "description": " The name of the domain that contains the repository. "
+              },
+              {
+                "name": "domain-owner",
+                "value": "",
+                "type": "query",
+                "description": " The 12-digit account number of the Amazon Web Services account that owns the domain that contains the repository. It does not include dashes or spaces. "
+              },
+              {
+                "name": "repository",
+                "value": "",
+                "type": "query",
+                "description": " The name of the repository. "
+              },
+              {
+                "name": "format",
+                "value": "",
+                "type": "query",
+                "description": " Returns which endpoint of a repository to return. A repository has one endpoint for each package format. "
+              }
+            ]
+          },
+          "docs": "<p> Returns the endpoint of a repository for a specific package format. A repository has one endpoint for each package format: </p> <ul> <li> <p> <code>maven</code> </p> </li> <li> <p> <code>npm</code> </p> </li> <li> <p> <code>nuget</code> </p> </li> <li> <p> <code>pypi</code> </p> </li> </ul>"
+        },
+        {
+          "info": {
+            "name": "Amazon CodeArtifact Get Repository Permissions Policy",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "http://codeartifact.{region}.amazonaws.com/v1/repository/permissions/policy#domain&repository",
+            "headers": [
+              {
+                "name": "X-Amz-Content-Sha256",
+                "value": ""
+              },
+              {
+                "name": "X-Amz-Date",
+                "value": ""
+              },
+              {
+                "name": "X-Amz-Algorithm",
+                "value": ""
+              },
+              {
+                "name": "X-Amz-Credential",
+                "value": ""
+              },
+              {
+                "name": "X-Amz-Security-Token",
+                "value": ""
+              },
+              {
+                "name": "X-Amz-Signature",
+                "value": ""
+              },
+              {
+                "name": "X-Amz-SignedHeaders",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "domain",
+                "value": "",
+                "type": "query",
+                "description": " The name of the domain containing the repository whose associated resource policy is to be retrieved. "
+              },
+              {
+                "name": "domain-owner",
+                "value": "",
+                "type": "query",
+                "description": " The 12-digit account number of the Amazon Web Services account that owns the domain. It does not include dashes or spaces. "
+              },
+              {
+                "name": "repository",
+                "value": "",
+                "type": "query",
+                "description": " The name of the repository whose associated resource policy is to be retrieved. "
+              }
+            ]
+          },
+          "docs": " Returns the resource policy that is set on a repository. "
+        },
+        {
+          "info": {
+            "name": "Amazon CodeArtifact Put Repository Permissions Policy",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "http://codeartifact.{region}.amazonaws.com/v1/repository/permissions/policy#domain&repository",
+            "headers": [
+              {
+                "name": "X-Amz-Content-Sha256",
+                "value": ""
+              },
+              {
+                "name": "X-Amz-Date",
+                "value": ""
+              },
+              {
+                "name": "X-Amz-Algorithm",
+                "value": ""
+              },
+              {
+                "name": "X-Amz-Credential",
+                "value": ""
+              },
+              {
+                "name": "X-Amz-Security-Token",
+                "value": ""
+              },
+              {
+                "name": "X-Amz-Signature",
+                "value": ""
+              },
+              {
+                "name": "X-Amz-SignedHeaders",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "domain",
+                "value": "",
+                "type": "query",
+                "description": " The name of the domain containing the repository to set the resource policy on. "
+              },
+              {
+                "name": "domain-owner",
+                "value": "",
+                "type": "query",
+                "description": " The 12-digit account number of the Amazon Web Services account that owns the domain. It does not include dashes or spaces. "
+              },
+              {
+                "name": "repository",
+                "value": "",
+                "type": "query",
+                "description": " The name of the repository to set the resource policy on. "
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "<p> Sets the resource policy on a repository that specifies permissions to access it. </p> <p> When you call <code>PutRepositoryPermissionsPolicy</code>, the resource policy on the repository is ignored when evaluting permissions. This ensures that the owner of a repository cannot lock themselves out of the repository, which would prevent them from being able to update the resource policy. </p>"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}
