@@ -2,7 +2,7 @@ openapi: 3.2.0
 info:
   version: '2018-09-22'
   x-release: v4
-  title: CodeArtifact Authorization Token#domain API
+  title: CodeArtifact Untag API
   description: CodeArtifact is a fully managed artifact repository compatible with language-native package managers and build tools such as npm, Apache Maven, pip, and dotnet.
   x-logo:
     url: https://twitter.com/awscloud/profile_image?size=original
@@ -113,9 +113,9 @@ servers:
 security:
 - hmac: []
 tags:
-- name: Authorization Token#domain
+- name: Untag
 paths:
-  /v1/authorization-token#domain:
+  /v1/untag#resourceArn:
     parameters:
     - $ref: '#/components/parameters/X-Amz-Content-Sha256'
     - $ref: '#/components/parameters/X-Amz-Date'
@@ -125,31 +125,20 @@ paths:
     - $ref: '#/components/parameters/X-Amz-Signature'
     - $ref: '#/components/parameters/X-Amz-SignedHeaders'
     post:
-      operationId: GetAuthorizationToken
-      description: 'Generates a temporary authorization token for accessing repositories in the domain. This API requires the codeartifact:GetAuthorizationToken and sts:GetServiceBearerToken permissions. For more information about authorization tokens, see CodeArtifact authentication and tokens.
-
-
-        CodeArtifact authorization tokens are valid for a period of 12 hours when created with the login command. You can call login periodically to refresh the token. When you create an authorization token with the GetAuthorizationToken API, you can set a custom authorization period, up to a maximum of 12 hours, with the durationSeconds parameter.
-
-
-        The authorization period begins after login or GetAuthorizationToken is called. If login or GetAuthorizationToken is called while assuming a role, the token lifetime is independent of the maximum session duration of the role. For example, if you call sts assume-role and specify a session duration of 15 minutes, then generate a CodeArtifact authorization token, the token will be valid for the full authorization period even though this is longer than the 15-minute session duration.
-
-
-        See Using IAM Roles for more information on controlling session duration.'
+      operationId: UntagResource
+      description: Removes tags from a resource in CodeArtifact.
       responses:
         '200':
           description: Success
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/GetAuthorizationTokenResult'
+                $ref: '#/components/schemas/UntagResourceResult'
               examples:
-                GetAuthorizationToken200Example:
-                  summary: Default GetAuthorizationToken 200 response
+                UntagResource200Example:
+                  summary: Default UntagResource 200 response
                   x-microcks-default: true
-                  value:
-                    authorizationToken: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.example
-                    expiration: example-value
+                  value: {}
         '480':
           description: AccessDeniedException
           content:
@@ -157,101 +146,97 @@ paths:
               schema:
                 $ref: '#/components/schemas/AccessDeniedException'
               examples:
-                GetAuthorizationToken480Example:
-                  summary: Default GetAuthorizationToken 480 response
+                UntagResource480Example:
+                  summary: Default UntagResource 480 response
                   x-microcks-default: true
                   value: example-value
         '481':
-          description: InternalServerException
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/InternalServerException'
-              examples:
-                GetAuthorizationToken481Example:
-                  summary: Default GetAuthorizationToken 481 response
-                  x-microcks-default: true
-                  value: example-value
-        '482':
           description: ResourceNotFoundException
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ResourceNotFoundException'
               examples:
-                GetAuthorizationToken482Example:
-                  summary: Default GetAuthorizationToken 482 response
+                UntagResource481Example:
+                  summary: Default UntagResource 481 response
                   x-microcks-default: true
                   value: example-value
-        '483':
+        '482':
           description: ThrottlingException
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ThrottlingException'
               examples:
-                GetAuthorizationToken483Example:
-                  summary: Default GetAuthorizationToken 483 response
+                UntagResource482Example:
+                  summary: Default UntagResource 482 response
                   x-microcks-default: true
                   value: example-value
-        '484':
+        '483':
           description: ValidationException
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ValidationException'
               examples:
-                GetAuthorizationToken484Example:
-                  summary: Default GetAuthorizationToken 484 response
+                UntagResource483Example:
+                  summary: Default UntagResource 483 response
                   x-microcks-default: true
                   value: '500123'
       parameters:
-      - name: domain
+      - name: resourceArn
         in: query
         required: true
-        description: ' The name of the domain that is in scope for the generated authorization token. '
+        description: The Amazon Resource Name (ARN) of the resource that you want to remove tags from.
         schema:
           type: string
-          pattern: '[a-z][a-z0-9\-]{0,48}[a-z0-9]'
-          minLength: 2
-          maxLength: 50
-      - name: domain-owner
-        in: query
-        required: false
-        description: ' The 12-digit account number of the Amazon Web Services account that owns the domain. It does not include dashes or spaces. '
-        schema:
-          type: string
-          pattern: '[0-9]{12}'
-          minLength: 12
-          maxLength: 12
-      - name: duration
-        in: query
-        required: false
-        description: The time, in seconds, that the generated authorization token is valid. Valid values are <code>0</code> and any number between <code>900</code> (15 minutes) and <code>43200</code> (12 hours). A value of <code>0</code> will set the expiration of the authorization token to the same expiration of the user's role's temporary credentials.
-        schema:
-          type: integer
-          minimum: 0
-          maximum: 43200
-      summary: Amazon CodeArtifact Get Authorization Token
+          pattern: \S+
+          minLength: 1
+          maxLength: 1011
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - tagKeys
+              properties:
+                tagKeys:
+                  description: The tag key for each tag that you want to remove from the resource.
+                  type: array
+                  items:
+                    $ref: '#/components/schemas/TagKey'
+                  minItems: 0
+                  maxItems: 200
+            examples:
+              UntagResourceRequestExample:
+                summary: Default UntagResource request
+                x-microcks-default: true
+                value:
+                  tagKeys:
+                  - arn:aws:kms:us-east-1:123456789012:key/12345678-1234-1234-1234-123456789012
+      summary: Amazon CodeArtifact Untag Resource
       x-microcks-operation:
         delay: 0
         dispatcher: FALLBACK
       tags:
-      - Authorization Token#domain
+      - Untag
 components:
+  schemas:
+    ValidationException: {}
+    ResourceNotFoundException: {}
+    ThrottlingException: {}
+    TagKey:
+      type: string
+      pattern: \P{C}+
+      minLength: 1
+      maxLength: 128
+    AccessDeniedException: {}
+    UntagResourceResult:
+      type: object
+      properties: {}
   parameters:
-    X-Amz-SignedHeaders:
-      name: X-Amz-SignedHeaders
-      in: header
-      schema:
-        type: string
-      required: false
-    X-Amz-Signature:
-      name: X-Amz-Signature
-      in: header
-      schema:
-        type: string
-      required: false
     X-Amz-Algorithm:
       name: X-Amz-Algorithm
       in: header
@@ -264,8 +249,20 @@ components:
       schema:
         type: string
       required: false
-    X-Amz-Content-Sha256:
-      name: X-Amz-Content-Sha256
+    X-Amz-Credential:
+      name: X-Amz-Credential
+      in: header
+      schema:
+        type: string
+      required: false
+    X-Amz-SignedHeaders:
+      name: X-Amz-SignedHeaders
+      in: header
+      schema:
+        type: string
+      required: false
+    X-Amz-Signature:
+      name: X-Amz-Signature
       in: header
       schema:
         type: string
@@ -276,34 +273,12 @@ components:
       schema:
         type: string
       required: false
-    X-Amz-Credential:
-      name: X-Amz-Credential
+    X-Amz-Content-Sha256:
+      name: X-Amz-Content-Sha256
       in: header
       schema:
         type: string
       required: false
-  schemas:
-    AccessDeniedException: {}
-    InternalServerException: {}
-    ValidationException: {}
-    ThrottlingException: {}
-    Timestamp:
-      type: string
-      format: date-time
-    GetAuthorizationTokenResult:
-      type: object
-      properties:
-        authorizationToken:
-          allOf:
-          - $ref: '#/components/schemas/String'
-          - description: ' The returned authentication token. '
-        expiration:
-          allOf:
-          - $ref: '#/components/schemas/Timestamp'
-          - description: ' A timestamp that specifies the date and time the authorization token expires. '
-    String:
-      type: string
-    ResourceNotFoundException: {}
   securitySchemes:
     hmac:
       type: apiKey

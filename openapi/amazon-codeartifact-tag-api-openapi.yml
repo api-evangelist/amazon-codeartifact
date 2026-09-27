@@ -2,7 +2,7 @@ openapi: 3.2.0
 info:
   version: '2018-09-22'
   x-release: v4
-  title: CodeArtifact Untag#resource Arn API
+  title: CodeArtifact Tag API
   description: CodeArtifact is a fully managed artifact repository compatible with language-native package managers and build tools such as npm, Apache Maven, pip, and dotnet.
   x-logo:
     url: https://twitter.com/awscloud/profile_image?size=original
@@ -113,9 +113,9 @@ servers:
 security:
 - hmac: []
 tags:
-- name: Untag#resourceArn
+- name: Tag
 paths:
-  /v1/untag#resourceArn:
+  /v1/tag#resourceArn:
     parameters:
     - $ref: '#/components/parameters/X-Amz-Content-Sha256'
     - $ref: '#/components/parameters/X-Amz-Date'
@@ -125,18 +125,18 @@ paths:
     - $ref: '#/components/parameters/X-Amz-Signature'
     - $ref: '#/components/parameters/X-Amz-SignedHeaders'
     post:
-      operationId: UntagResource
-      description: Removes tags from a resource in CodeArtifact.
+      operationId: TagResource
+      description: Adds or updates tags for a resource in CodeArtifact.
       responses:
         '200':
           description: Success
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/UntagResourceResult'
+                $ref: '#/components/schemas/TagResourceResult'
               examples:
-                UntagResource200Example:
-                  summary: Default UntagResource 200 response
+                TagResource200Example:
+                  summary: Default TagResource 200 response
                   x-microcks-default: true
                   value: {}
         '480':
@@ -146,8 +146,8 @@ paths:
               schema:
                 $ref: '#/components/schemas/AccessDeniedException'
               examples:
-                UntagResource480Example:
-                  summary: Default UntagResource 480 response
+                TagResource480Example:
+                  summary: Default TagResource 480 response
                   x-microcks-default: true
                   value: example-value
         '481':
@@ -157,37 +157,48 @@ paths:
               schema:
                 $ref: '#/components/schemas/ResourceNotFoundException'
               examples:
-                UntagResource481Example:
-                  summary: Default UntagResource 481 response
+                TagResource481Example:
+                  summary: Default TagResource 481 response
                   x-microcks-default: true
                   value: example-value
         '482':
+          description: ServiceQuotaExceededException
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ServiceQuotaExceededException'
+              examples:
+                TagResource482Example:
+                  summary: Default TagResource 482 response
+                  x-microcks-default: true
+                  value: example-value
+        '483':
           description: ThrottlingException
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ThrottlingException'
               examples:
-                UntagResource482Example:
-                  summary: Default UntagResource 482 response
+                TagResource483Example:
+                  summary: Default TagResource 483 response
                   x-microcks-default: true
                   value: example-value
-        '483':
+        '484':
           description: ValidationException
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ValidationException'
               examples:
-                UntagResource483Example:
-                  summary: Default UntagResource 483 response
+                TagResource484Example:
+                  summary: Default TagResource 484 response
                   x-microcks-default: true
                   value: '500123'
       parameters:
       - name: resourceArn
         in: query
         required: true
-        description: The Amazon Resource Name (ARN) of the resource that you want to remove tags from.
+        description: The Amazon Resource Name (ARN) of the resource that you want to add or update tags for.
         schema:
           type: string
           pattern: \S+
@@ -200,42 +211,65 @@ paths:
             schema:
               type: object
               required:
-              - tagKeys
+              - tags
               properties:
-                tagKeys:
-                  description: The tag key for each tag that you want to remove from the resource.
+                tags:
+                  description: The tags you want to modify or add to the resource.
                   type: array
                   items:
-                    $ref: '#/components/schemas/TagKey'
+                    $ref: '#/components/schemas/Tag'
                   minItems: 0
                   maxItems: 200
             examples:
-              UntagResourceRequestExample:
-                summary: Default UntagResource request
+              TagResourceRequestExample:
+                summary: Default TagResource request
                 x-microcks-default: true
                 value:
-                  tagKeys:
-                  - arn:aws:kms:us-east-1:123456789012:key/12345678-1234-1234-1234-123456789012
-      summary: Amazon CodeArtifact Untag Resource
+                  tags:
+                  - key: arn:aws:kms:us-east-1:123456789012:key/12345678-1234-1234-1234-123456789012
+                    value: example-value
+      summary: Amazon CodeArtifact Tag Resource
       x-microcks-operation:
         delay: 0
         dispatcher: FALLBACK
       tags:
-      - Untag#resourceArn
+      - Tag
 components:
+  schemas:
+    ServiceQuotaExceededException: {}
+    ValidationException: {}
+    ResourceNotFoundException: {}
+    ThrottlingException: {}
+    TagKey:
+      type: string
+      pattern: \P{C}+
+      minLength: 1
+      maxLength: 128
+    TagValue:
+      type: string
+      pattern: \P{C}*
+      minLength: 0
+      maxLength: 256
+    AccessDeniedException: {}
+    Tag:
+      type: object
+      required:
+      - key
+      - value
+      properties:
+        key:
+          allOf:
+          - $ref: '#/components/schemas/TagKey'
+          - description: The tag key.
+        value:
+          allOf:
+          - $ref: '#/components/schemas/TagValue'
+          - description: The tag value.
+      description: A tag is a key-value pair that can be used to manage, search for, or filter resources in CodeArtifact.
+    TagResourceResult:
+      type: object
+      properties: {}
   parameters:
-    X-Amz-SignedHeaders:
-      name: X-Amz-SignedHeaders
-      in: header
-      schema:
-        type: string
-      required: false
-    X-Amz-Signature:
-      name: X-Amz-Signature
-      in: header
-      schema:
-        type: string
-      required: false
     X-Amz-Algorithm:
       name: X-Amz-Algorithm
       in: header
@@ -244,12 +278,6 @@ components:
       required: false
     X-Amz-Date:
       name: X-Amz-Date
-      in: header
-      schema:
-        type: string
-      required: false
-    X-Amz-Content-Sha256:
-      name: X-Amz-Content-Sha256
       in: header
       schema:
         type: string
@@ -266,19 +294,24 @@ components:
       schema:
         type: string
       required: false
-  schemas:
-    AccessDeniedException: {}
-    ValidationException: {}
-    ThrottlingException: {}
-    UntagResourceResult:
-      type: object
-      properties: {}
-    TagKey:
-      type: string
-      pattern: \P{C}+
-      minLength: 1
-      maxLength: 128
-    ResourceNotFoundException: {}
+    X-Amz-Signature:
+      name: X-Amz-Signature
+      in: header
+      schema:
+        type: string
+      required: false
+    X-Amz-SignedHeaders:
+      name: X-Amz-SignedHeaders
+      in: header
+      schema:
+        type: string
+      required: false
+    X-Amz-Content-Sha256:
+      name: X-Amz-Content-Sha256
+      in: header
+      schema:
+        type: string
+      required: false
   securitySchemes:
     hmac:
       type: apiKey

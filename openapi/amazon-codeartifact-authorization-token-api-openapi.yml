@@ -2,7 +2,7 @@ openapi: 3.2.0
 info:
   version: '2018-09-22'
   x-release: v4
-  title: CodeArtifact Tags#resource Arn API
+  title: CodeArtifact Authorization Token API
   description: CodeArtifact is a fully managed artifact repository compatible with language-native package managers and build tools such as npm, Apache Maven, pip, and dotnet.
   x-logo:
     url: https://twitter.com/awscloud/profile_image?size=original
@@ -113,9 +113,9 @@ servers:
 security:
 - hmac: []
 tags:
-- name: Tags#resourceArn
+- name: Authorization Token
 paths:
-  /v1/tags#resourceArn:
+  /v1/authorization-token#domain:
     parameters:
     - $ref: '#/components/parameters/X-Amz-Content-Sha256'
     - $ref: '#/components/parameters/X-Amz-Date'
@@ -125,21 +125,31 @@ paths:
     - $ref: '#/components/parameters/X-Amz-Signature'
     - $ref: '#/components/parameters/X-Amz-SignedHeaders'
     post:
-      operationId: ListTagsForResource
-      description: Gets information about Amazon Web Services tags for a specified Amazon Resource Name (ARN) in CodeArtifact.
+      operationId: GetAuthorizationToken
+      description: 'Generates a temporary authorization token for accessing repositories in the domain. This API requires the codeartifact:GetAuthorizationToken and sts:GetServiceBearerToken permissions. For more information about authorization tokens, see CodeArtifact authentication and tokens.
+
+
+        CodeArtifact authorization tokens are valid for a period of 12 hours when created with the login command. You can call login periodically to refresh the token. When you create an authorization token with the GetAuthorizationToken API, you can set a custom authorization period, up to a maximum of 12 hours, with the durationSeconds parameter.
+
+
+        The authorization period begins after login or GetAuthorizationToken is called. If login or GetAuthorizationToken is called while assuming a role, the token lifetime is independent of the maximum session duration of the role. For example, if you call sts assume-role and specify a session duration of 15 minutes, then generate a CodeArtifact authorization token, the token will be valid for the full authorization period even though this is longer than the 15-minute session duration.
+
+
+        See Using IAM Roles for more information on controlling session duration.'
       responses:
         '200':
           description: Success
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ListTagsForResourceResult'
+                $ref: '#/components/schemas/GetAuthorizationTokenResult'
               examples:
-                ListTagsForResource200Example:
-                  summary: Default ListTagsForResource 200 response
+                GetAuthorizationToken200Example:
+                  summary: Default GetAuthorizationToken 200 response
                   x-microcks-default: true
                   value:
-                    tags: example-value
+                    authorizationToken: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.example
+                    expiration: example-value
         '480':
           description: AccessDeniedException
           content:
@@ -147,73 +157,111 @@ paths:
               schema:
                 $ref: '#/components/schemas/AccessDeniedException'
               examples:
-                ListTagsForResource480Example:
-                  summary: Default ListTagsForResource 480 response
+                GetAuthorizationToken480Example:
+                  summary: Default GetAuthorizationToken 480 response
                   x-microcks-default: true
                   value: example-value
         '481':
+          description: InternalServerException
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InternalServerException'
+              examples:
+                GetAuthorizationToken481Example:
+                  summary: Default GetAuthorizationToken 481 response
+                  x-microcks-default: true
+                  value: example-value
+        '482':
           description: ResourceNotFoundException
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ResourceNotFoundException'
               examples:
-                ListTagsForResource481Example:
-                  summary: Default ListTagsForResource 481 response
+                GetAuthorizationToken482Example:
+                  summary: Default GetAuthorizationToken 482 response
                   x-microcks-default: true
                   value: example-value
-        '482':
+        '483':
           description: ThrottlingException
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ThrottlingException'
               examples:
-                ListTagsForResource482Example:
-                  summary: Default ListTagsForResource 482 response
+                GetAuthorizationToken483Example:
+                  summary: Default GetAuthorizationToken 483 response
                   x-microcks-default: true
                   value: example-value
-        '483':
+        '484':
           description: ValidationException
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ValidationException'
               examples:
-                ListTagsForResource483Example:
-                  summary: Default ListTagsForResource 483 response
+                GetAuthorizationToken484Example:
+                  summary: Default GetAuthorizationToken 484 response
                   x-microcks-default: true
                   value: '500123'
       parameters:
-      - name: resourceArn
+      - name: domain
         in: query
         required: true
-        description: The Amazon Resource Name (ARN) of the resource to get tags for.
+        description: ' The name of the domain that is in scope for the generated authorization token. '
         schema:
           type: string
-          pattern: \S+
-          minLength: 1
-          maxLength: 1011
-      summary: Amazon CodeArtifact List Tags for Resource
+          pattern: '[a-z][a-z0-9\-]{0,48}[a-z0-9]'
+          minLength: 2
+          maxLength: 50
+      - name: domain-owner
+        in: query
+        required: false
+        description: ' The 12-digit account number of the Amazon Web Services account that owns the domain. It does not include dashes or spaces. '
+        schema:
+          type: string
+          pattern: '[0-9]{12}'
+          minLength: 12
+          maxLength: 12
+      - name: duration
+        in: query
+        required: false
+        description: The time, in seconds, that the generated authorization token is valid. Valid values are <code>0</code> and any number between <code>900</code> (15 minutes) and <code>43200</code> (12 hours). A value of <code>0</code> will set the expiration of the authorization token to the same expiration of the user's role's temporary credentials.
+        schema:
+          type: integer
+          minimum: 0
+          maximum: 43200
+      summary: Amazon CodeArtifact Get Authorization Token
       x-microcks-operation:
         delay: 0
         dispatcher: FALLBACK
       tags:
-      - Tags#resourceArn
+      - Authorization Token
 components:
+  schemas:
+    ValidationException: {}
+    ResourceNotFoundException: {}
+    ThrottlingException: {}
+    Timestamp:
+      type: string
+      format: date-time
+    AccessDeniedException: {}
+    String:
+      type: string
+    InternalServerException: {}
+    GetAuthorizationTokenResult:
+      type: object
+      properties:
+        authorizationToken:
+          allOf:
+          - $ref: '#/components/schemas/String'
+          - description: ' The returned authentication token. '
+        expiration:
+          allOf:
+          - $ref: '#/components/schemas/Timestamp'
+          - description: ' A timestamp that specifies the date and time the authorization token expires. '
   parameters:
-    X-Amz-SignedHeaders:
-      name: X-Amz-SignedHeaders
-      in: header
-      schema:
-        type: string
-      required: false
-    X-Amz-Signature:
-      name: X-Amz-Signature
-      in: header
-      schema:
-        type: string
-      required: false
     X-Amz-Algorithm:
       name: X-Amz-Algorithm
       in: header
@@ -226,8 +274,20 @@ components:
       schema:
         type: string
       required: false
-    X-Amz-Content-Sha256:
-      name: X-Amz-Content-Sha256
+    X-Amz-Credential:
+      name: X-Amz-Credential
+      in: header
+      schema:
+        type: string
+      required: false
+    X-Amz-SignedHeaders:
+      name: X-Amz-SignedHeaders
+      in: header
+      schema:
+        type: string
+      required: false
+    X-Amz-Signature:
+      name: X-Amz-Signature
       in: header
       schema:
         type: string
@@ -238,55 +298,12 @@ components:
       schema:
         type: string
       required: false
-    X-Amz-Credential:
-      name: X-Amz-Credential
+    X-Amz-Content-Sha256:
+      name: X-Amz-Content-Sha256
       in: header
       schema:
         type: string
       required: false
-  schemas:
-    TagValue:
-      type: string
-      pattern: \P{C}*
-      minLength: 0
-      maxLength: 256
-    AccessDeniedException: {}
-    ValidationException: {}
-    ThrottlingException: {}
-    ListTagsForResourceResult:
-      type: object
-      properties:
-        tags:
-          allOf:
-          - $ref: '#/components/schemas/TagList'
-          - description: A list of tag key and value pairs associated with the specified resource.
-    TagList:
-      type: array
-      items:
-        $ref: '#/components/schemas/Tag'
-      minItems: 0
-      maxItems: 200
-    TagKey:
-      type: string
-      pattern: \P{C}+
-      minLength: 1
-      maxLength: 128
-    Tag:
-      type: object
-      required:
-      - key
-      - value
-      properties:
-        key:
-          allOf:
-          - $ref: '#/components/schemas/TagKey'
-          - description: The tag key.
-        value:
-          allOf:
-          - $ref: '#/components/schemas/TagValue'
-          - description: The tag value.
-      description: A tag is a key-value pair that can be used to manage, search for, or filter resources in CodeArtifact.
-    ResourceNotFoundException: {}
   securitySchemes:
     hmac:
       type: apiKey

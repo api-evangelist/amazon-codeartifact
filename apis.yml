@@ -49,33 +49,6 @@ created: '2026-03-16'
 modified: '2026-09-16'
 specificationVersion: '0.23'
 apis:
-- aid: amazon-codeartifact:amazon-codeartifact-authorization-token-domain-api
-  name: Amazon CodeArtifact Authorization Token#domain API
-  description: The Authorization Token#domain API from Amazon CodeArtifact — 1 operation(s) for authorization
-    token#domain.
-  humanURL: https://docs.aws.amazon.com/codeartifact/latest/APIReference/Welcome.html
-  baseURL: https://codeartifact.us-east-1.amazonaws.com
-  tags:
-  - Authorization Token#domain
-  properties:
-  - type: OpenAPI
-    url: openapi/amazon-codeartifact-authorization-token-domain-api-openapi.yml
-  - type: Documentation
-    url: https://docs.aws.amazon.com/codeartifact/latest/ug/welcome.html
-  - type: APIReference
-    url: https://docs.aws.amazon.com/codeartifact/latest/APIReference/Welcome.html
-  - type: JSONSchema
-    url: json-schema/codeartifact-domain-description-schema.json
-  - type: JSONSchema
-    url: json-schema/codeartifact-repository-description-schema.json
-  - type: JSONSchema
-    url: json-schema/codeartifact-package-version-description-schema.json
-  - type: ErrorCatalog
-    url: errors/amazon-codeartifact-problem-types.yml
-  - type: Conformance
-    url: conformance/amazon-codeartifact-conformance.yml
-  - type: Lifecycle
-    url: lifecycle/amazon-codeartifact-lifecycle.yml
 - aid: amazon-codeartifact:amazon-codeartifact-domain-api
   name: Amazon CodeArtifact Domain API
   description: The Domain API from Amazon CodeArtifact — 3 operation(s) for domain.
@@ -86,32 +59,6 @@ apis:
   properties:
   - type: OpenAPI
     url: openapi/amazon-codeartifact-domain-api-openapi.yml
-  - type: Documentation
-    url: https://docs.aws.amazon.com/codeartifact/latest/ug/welcome.html
-  - type: APIReference
-    url: https://docs.aws.amazon.com/codeartifact/latest/APIReference/Welcome.html
-  - type: JSONSchema
-    url: json-schema/codeartifact-domain-description-schema.json
-  - type: JSONSchema
-    url: json-schema/codeartifact-repository-description-schema.json
-  - type: JSONSchema
-    url: json-schema/codeartifact-package-version-description-schema.json
-  - type: ErrorCatalog
-    url: errors/amazon-codeartifact-problem-types.yml
-  - type: Conformance
-    url: conformance/amazon-codeartifact-conformance.yml
-  - type: Lifecycle
-    url: lifecycle/amazon-codeartifact-lifecycle.yml
-- aid: amazon-codeartifact:amazon-codeartifact-domain-domain-api
-  name: Amazon CodeArtifact Domain#domain API
-  description: The Domain#domain API from Amazon CodeArtifact — 1 operation(s) for domain#domain.
-  humanURL: https://docs.aws.amazon.com/codeartifact/latest/APIReference/Welcome.html
-  baseURL: https://codeartifact.us-east-1.amazonaws.com
-  tags:
-  - Domain#domain
-  properties:
-  - type: OpenAPI
-    url: openapi/amazon-codeartifact-domain-domain-api-openapi.yml
   - type: Documentation
     url: https://docs.aws.amazon.com/codeartifact/latest/ug/welcome.html
   - type: APIReference
@@ -180,59 +127,6 @@ apis:
     url: conformance/amazon-codeartifact-conformance.yml
   - type: Lifecycle
     url: lifecycle/amazon-codeartifact-lifecycle.yml
-- aid: amazon-codeartifact:amazon-codeartifact-package-domain-repository-format-package-api
-  name: Amazon CodeArtifact Package#domain&repository&format&package API
-  description: The Package#domain&repository&format&package API from Amazon CodeArtifact — 1 operation(s)
-    for package#domain&repository&format&package.
-  humanURL: https://docs.aws.amazon.com/codeartifact/latest/APIReference/Welcome.html
-  baseURL: https://codeartifact.us-east-1.amazonaws.com
-  tags:
-  - Package#domain&repository&format&package
-  properties:
-  - type: OpenAPI
-    url: openapi/amazon-codeartifact-package-domain-repository-format-package-api-openapi.yml
-  - type: Documentation
-    url: https://docs.aws.amazon.com/codeartifact/latest/ug/welcome.html
-  - type: APIReference
-    url: https://docs.aws.amazon.com/codeartifact/latest/APIReference/Welcome.html
-  - type: JSONSchema
-    url: json-schema/codeartifact-domain-description-schema.json
-  - type: JSONSchema
-    url: json-schema/codeartifact-repository-description-schema.json
-  - type: JSONSchema
-    url: json-schema/codeartifact-package-version-description-schema.json
-  - type: ErrorCatalog
-    url: errors/amazon-codeartifact-problem-types.yml
-  - type: Conformance
-    url: conformance/amazon-codeartifact-conformance.yml
-  - type: Lifecycle
-    url: lifecycle/amazon-codeartifact-lifecycle.yml
-- aid: amazon-codeartifact:amazon-codeartifact-packages-domain-repository-api
-  name: Amazon CodeArtifact Packages#domain&repository API
-  description: The Packages#domain&repository API from Amazon CodeArtifact — 1 operation(s) for packages#domain&repository.
-  humanURL: https://docs.aws.amazon.com/codeartifact/latest/APIReference/Welcome.html
-  baseURL: https://codeartifact.us-east-1.amazonaws.com
-  tags:
-  - Packages#domain&repository
-  properties:
-  - type: OpenAPI
-    url: openapi/amazon-codeartifact-packages-domain-repository-api-openapi.yml
-  - type: Documentation
-    url: https://docs.aws.amazon.com/codeartifact/latest/ug/welcome.html
-  - type: APIReference
-    url: https://docs.aws.amazon.com/codeartifact/latest/APIReference/Welcome.html
-  - type: JSONSchema
-    url: json-schema/codeartifact-domain-description-schema.json
-  - type: JSONSchema
-    url: json-schema/codeartifact-repository-description-schema.json
-  - type: JSONSchema
-    url: json-schema/codeartifact-package-version-description-schema.json
-  - type: ErrorCatalog
-    url: errors/amazon-codeartifact-problem-types.yml
-  - type: Conformance
-    url: conformance/amazon-codeartifact-conformance.yml
-  - type: Lifecycle
-    url: lifecycle/amazon-codeartifact-lifecycle.yml
 - aid: amazon-codeartifact:amazon-codeartifact-repositories-api
   name: Amazon CodeArtifact Repositories API
   description: The Repositories API from Amazon CodeArtifact — 1 operation(s) for repositories.
@@ -285,16 +179,17 @@ apis:
     url: conformance/amazon-codeartifact-conformance.yml
   - type: Lifecycle
     url: lifecycle/amazon-codeartifact-lifecycle.yml
-- aid: amazon-codeartifact:amazon-codeartifact-repository-domain-repository-api
-  name: Amazon CodeArtifact Repository#domain&repository API
-  description: The Repository#domain&repository API from Amazon CodeArtifact — 1 operation(s) for repository#domain&repository.
+- aid: amazon-codeartifact:amazon-codeartifact-authorization-token-api
+  name: Amazon CodeArtifact Authorization Token API
+  description: >-
+    The Authorization Token API from Amazon CodeArtifact — 1 operation(s) for authorization token.
   humanURL: https://docs.aws.amazon.com/codeartifact/latest/APIReference/Welcome.html
   baseURL: https://codeartifact.us-east-1.amazonaws.com
   tags:
-  - Repository#domain&repository
+  - Authorization Token
   properties:
   - type: OpenAPI
-    url: openapi/amazon-codeartifact-repository-domain-repository-api-openapi.yml
+    url: openapi/amazon-codeartifact-authorization-token-api-openapi.yml
   - type: Documentation
     url: https://docs.aws.amazon.com/codeartifact/latest/ug/welcome.html
   - type: APIReference
@@ -311,16 +206,16 @@ apis:
     url: conformance/amazon-codeartifact-conformance.yml
   - type: Lifecycle
     url: lifecycle/amazon-codeartifact-lifecycle.yml
-- aid: amazon-codeartifact:amazon-codeartifact-tag-resourcearn-api
-  name: Amazon CodeArtifact Tag#resourceArn API
-  description: The Tag#resourceArn API from Amazon CodeArtifact — 1 operation(s) for tag#resourcearn.
+- aid: amazon-codeartifact:amazon-codeartifact-packages-api
+  name: Amazon CodeArtifact Packages API
+  description: The Packages API from Amazon CodeArtifact — 1 operation(s) for packages.
   humanURL: https://docs.aws.amazon.com/codeartifact/latest/APIReference/Welcome.html
   baseURL: https://codeartifact.us-east-1.amazonaws.com
   tags:
-  - Tag#resourceArn
+  - Packages
   properties:
   - type: OpenAPI
-    url: openapi/amazon-codeartifact-tag-resourcearn-api-openapi.yml
+    url: openapi/amazon-codeartifact-packages-api-openapi.yml
   - type: Documentation
     url: https://docs.aws.amazon.com/codeartifact/latest/ug/welcome.html
   - type: APIReference
@@ -337,16 +232,16 @@ apis:
     url: conformance/amazon-codeartifact-conformance.yml
   - type: Lifecycle
     url: lifecycle/amazon-codeartifact-lifecycle.yml
-- aid: amazon-codeartifact:amazon-codeartifact-tags-resourcearn-api
-  name: Amazon CodeArtifact Tags#resourceArn API
-  description: The Tags#resourceArn API from Amazon CodeArtifact — 1 operation(s) for tags#resourcearn.
+- aid: amazon-codeartifact:amazon-codeartifact-tag-api
+  name: Amazon CodeArtifact Tag API
+  description: The Tag API from Amazon CodeArtifact — 1 operation(s) for tag.
   humanURL: https://docs.aws.amazon.com/codeartifact/latest/APIReference/Welcome.html
   baseURL: https://codeartifact.us-east-1.amazonaws.com
   tags:
-  - Tags#resourceArn
+  - Tag
   properties:
   - type: OpenAPI
-    url: openapi/amazon-codeartifact-tags-resourcearn-api-openapi.yml
+    url: openapi/amazon-codeartifact-tag-api-openapi.yml
   - type: Documentation
     url: https://docs.aws.amazon.com/codeartifact/latest/ug/welcome.html
   - type: APIReference
@@ -363,16 +258,42 @@ apis:
     url: conformance/amazon-codeartifact-conformance.yml
   - type: Lifecycle
     url: lifecycle/amazon-codeartifact-lifecycle.yml
-- aid: amazon-codeartifact:amazon-codeartifact-untag-resourcearn-api
-  name: Amazon CodeArtifact Untag#resourceArn API
-  description: The Untag#resourceArn API from Amazon CodeArtifact — 1 operation(s) for untag#resourcearn.
+- aid: amazon-codeartifact:amazon-codeartifact-tags-api
+  name: Amazon CodeArtifact Tags API
+  description: The Tags API from Amazon CodeArtifact — 1 operation(s) for tags.
   humanURL: https://docs.aws.amazon.com/codeartifact/latest/APIReference/Welcome.html
   baseURL: https://codeartifact.us-east-1.amazonaws.com
   tags:
-  - Untag#resourceArn
+  - Tags
   properties:
   - type: OpenAPI
-    url: openapi/amazon-codeartifact-untag-resourcearn-api-openapi.yml
+    url: openapi/amazon-codeartifact-tags-api-openapi.yml
+  - type: Documentation
+    url: https://docs.aws.amazon.com/codeartifact/latest/ug/welcome.html
+  - type: APIReference
+    url: https://docs.aws.amazon.com/codeartifact/latest/APIReference/Welcome.html
+  - type: JSONSchema
+    url: json-schema/codeartifact-domain-description-schema.json
+  - type: JSONSchema
+    url: json-schema/codeartifact-repository-description-schema.json
+  - type: JSONSchema
+    url: json-schema/codeartifact-package-version-description-schema.json
+  - type: ErrorCatalog
+    url: errors/amazon-codeartifact-problem-types.yml
+  - type: Conformance
+    url: conformance/amazon-codeartifact-conformance.yml
+  - type: Lifecycle
+    url: lifecycle/amazon-codeartifact-lifecycle.yml
+- aid: amazon-codeartifact:amazon-codeartifact-untag-api
+  name: Amazon CodeArtifact Untag API
+  description: The Untag API from Amazon CodeArtifact — 1 operation(s) for untag.
+  humanURL: https://docs.aws.amazon.com/codeartifact/latest/APIReference/Welcome.html
+  baseURL: https://codeartifact.us-east-1.amazonaws.com
+  tags:
+  - Untag
+  properties:
+  - type: OpenAPI
+    url: openapi/amazon-codeartifact-untag-api-openapi.yml
   - type: Documentation
     url: https://docs.aws.amazon.com/codeartifact/latest/ug/welcome.html
   - type: APIReference
@@ -391,7 +312,7 @@ apis:
     url: lifecycle/amazon-codeartifact-lifecycle.yml
 common:
 - type: Website
-  url: https://amazon.com
+  url: https://aws.amazon.com/codeartifact/
 - type: X-MCPServerCandidate
   url: mcp/amazon-codeartifact-mcp.yml
   note: 'Renamed from MCPServer 2026-09-03 (roadmap#247): the manifest self-describes as status: candidate
@@ -543,5 +464,5 @@ common:
 maintainers:
 - FN: Kin Lane
   email: kin@apievangelist.com
-x-parent: aws
+x-parent: amazon-web-services
 x-relationship: product

@@ -399,6 +399,550 @@ paths:
         dispatcher: FALLBACK
       tags:
       - Repository
+  /v1/repository#domain&repository:
+    parameters:
+    - $ref: '#/components/parameters/X-Amz-Content-Sha256'
+    - $ref: '#/components/parameters/X-Amz-Date'
+    - $ref: '#/components/parameters/X-Amz-Algorithm'
+    - $ref: '#/components/parameters/X-Amz-Credential'
+    - $ref: '#/components/parameters/X-Amz-Security-Token'
+    - $ref: '#/components/parameters/X-Amz-Signature'
+    - $ref: '#/components/parameters/X-Amz-SignedHeaders'
+    post:
+      operationId: CreateRepository
+      description: Creates a repository.
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CreateRepositoryResult'
+              examples:
+                CreateRepository200Example:
+                  summary: Default CreateRepository 200 response
+                  x-microcks-default: true
+                  value:
+                    repository: my-repo
+        '480':
+          description: AccessDeniedException
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AccessDeniedException'
+              examples:
+                CreateRepository480Example:
+                  summary: Default CreateRepository 480 response
+                  x-microcks-default: true
+                  value: example-value
+        '481':
+          description: ConflictException
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ConflictException'
+              examples:
+                CreateRepository481Example:
+                  summary: Default CreateRepository 481 response
+                  x-microcks-default: true
+                  value: example-value
+        '482':
+          description: InternalServerException
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InternalServerException'
+              examples:
+                CreateRepository482Example:
+                  summary: Default CreateRepository 482 response
+                  x-microcks-default: true
+                  value: example-value
+        '483':
+          description: ResourceNotFoundException
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResourceNotFoundException'
+              examples:
+                CreateRepository483Example:
+                  summary: Default CreateRepository 483 response
+                  x-microcks-default: true
+                  value: example-value
+        '484':
+          description: ServiceQuotaExceededException
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ServiceQuotaExceededException'
+              examples:
+                CreateRepository484Example:
+                  summary: Default CreateRepository 484 response
+                  x-microcks-default: true
+                  value: example-value
+        '485':
+          description: ThrottlingException
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ThrottlingException'
+              examples:
+                CreateRepository485Example:
+                  summary: Default CreateRepository 485 response
+                  x-microcks-default: true
+                  value: example-value
+        '486':
+          description: ValidationException
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidationException'
+              examples:
+                CreateRepository486Example:
+                  summary: Default CreateRepository 486 response
+                  x-microcks-default: true
+                  value: '500123'
+      parameters:
+      - name: domain
+        in: query
+        required: true
+        description: ' The name of the domain that contains the created repository. '
+        schema:
+          type: string
+          pattern: '[a-z][a-z0-9\-]{0,48}[a-z0-9]'
+          minLength: 2
+          maxLength: 50
+      - name: domain-owner
+        in: query
+        required: false
+        description: ' The 12-digit account number of the Amazon Web Services account that owns the domain. It does not include dashes or spaces. '
+        schema:
+          type: string
+          pattern: '[0-9]{12}'
+          minLength: 12
+          maxLength: 12
+      - name: repository
+        in: query
+        required: true
+        description: ' The name of the repository to create. '
+        schema:
+          type: string
+          pattern: '[A-Za-z0-9][A-Za-z0-9._\-]{1,99}'
+          minLength: 2
+          maxLength: 100
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                description:
+                  description: ' A description of the created repository. '
+                  type: string
+                  pattern: \P{C}*
+                  maxLength: 1000
+                upstreams:
+                  description: ' A list of upstream repositories to associate with the repository. The order of the upstream repositories in the list determines their priority order when CodeArtifact looks for a requested package version. For more information, see <a href="https://docs.aws.amazon.com/codeartifact/latest/ug/repos-upstream.html">Working with upstream repositories</a>. '
+                  type: array
+                  items:
+                    $ref: '#/components/schemas/UpstreamRepository'
+                tags:
+                  description: One or more tag key-value pairs for the repository.
+                  type: array
+                  items:
+                    $ref: '#/components/schemas/Tag'
+                  minItems: 0
+                  maxItems: 200
+            examples:
+              CreateRepositoryRequestExample:
+                summary: Default CreateRepository request
+                x-microcks-default: true
+                value:
+                  description: Example description for CodeArtifact resource
+                  upstreams:
+                  - repositoryName: my-repo
+                  tags:
+                  - key: arn:aws:kms:us-east-1:123456789012:key/12345678-1234-1234-1234-123456789012
+                    value: example-value
+      summary: Amazon CodeArtifact Create Repository
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
+      tags:
+      - Repository
+    delete:
+      operationId: DeleteRepository
+      description: Deletes a repository.
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DeleteRepositoryResult'
+              examples:
+                DeleteRepository200Example:
+                  summary: Default DeleteRepository 200 response
+                  x-microcks-default: true
+                  value:
+                    repository: my-repo
+        '480':
+          description: AccessDeniedException
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AccessDeniedException'
+              examples:
+                DeleteRepository480Example:
+                  summary: Default DeleteRepository 480 response
+                  x-microcks-default: true
+                  value: example-value
+        '481':
+          description: ConflictException
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ConflictException'
+              examples:
+                DeleteRepository481Example:
+                  summary: Default DeleteRepository 481 response
+                  x-microcks-default: true
+                  value: example-value
+        '482':
+          description: InternalServerException
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InternalServerException'
+              examples:
+                DeleteRepository482Example:
+                  summary: Default DeleteRepository 482 response
+                  x-microcks-default: true
+                  value: example-value
+        '483':
+          description: ResourceNotFoundException
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResourceNotFoundException'
+              examples:
+                DeleteRepository483Example:
+                  summary: Default DeleteRepository 483 response
+                  x-microcks-default: true
+                  value: example-value
+        '484':
+          description: ThrottlingException
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ThrottlingException'
+              examples:
+                DeleteRepository484Example:
+                  summary: Default DeleteRepository 484 response
+                  x-microcks-default: true
+                  value: example-value
+        '485':
+          description: ValidationException
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidationException'
+              examples:
+                DeleteRepository485Example:
+                  summary: Default DeleteRepository 485 response
+                  x-microcks-default: true
+                  value: '500123'
+      parameters:
+      - name: domain
+        in: query
+        required: true
+        description: ' The name of the domain that contains the repository to delete. '
+        schema:
+          type: string
+          pattern: '[a-z][a-z0-9\-]{0,48}[a-z0-9]'
+          minLength: 2
+          maxLength: 50
+      - name: domain-owner
+        in: query
+        required: false
+        description: ' The 12-digit account number of the Amazon Web Services account that owns the domain. It does not include dashes or spaces. '
+        schema:
+          type: string
+          pattern: '[0-9]{12}'
+          minLength: 12
+          maxLength: 12
+      - name: repository
+        in: query
+        required: true
+        description: ' The name of the repository to delete. '
+        schema:
+          type: string
+          pattern: '[A-Za-z0-9][A-Za-z0-9._\-]{1,99}'
+          minLength: 2
+          maxLength: 100
+      summary: Amazon CodeArtifact Delete Repository
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
+      tags:
+      - Repository
+    get:
+      operationId: DescribeRepository
+      description: Returns a RepositoryDescription object that contains detailed information about the requested repository.
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DescribeRepositoryResult'
+              examples:
+                DescribeRepository200Example:
+                  summary: Default DescribeRepository 200 response
+                  x-microcks-default: true
+                  value:
+                    repository: my-repo
+        '480':
+          description: AccessDeniedException
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AccessDeniedException'
+              examples:
+                DescribeRepository480Example:
+                  summary: Default DescribeRepository 480 response
+                  x-microcks-default: true
+                  value: example-value
+        '481':
+          description: InternalServerException
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InternalServerException'
+              examples:
+                DescribeRepository481Example:
+                  summary: Default DescribeRepository 481 response
+                  x-microcks-default: true
+                  value: example-value
+        '482':
+          description: ResourceNotFoundException
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResourceNotFoundException'
+              examples:
+                DescribeRepository482Example:
+                  summary: Default DescribeRepository 482 response
+                  x-microcks-default: true
+                  value: example-value
+        '483':
+          description: ThrottlingException
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ThrottlingException'
+              examples:
+                DescribeRepository483Example:
+                  summary: Default DescribeRepository 483 response
+                  x-microcks-default: true
+                  value: example-value
+        '484':
+          description: ValidationException
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidationException'
+              examples:
+                DescribeRepository484Example:
+                  summary: Default DescribeRepository 484 response
+                  x-microcks-default: true
+                  value: '500123'
+      parameters:
+      - name: domain
+        in: query
+        required: true
+        description: ' The name of the domain that contains the repository to describe. '
+        schema:
+          type: string
+          pattern: '[a-z][a-z0-9\-]{0,48}[a-z0-9]'
+          minLength: 2
+          maxLength: 50
+      - name: domain-owner
+        in: query
+        required: false
+        description: ' The 12-digit account number of the Amazon Web Services account that owns the domain. It does not include dashes or spaces. '
+        schema:
+          type: string
+          pattern: '[0-9]{12}'
+          minLength: 12
+          maxLength: 12
+      - name: repository
+        in: query
+        required: true
+        description: ' A string that specifies the name of the requested repository. '
+        schema:
+          type: string
+          pattern: '[A-Za-z0-9][A-Za-z0-9._\-]{1,99}'
+          minLength: 2
+          maxLength: 100
+      summary: Amazon CodeArtifact Describe Repository
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
+      tags:
+      - Repository
+    put:
+      operationId: UpdateRepository
+      description: Update the properties of a repository.
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UpdateRepositoryResult'
+              examples:
+                UpdateRepository200Example:
+                  summary: Default UpdateRepository 200 response
+                  x-microcks-default: true
+                  value:
+                    repository: my-repo
+        '480':
+          description: AccessDeniedException
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AccessDeniedException'
+              examples:
+                UpdateRepository480Example:
+                  summary: Default UpdateRepository 480 response
+                  x-microcks-default: true
+                  value: example-value
+        '481':
+          description: ConflictException
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ConflictException'
+              examples:
+                UpdateRepository481Example:
+                  summary: Default UpdateRepository 481 response
+                  x-microcks-default: true
+                  value: example-value
+        '482':
+          description: InternalServerException
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InternalServerException'
+              examples:
+                UpdateRepository482Example:
+                  summary: Default UpdateRepository 482 response
+                  x-microcks-default: true
+                  value: example-value
+        '483':
+          description: ResourceNotFoundException
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResourceNotFoundException'
+              examples:
+                UpdateRepository483Example:
+                  summary: Default UpdateRepository 483 response
+                  x-microcks-default: true
+                  value: example-value
+        '484':
+          description: ServiceQuotaExceededException
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ServiceQuotaExceededException'
+              examples:
+                UpdateRepository484Example:
+                  summary: Default UpdateRepository 484 response
+                  x-microcks-default: true
+                  value: example-value
+        '485':
+          description: ThrottlingException
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ThrottlingException'
+              examples:
+                UpdateRepository485Example:
+                  summary: Default UpdateRepository 485 response
+                  x-microcks-default: true
+                  value: example-value
+        '486':
+          description: ValidationException
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidationException'
+              examples:
+                UpdateRepository486Example:
+                  summary: Default UpdateRepository 486 response
+                  x-microcks-default: true
+                  value: '500123'
+      parameters:
+      - name: domain
+        in: query
+        required: true
+        description: ' The name of the domain associated with the repository to update. '
+        schema:
+          type: string
+          pattern: '[a-z][a-z0-9\-]{0,48}[a-z0-9]'
+          minLength: 2
+          maxLength: 50
+      - name: domain-owner
+        in: query
+        required: false
+        description: ' The 12-digit account number of the Amazon Web Services account that owns the domain. It does not include dashes or spaces. '
+        schema:
+          type: string
+          pattern: '[0-9]{12}'
+          minLength: 12
+          maxLength: 12
+      - name: repository
+        in: query
+        required: true
+        description: ' The name of the repository to update. '
+        schema:
+          type: string
+          pattern: '[A-Za-z0-9][A-Za-z0-9._\-]{1,99}'
+          minLength: 2
+          maxLength: 100
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                description:
+                  description: ' An updated repository description. '
+                  type: string
+                  pattern: \P{C}*
+                  maxLength: 1000
+                upstreams:
+                  description: ' A list of upstream repositories to associate with the repository. The order of the upstream repositories in the list determines their priority order when CodeArtifact looks for a requested package version. For more information, see <a href="https://docs.aws.amazon.com/codeartifact/latest/ug/repos-upstream.html">Working with upstream repositories</a>. '
+                  type: array
+                  items:
+                    $ref: '#/components/schemas/UpstreamRepository'
+            examples:
+              UpdateRepositoryRequestExample:
+                summary: Default UpdateRepository request
+                x-microcks-default: true
+                value:
+                  description: Example description for CodeArtifact resource
+                  upstreams:
+                  - repositoryName: my-repo
+      summary: Amazon CodeArtifact Update Repository
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
+      tags:
+      - Repository
   /v1/repository/permissions/policies#domain&repository:
     parameters:
     - $ref: '#/components/parameters/X-Amz-Content-Sha256'
@@ -948,10 +1492,60 @@ paths:
       - Repository
 components:
   schemas:
+    GetRepositoryPermissionsPolicyResult:
+      type: object
+      properties:
+        policy:
+          allOf:
+          - $ref: '#/components/schemas/ResourcePolicy'
+          - description: ' The returned resource policy. '
+    DomainName:
+      type: string
+      pattern: '[a-z][a-z0-9\-]{0,48}[a-z0-9]'
+      minLength: 2
+      maxLength: 50
+    UpstreamRepositoryInfoList:
+      type: array
+      items:
+        $ref: '#/components/schemas/UpstreamRepositoryInfo'
+    DescribeRepositoryResult:
+      type: object
+      properties:
+        repository:
+          allOf:
+          - $ref: '#/components/schemas/RepositoryDescription'
+          - description: ' A <code>RepositoryDescription</code> object that contains the requested repository information. '
+    TagKey:
+      type: string
+      pattern: \P{C}+
+      minLength: 1
+      maxLength: 128
     RepositoryExternalConnectionInfoList:
       type: array
       items:
         $ref: '#/components/schemas/RepositoryExternalConnectionInfo'
+    AccessDeniedException: {}
+    String:
+      type: string
+    UpstreamRepository:
+      type: object
+      required:
+      - repositoryName
+      properties:
+        repositoryName:
+          allOf:
+          - $ref: '#/components/schemas/RepositoryName'
+          - description: ' The name of an upstream repository. '
+      description: ' Information about an upstream repository. A list of <code>UpstreamRepository</code> objects is an input parameter to <a href="https://docs.aws.amazon.com/codeartifact/latest/APIReference/API_CreateRepository.html">CreateRepository</a> and <a href="https://docs.aws.amazon.com/codeartifact/latest/APIReference/API_UpdateRepository.html">UpdateRepository</a>. '
+    CreateRepositoryResult:
+      type: object
+      properties:
+        repository:
+          allOf:
+          - $ref: '#/components/schemas/RepositoryDescription'
+          - description: ' Information about the created repository after processing the request. '
+    ValidationException: {}
+    ThrottlingException: {}
     PutRepositoryPermissionsPolicyResult:
       type: object
       properties:
@@ -959,6 +1553,102 @@ components:
           allOf:
           - $ref: '#/components/schemas/ResourcePolicy'
           - description: ' The resource policy that was set after processing the request. '
+    Timestamp:
+      type: string
+      format: date-time
+    UpstreamRepositoryInfo:
+      type: object
+      properties:
+        repositoryName:
+          allOf:
+          - $ref: '#/components/schemas/RepositoryName'
+          - description: ' The name of an upstream repository. '
+      description: ' Information about an upstream repository. '
+    ConflictException: {}
+    Tag:
+      type: object
+      required:
+      - key
+      - value
+      properties:
+        key:
+          allOf:
+          - $ref: '#/components/schemas/TagKey'
+          - description: The tag key.
+        value:
+          allOf:
+          - $ref: '#/components/schemas/TagValue'
+          - description: The tag value.
+      description: A tag is a key-value pair that can be used to manage, search for, or filter resources in CodeArtifact.
+    InternalServerException: {}
+    AssociateExternalConnectionResult:
+      type: object
+      properties:
+        repository:
+          allOf:
+          - $ref: '#/components/schemas/RepositoryDescription'
+          - description: ' Information about the connected repository after processing the request. '
+    PackageFormat:
+      type: string
+      enum:
+      - npm
+      - pypi
+      - maven
+      - nuget
+      - generic
+    ResourcePolicy:
+      type: object
+      properties:
+        resourceArn:
+          allOf:
+          - $ref: '#/components/schemas/Arn'
+          - description: ' The ARN of the resource associated with the resource policy '
+        revision:
+          allOf:
+          - $ref: '#/components/schemas/PolicyRevision'
+          - description: ' The current revision of the resource policy. '
+        document:
+          allOf:
+          - $ref: '#/components/schemas/PolicyDocument'
+          - description: ' The resource policy formatted in JSON. '
+      description: ' An CodeArtifact resource policy that contains a resource ARN, document details, and a revision. '
+    ExternalConnectionStatus:
+      type: string
+      enum:
+      - Available
+    UpdateRepositoryResult:
+      type: object
+      properties:
+        repository:
+          allOf:
+          - $ref: '#/components/schemas/RepositoryDescription'
+          - description: ' The updated repository. '
+    Description:
+      type: string
+      pattern: \P{C}*
+      maxLength: 1000
+    ExternalConnectionName:
+      type: string
+      pattern: '[A-Za-z0-9][A-Za-z0-9._\-:]{1,99}'
+      minLength: 2
+      maxLength: 100
+    AccountId:
+      type: string
+      pattern: '[0-9]{12}'
+      minLength: 12
+      maxLength: 12
+    DisassociateExternalConnectionResult:
+      type: object
+      properties:
+        repository:
+          allOf:
+          - $ref: '#/components/schemas/RepositoryDescription'
+          - description: ' The repository associated with the removed external connection. '
+    RepositoryName:
+      type: string
+      pattern: '[A-Za-z0-9][A-Za-z0-9._\-]{1,99}'
+      minLength: 2
+      maxLength: 100
     GetRepositoryEndpointResult:
       type: object
       properties:
@@ -966,7 +1656,58 @@ components:
           allOf:
           - $ref: '#/components/schemas/String'
           - description: ' A string that specifies the URL of the returned endpoint. '
-    ThrottlingException: {}
+    ServiceQuotaExceededException: {}
+    Arn:
+      type: string
+      pattern: \S+
+      minLength: 1
+      maxLength: 1011
+    DeleteRepositoryResult:
+      type: object
+      properties:
+        repository:
+          allOf:
+          - $ref: '#/components/schemas/RepositoryDescription'
+          - description: ' Information about the deleted repository after processing the request. '
+    ResourceNotFoundException: {}
+    PolicyRevision:
+      type: string
+      pattern: \S+
+      minLength: 1
+      maxLength: 100
+    PolicyDocument:
+      type: string
+      pattern: '[\P{C}\s]+'
+      minLength: 1
+      maxLength: 7168
+    RepositoryExternalConnectionInfo:
+      type: object
+      properties:
+        externalConnectionName:
+          allOf:
+          - $ref: '#/components/schemas/ExternalConnectionName'
+          - description: ' The name of the external connection associated with a repository. '
+        packageFormat:
+          allOf:
+          - $ref: '#/components/schemas/PackageFormat'
+          - description: '<p> The package format associated with a repository''s external connection. The valid package formats are: </p> <ul> <li> <p> <code>npm</code>: A Node Package Manager (npm) package. </p> </li> <li> <p> <code>pypi</code>: A Python Package Index (PyPI) package. </p> </li> <li> <p> <code>maven</code>: A Maven package that contains compiled code in a distributable format, such as a JAR file. </p> </li> <li> <p> <code>nuget</code>: A NuGet package. </p> </li> </ul>'
+        status:
+          allOf:
+          - $ref: '#/components/schemas/ExternalConnectionStatus'
+          - description: ' The status of the external connection of a repository. There is one valid value, <code>Available</code>. '
+      description: ' Contains information about the external connection of a repository. '
+    TagValue:
+      type: string
+      pattern: \P{C}*
+      minLength: 0
+      maxLength: 256
+    DeleteRepositoryPermissionsPolicyResult:
+      type: object
+      properties:
+        policy:
+          allOf:
+          - $ref: '#/components/schemas/ResourcePolicy'
+          - description: ' Information about the deleted policy after processing the request. '
     RepositoryDescription:
       type: object
       properties:
@@ -1007,143 +1748,21 @@ components:
           - $ref: '#/components/schemas/Timestamp'
           - description: A timestamp that represents the date and time the repository was created.
       description: ' The details of a repository stored in CodeArtifact. A CodeArtifact repository contains a set of package versions, each of which maps to a set of assets. Repositories are polyglot—a single repository can contain packages of any supported type. Each repository exposes endpoints for fetching and publishing packages using tools like the <code>npm</code> CLI, the Maven CLI (<code>mvn</code>), and <code>pip</code>. You can create up to 100 repositories per Amazon Web Services account. '
-    ServiceQuotaExceededException: {}
-    AccountId:
-      type: string
-      pattern: '[0-9]{12}'
-      minLength: 12
-      maxLength: 12
-    ConflictException: {}
-    Arn:
-      type: string
-      pattern: \S+
-      minLength: 1
-      maxLength: 1011
-    AssociateExternalConnectionResult:
-      type: object
-      properties:
-        repository:
-          allOf:
-          - $ref: '#/components/schemas/RepositoryDescription'
-          - description: ' Information about the connected repository after processing the request. '
-    RepositoryName:
-      type: string
-      pattern: '[A-Za-z0-9][A-Za-z0-9._\-]{1,99}'
-      minLength: 2
-      maxLength: 100
-    GetRepositoryPermissionsPolicyResult:
-      type: object
-      properties:
-        policy:
-          allOf:
-          - $ref: '#/components/schemas/ResourcePolicy'
-          - description: ' The returned resource policy. '
-    DeleteRepositoryPermissionsPolicyResult:
-      type: object
-      properties:
-        policy:
-          allOf:
-          - $ref: '#/components/schemas/ResourcePolicy'
-          - description: ' Information about the deleted policy after processing the request. '
-    PolicyRevision:
-      type: string
-      pattern: \S+
-      minLength: 1
-      maxLength: 100
-    ValidationException: {}
-    DisassociateExternalConnectionResult:
-      type: object
-      properties:
-        repository:
-          allOf:
-          - $ref: '#/components/schemas/RepositoryDescription'
-          - description: ' The repository associated with the removed external connection. '
-    Description:
-      type: string
-      pattern: \P{C}*
-      maxLength: 1000
-    PackageFormat:
-      type: string
-      enum:
-      - npm
-      - pypi
-      - maven
-      - nuget
-      - generic
-    ResourcePolicy:
-      type: object
-      properties:
-        resourceArn:
-          allOf:
-          - $ref: '#/components/schemas/Arn'
-          - description: ' The ARN of the resource associated with the resource policy '
-        revision:
-          allOf:
-          - $ref: '#/components/schemas/PolicyRevision'
-          - description: ' The current revision of the resource policy. '
-        document:
-          allOf:
-          - $ref: '#/components/schemas/PolicyDocument'
-          - description: ' The resource policy formatted in JSON. '
-      description: ' An CodeArtifact resource policy that contains a resource ARN, document details, and a revision. '
-    String:
-      type: string
-    ResourceNotFoundException: {}
-    ExternalConnectionStatus:
-      type: string
-      enum:
-      - Available
-    InternalServerException: {}
-    RepositoryExternalConnectionInfo:
-      type: object
-      properties:
-        externalConnectionName:
-          allOf:
-          - $ref: '#/components/schemas/ExternalConnectionName'
-          - description: ' The name of the external connection associated with a repository. '
-        packageFormat:
-          allOf:
-          - $ref: '#/components/schemas/PackageFormat'
-          - description: '<p> The package format associated with a repository''s external connection. The valid package formats are: </p> <ul> <li> <p> <code>npm</code>: A Node Package Manager (npm) package. </p> </li> <li> <p> <code>pypi</code>: A Python Package Index (PyPI) package. </p> </li> <li> <p> <code>maven</code>: A Maven package that contains compiled code in a distributable format, such as a JAR file. </p> </li> <li> <p> <code>nuget</code>: A NuGet package. </p> </li> </ul>'
-        status:
-          allOf:
-          - $ref: '#/components/schemas/ExternalConnectionStatus'
-          - description: ' The status of the external connection of a repository. There is one valid value, <code>Available</code>. '
-      description: ' Contains information about the external connection of a repository. '
-    ExternalConnectionName:
-      type: string
-      pattern: '[A-Za-z0-9][A-Za-z0-9._\-:]{1,99}'
-      minLength: 2
-      maxLength: 100
-    UpstreamRepositoryInfoList:
-      type: array
-      items:
-        $ref: '#/components/schemas/UpstreamRepositoryInfo'
-    AccessDeniedException: {}
-    UpstreamRepositoryInfo:
-      type: object
-      properties:
-        repositoryName:
-          allOf:
-          - $ref: '#/components/schemas/RepositoryName'
-          - description: ' The name of an upstream repository. '
-      description: ' Information about an upstream repository. '
-    DomainName:
-      type: string
-      pattern: '[a-z][a-z0-9\-]{0,48}[a-z0-9]'
-      minLength: 2
-      maxLength: 50
-    Timestamp:
-      type: string
-      format: date-time
-    PolicyDocument:
-      type: string
-      pattern: '[\P{C}\s]+'
-      minLength: 1
-      maxLength: 7168
   parameters:
+    X-Amz-Signature:
+      name: X-Amz-Signature
+      in: header
+      schema:
+        type: string
+      required: false
     X-Amz-Date:
       name: X-Amz-Date
+      in: header
+      schema:
+        type: string
+      required: false
+    X-Amz-Credential:
+      name: X-Amz-Credential
       in: header
       schema:
         type: string
@@ -1154,20 +1773,8 @@ components:
       schema:
         type: string
       required: false
-    X-Amz-Signature:
-      name: X-Amz-Signature
-      in: header
-      schema:
-        type: string
-      required: false
     X-Amz-Security-Token:
       name: X-Amz-Security-Token
-      in: header
-      schema:
-        type: string
-      required: false
-    X-Amz-Credential:
-      name: X-Amz-Credential
       in: header
       schema:
         type: string

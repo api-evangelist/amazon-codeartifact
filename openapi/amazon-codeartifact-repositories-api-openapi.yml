@@ -231,71 +231,34 @@ paths:
       tags:
       - Repositories
 components:
-  parameters:
-    X-Amz-Date:
-      name: X-Amz-Date
-      in: header
-      schema:
-        type: string
-      required: false
-    X-Amz-SignedHeaders:
-      name: X-Amz-SignedHeaders
-      in: header
-      schema:
-        type: string
-      required: false
-    X-Amz-Signature:
-      name: X-Amz-Signature
-      in: header
-      schema:
-        type: string
-      required: false
-    X-Amz-Security-Token:
-      name: X-Amz-Security-Token
-      in: header
-      schema:
-        type: string
-      required: false
-    X-Amz-Credential:
-      name: X-Amz-Credential
-      in: header
-      schema:
-        type: string
-      required: false
-    X-Amz-Algorithm:
-      name: X-Amz-Algorithm
-      in: header
-      schema:
-        type: string
-      required: false
-    X-Amz-Content-Sha256:
-      name: X-Amz-Content-Sha256
-      in: header
-      schema:
-        type: string
-      required: false
   schemas:
-    ThrottlingException: {}
-    AccountId:
+    DomainName:
       type: string
-      pattern: '[0-9]{12}'
-      minLength: 12
-      maxLength: 12
-    Arn:
-      type: string
-      pattern: \S+
-      minLength: 1
-      maxLength: 1011
-    RepositoryName:
-      type: string
-      pattern: '[A-Za-z0-9][A-Za-z0-9._\-]{1,99}'
+      pattern: '[a-z][a-z0-9\-]{0,48}[a-z0-9]'
       minLength: 2
-      maxLength: 100
+      maxLength: 50
+    RepositorySummaryList:
+      type: array
+      items:
+        $ref: '#/components/schemas/RepositorySummary'
+    AccessDeniedException: {}
+    ListRepositoriesResult:
+      type: object
+      properties:
+        repositories:
+          allOf:
+          - $ref: '#/components/schemas/RepositorySummaryList'
+          - description: ' The returned list of <a href="https://docs.aws.amazon.com/codeartifact/latest/APIReference/API_RepositorySummary.html">RepositorySummary</a> objects. '
+        nextToken:
+          allOf:
+          - $ref: '#/components/schemas/PaginationToken'
+          - description: ' If there are additional results, this is the token for the next set of results. '
     ValidationException: {}
-    Description:
+    ThrottlingException: {}
+    Timestamp:
       type: string
-      pattern: \P{C}*
-      maxLength: 1000
+      format: date-time
+    InternalServerException: {}
     RepositorySummary:
       type: object
       properties:
@@ -328,36 +291,73 @@ components:
           - $ref: '#/components/schemas/Timestamp'
           - description: A timestamp that represents the date and time the repository was created.
       description: ' Details about a repository, including its Amazon Resource Name (ARN), description, and domain information. The <a href="https://docs.aws.amazon.com/codeartifact/latest/APIReference/API_ListRepositories.html">ListRepositories</a> operation returns a list of <code>RepositorySummary</code> objects. '
+    Description:
+      type: string
+      pattern: \P{C}*
+      maxLength: 1000
+    AccountId:
+      type: string
+      pattern: '[0-9]{12}'
+      minLength: 12
+      maxLength: 12
+    RepositoryName:
+      type: string
+      pattern: '[A-Za-z0-9][A-Za-z0-9._\-]{1,99}'
+      minLength: 2
+      maxLength: 100
+    Arn:
+      type: string
+      pattern: \S+
+      minLength: 1
+      maxLength: 1011
     PaginationToken:
       type: string
       pattern: \S+
       minLength: 1
       maxLength: 2000
-    InternalServerException: {}
-    ListRepositoriesResult:
-      type: object
-      properties:
-        repositories:
-          allOf:
-          - $ref: '#/components/schemas/RepositorySummaryList'
-          - description: ' The returned list of <a href="https://docs.aws.amazon.com/codeartifact/latest/APIReference/API_RepositorySummary.html">RepositorySummary</a> objects. '
-        nextToken:
-          allOf:
-          - $ref: '#/components/schemas/PaginationToken'
-          - description: ' If there are additional results, this is the token for the next set of results. '
-    AccessDeniedException: {}
-    DomainName:
-      type: string
-      pattern: '[a-z][a-z0-9\-]{0,48}[a-z0-9]'
-      minLength: 2
-      maxLength: 50
-    Timestamp:
-      type: string
-      format: date-time
-    RepositorySummaryList:
-      type: array
-      items:
-        $ref: '#/components/schemas/RepositorySummary'
+  parameters:
+    X-Amz-Signature:
+      name: X-Amz-Signature
+      in: header
+      schema:
+        type: string
+      required: false
+    X-Amz-Date:
+      name: X-Amz-Date
+      in: header
+      schema:
+        type: string
+      required: false
+    X-Amz-Credential:
+      name: X-Amz-Credential
+      in: header
+      schema:
+        type: string
+      required: false
+    X-Amz-SignedHeaders:
+      name: X-Amz-SignedHeaders
+      in: header
+      schema:
+        type: string
+      required: false
+    X-Amz-Security-Token:
+      name: X-Amz-Security-Token
+      in: header
+      schema:
+        type: string
+      required: false
+    X-Amz-Algorithm:
+      name: X-Amz-Algorithm
+      in: header
+      schema:
+        type: string
+      required: false
+    X-Amz-Content-Sha256:
+      name: X-Amz-Content-Sha256
+      in: header
+      schema:
+        type: string
+      required: false
   securitySchemes:
     hmac:
       type: apiKey

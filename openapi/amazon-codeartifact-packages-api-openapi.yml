@@ -2,7 +2,7 @@ openapi: 3.2.0
 info:
   version: '2018-09-22'
   x-release: v4
-  title: CodeArtifact Packages#domain&repository API
+  title: CodeArtifact Packages API
   description: CodeArtifact is a fully managed artifact repository compatible with language-native package managers and build tools such as npm, Apache Maven, pip, and dotnet.
   x-logo:
     url: https://twitter.com/awscloud/profile_image?size=original
@@ -113,7 +113,7 @@ servers:
 security:
 - hmac: []
 tags:
-- name: Packages#domain&repository
+- name: Packages
 paths:
   /v1/packages#domain&repository:
     parameters:
@@ -306,14 +306,29 @@ paths:
         delay: 0
         dispatcher: FALLBACK
       tags:
-      - Packages#domain&repository
+      - Packages
 components:
   schemas:
-    PackageSummaryList:
-      type: array
-      items:
-        $ref: '#/components/schemas/PackageSummary'
-    ThrottlingException: {}
+    AllowUpstream:
+      type: string
+      enum:
+      - ALLOW
+      - BLOCK
+    PackageOriginRestrictions:
+      type: object
+      required:
+      - publish
+      - upstream
+      properties:
+        publish:
+          allOf:
+          - $ref: '#/components/schemas/AllowPublish'
+          - description: The package origin configuration that determines if new versions of the package can be published directly to the repository.
+        upstream:
+          allOf:
+          - $ref: '#/components/schemas/AllowUpstream'
+          - description: The package origin configuration that determines if new versions of the package can be added to the repository from an external connection or upstream source.
+      description: Details about the origin restrictions set on the package. The package origin restrictions determine how new versions of a package can be added to a specific repository.
     PackageOriginConfiguration:
       type: object
       properties:
@@ -322,26 +337,7 @@ components:
           - $ref: '#/components/schemas/PackageOriginRestrictions'
           - description: A <code>PackageOriginRestrictions</code> object that contains information about the upstream and publish package origin configuration for the package.
       description: Details about the package origin configuration of a package.
-    ValidationException: {}
-    PackageName:
-      type: string
-      pattern: '[^#/\s]+'
-      minLength: 1
-      maxLength: 255
-    PackageFormat:
-      type: string
-      enum:
-      - npm
-      - pypi
-      - maven
-      - nuget
-      - generic
-    AllowUpstream:
-      type: string
-      enum:
-      - ALLOW
-      - BLOCK
-    ResourceNotFoundException: {}
+    AccessDeniedException: {}
     ListPackagesResult:
       type: object
       properties:
@@ -353,11 +349,7 @@ components:
           allOf:
           - $ref: '#/components/schemas/PaginationToken'
           - description: ' If there are additional results, this is the token for the next set of results. '
-    PaginationToken:
-      type: string
-      pattern: \S+
-      minLength: 1
-      maxLength: 2000
+    ValidationException: {}
     PackageSummary:
       type: object
       properties:
@@ -378,36 +370,56 @@ components:
           - $ref: '#/components/schemas/PackageOriginConfiguration'
           - description: A <a href="https://docs.aws.amazon.com/codeartifact/latest/APIReference/API_PackageOriginConfiguration.html">PackageOriginConfiguration</a> object that contains a <a href="https://docs.aws.amazon.com/codeartifact/latest/APIReference/API_PackageOriginRestrictions.html">PackageOriginRestrictions</a> object that contains information about the upstream and publish package origin restrictions.
       description: ' Details about a package, including its format, namespace, and name. '
+    ThrottlingException: {}
+    PackageName:
+      type: string
+      pattern: '[^#/\s]+'
+      minLength: 1
+      maxLength: 255
+    PackageSummaryList:
+      type: array
+      items:
+        $ref: '#/components/schemas/PackageSummary'
     InternalServerException: {}
-    PackageOriginRestrictions:
-      type: object
-      required:
-      - publish
-      - upstream
-      properties:
-        publish:
-          allOf:
-          - $ref: '#/components/schemas/AllowPublish'
-          - description: The package origin configuration that determines if new versions of the package can be published directly to the repository.
-        upstream:
-          allOf:
-          - $ref: '#/components/schemas/AllowUpstream'
-          - description: The package origin configuration that determines if new versions of the package can be added to the repository from an external connection or upstream source.
-      description: Details about the origin restrictions set on the package. The package origin restrictions determine how new versions of a package can be added to a specific repository.
+    PackageFormat:
+      type: string
+      enum:
+      - npm
+      - pypi
+      - maven
+      - nuget
+      - generic
     AllowPublish:
       type: string
       enum:
       - ALLOW
       - BLOCK
-    AccessDeniedException: {}
     PackageNamespace:
       type: string
       pattern: '[^#/\s]+'
       minLength: 1
       maxLength: 255
+    ResourceNotFoundException: {}
+    PaginationToken:
+      type: string
+      pattern: \S+
+      minLength: 1
+      maxLength: 2000
   parameters:
+    X-Amz-Signature:
+      name: X-Amz-Signature
+      in: header
+      schema:
+        type: string
+      required: false
     X-Amz-Date:
       name: X-Amz-Date
+      in: header
+      schema:
+        type: string
+      required: false
+    X-Amz-Credential:
+      name: X-Amz-Credential
       in: header
       schema:
         type: string
@@ -418,20 +430,8 @@ components:
       schema:
         type: string
       required: false
-    X-Amz-Signature:
-      name: X-Amz-Signature
-      in: header
-      schema:
-        type: string
-      required: false
     X-Amz-Security-Token:
       name: X-Amz-Security-Token
-      in: header
-      schema:
-        type: string
-      required: false
-    X-Amz-Credential:
-      name: X-Amz-Credential
       in: header
       schema:
         type: string

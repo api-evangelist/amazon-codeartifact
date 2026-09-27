@@ -115,6 +115,353 @@ security:
 tags:
 - name: Domain
 paths:
+  /v1/domain#domain:
+    parameters:
+    - $ref: '#/components/parameters/X-Amz-Content-Sha256'
+    - $ref: '#/components/parameters/X-Amz-Date'
+    - $ref: '#/components/parameters/X-Amz-Algorithm'
+    - $ref: '#/components/parameters/X-Amz-Credential'
+    - $ref: '#/components/parameters/X-Amz-Security-Token'
+    - $ref: '#/components/parameters/X-Amz-Signature'
+    - $ref: '#/components/parameters/X-Amz-SignedHeaders'
+    post:
+      operationId: CreateDomain
+      description: 'Creates a domain. CodeArtifact domains make it easier to manage multiple repositories across an organization. You can use a domain to apply permissions across many repositories owned by different Amazon Web Services accounts. An asset is stored only once in a domain, even if it''s in multiple repositories.
+
+
+        Although you can have multiple domains, we recommend a single production domain that contains all published artifacts so that your development teams can find and share packages. You can use a second pre-production domain to test changes to the production domain configuration.'
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CreateDomainResult'
+              examples:
+                CreateDomain200Example:
+                  summary: Default CreateDomain 200 response
+                  x-microcks-default: true
+                  value:
+                    domain: my-domain
+        '480':
+          description: AccessDeniedException
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AccessDeniedException'
+              examples:
+                CreateDomain480Example:
+                  summary: Default CreateDomain 480 response
+                  x-microcks-default: true
+                  value: example-value
+        '481':
+          description: ConflictException
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ConflictException'
+              examples:
+                CreateDomain481Example:
+                  summary: Default CreateDomain 481 response
+                  x-microcks-default: true
+                  value: example-value
+        '482':
+          description: InternalServerException
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InternalServerException'
+              examples:
+                CreateDomain482Example:
+                  summary: Default CreateDomain 482 response
+                  x-microcks-default: true
+                  value: example-value
+        '483':
+          description: ResourceNotFoundException
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResourceNotFoundException'
+              examples:
+                CreateDomain483Example:
+                  summary: Default CreateDomain 483 response
+                  x-microcks-default: true
+                  value: example-value
+        '484':
+          description: ServiceQuotaExceededException
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ServiceQuotaExceededException'
+              examples:
+                CreateDomain484Example:
+                  summary: Default CreateDomain 484 response
+                  x-microcks-default: true
+                  value: example-value
+        '485':
+          description: ThrottlingException
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ThrottlingException'
+              examples:
+                CreateDomain485Example:
+                  summary: Default CreateDomain 485 response
+                  x-microcks-default: true
+                  value: example-value
+        '486':
+          description: ValidationException
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidationException'
+              examples:
+                CreateDomain486Example:
+                  summary: Default CreateDomain 486 response
+                  x-microcks-default: true
+                  value: '500123'
+      parameters:
+      - name: domain
+        in: query
+        required: true
+        description: ' The name of the domain to create. All domain names in an Amazon Web Services Region that are in the same Amazon Web Services account must be unique. The domain name is used as the prefix in DNS hostnames. Do not use sensitive information in a domain name because it is publicly discoverable. '
+        schema:
+          type: string
+          pattern: '[a-z][a-z0-9\-]{0,48}[a-z0-9]'
+          minLength: 2
+          maxLength: 50
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                encryptionKey:
+                  description: <p> The encryption key for the domain. This is used to encrypt content stored in a domain. An encryption key can be a key ID, a key Amazon Resource Name (ARN), a key alias, or a key alias ARN. To specify an <code>encryptionKey</code>, your IAM role must have <code>kms:DescribeKey</code> and <code>kms:CreateGrant</code> permissions on the encryption key that is used. For more information, see <a href="https://docs.aws.amazon.com/kms/latest/APIReference/API_DescribeKey.html#API_DescribeKey_RequestSyntax">DescribeKey</a> in the <i>Key Management Service API Reference</i> and <a href="https://docs.aws.amazon.com/kms/latest/developerguide/kms-api-permissions-reference.html">Key Management Service API Permissions Reference</a> in the <i>Key Management Service Developer Guide</i>. </p> <important> <p> CodeArtifact supports only symmetric CMKs. Do not associate an asymmetric CMK with your domain. For more information, see <a href="https://docs.aws.amazon.com/kms/latest/developerguide/symmetric-asymmetric.html">Using symmetric and asymmetric keys</a> in the <i>Key Management Service Developer Guide</i>. </p> </important>
+                  type: string
+                  pattern: \S+
+                  minLength: 1
+                  maxLength: 1011
+                tags:
+                  description: One or more tag key-value pairs for the domain.
+                  type: array
+                  items:
+                    $ref: '#/components/schemas/Tag'
+                  minItems: 0
+                  maxItems: 200
+            examples:
+              CreateDomainRequestExample:
+                summary: Default CreateDomain request
+                x-microcks-default: true
+                value:
+                  encryptionKey: arn:aws:kms:us-east-1:123456789012:key/12345678-1234-1234-1234-123456789012
+                  tags:
+                  - key: arn:aws:kms:us-east-1:123456789012:key/12345678-1234-1234-1234-123456789012
+                    value: example-value
+      summary: Amazon CodeArtifact Create Domain
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
+      tags:
+      - Domain
+    delete:
+      operationId: DeleteDomain
+      description: Deletes a domain. You cannot delete a domain that contains repositories. If you want to delete a domain with repositories, first delete its repositories.
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DeleteDomainResult'
+              examples:
+                DeleteDomain200Example:
+                  summary: Default DeleteDomain 200 response
+                  x-microcks-default: true
+                  value:
+                    domain: my-domain
+        '480':
+          description: AccessDeniedException
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AccessDeniedException'
+              examples:
+                DeleteDomain480Example:
+                  summary: Default DeleteDomain 480 response
+                  x-microcks-default: true
+                  value: example-value
+        '481':
+          description: ConflictException
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ConflictException'
+              examples:
+                DeleteDomain481Example:
+                  summary: Default DeleteDomain 481 response
+                  x-microcks-default: true
+                  value: example-value
+        '482':
+          description: InternalServerException
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InternalServerException'
+              examples:
+                DeleteDomain482Example:
+                  summary: Default DeleteDomain 482 response
+                  x-microcks-default: true
+                  value: example-value
+        '483':
+          description: ThrottlingException
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ThrottlingException'
+              examples:
+                DeleteDomain483Example:
+                  summary: Default DeleteDomain 483 response
+                  x-microcks-default: true
+                  value: example-value
+        '484':
+          description: ValidationException
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidationException'
+              examples:
+                DeleteDomain484Example:
+                  summary: Default DeleteDomain 484 response
+                  x-microcks-default: true
+                  value: '500123'
+      parameters:
+      - name: domain
+        in: query
+        required: true
+        description: ' The name of the domain to delete. '
+        schema:
+          type: string
+          pattern: '[a-z][a-z0-9\-]{0,48}[a-z0-9]'
+          minLength: 2
+          maxLength: 50
+      - name: domain-owner
+        in: query
+        required: false
+        description: ' The 12-digit account number of the Amazon Web Services account that owns the domain. It does not include dashes or spaces. '
+        schema:
+          type: string
+          pattern: '[0-9]{12}'
+          minLength: 12
+          maxLength: 12
+      summary: Amazon CodeArtifact Delete Domain
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
+      tags:
+      - Domain
+    get:
+      operationId: DescribeDomain
+      description: Returns a DomainDescription object that contains information about the requested domain.
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DescribeDomainResult'
+              examples:
+                DescribeDomain200Example:
+                  summary: Default DescribeDomain 200 response
+                  x-microcks-default: true
+                  value:
+                    domain:
+                      name: my-package
+                      owner: '123456789012'
+                      arn: arn:aws:codeartifact:us-east-1:123456789012:domain/my-domain
+                      status: Active
+                      createdTime: example-value
+        '480':
+          description: AccessDeniedException
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AccessDeniedException'
+              examples:
+                DescribeDomain480Example:
+                  summary: Default DescribeDomain 480 response
+                  x-microcks-default: true
+                  value: example-value
+        '481':
+          description: InternalServerException
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InternalServerException'
+              examples:
+                DescribeDomain481Example:
+                  summary: Default DescribeDomain 481 response
+                  x-microcks-default: true
+                  value: example-value
+        '482':
+          description: ResourceNotFoundException
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResourceNotFoundException'
+              examples:
+                DescribeDomain482Example:
+                  summary: Default DescribeDomain 482 response
+                  x-microcks-default: true
+                  value: example-value
+        '483':
+          description: ThrottlingException
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ThrottlingException'
+              examples:
+                DescribeDomain483Example:
+                  summary: Default DescribeDomain 483 response
+                  x-microcks-default: true
+                  value: example-value
+        '484':
+          description: ValidationException
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidationException'
+              examples:
+                DescribeDomain484Example:
+                  summary: Default DescribeDomain 484 response
+                  x-microcks-default: true
+                  value: '500123'
+      parameters:
+      - name: domain
+        in: query
+        required: true
+        description: ' A string that specifies the name of the requested domain. '
+        schema:
+          type: string
+          pattern: '[a-z][a-z0-9\-]{0,48}[a-z0-9]'
+          minLength: 2
+          maxLength: 50
+      - name: domain-owner
+        in: query
+        required: false
+        description: ' The 12-digit account number of the Amazon Web Services account that owns the domain. It does not include dashes or spaces. '
+        schema:
+          type: string
+          pattern: '[0-9]{12}'
+          minLength: 12
+          maxLength: 12
+      summary: Amazon CodeArtifact Describe Domain
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
+      tags:
+      - Domain
   /v1/domain/permissions/policy#domain:
     parameters:
     - $ref: '#/components/parameters/X-Amz-Content-Sha256'
@@ -649,40 +996,6 @@ paths:
       - Domain
 components:
   schemas:
-    ListRepositoriesInDomainResult:
-      type: object
-      properties:
-        repositories:
-          allOf:
-          - $ref: '#/components/schemas/RepositorySummaryList'
-          - description: ' The returned list of repositories. '
-        nextToken:
-          allOf:
-          - $ref: '#/components/schemas/PaginationToken'
-          - description: ' If there are additional results, this is the token for the next set of results. '
-    ThrottlingException: {}
-    ServiceQuotaExceededException: {}
-    ConflictException: {}
-    AccountId:
-      type: string
-      pattern: '[0-9]{12}'
-      minLength: 12
-      maxLength: 12
-    Arn:
-      type: string
-      pattern: \S+
-      minLength: 1
-      maxLength: 1011
-    RepositoryName:
-      type: string
-      pattern: '[A-Za-z0-9][A-Za-z0-9._\-]{1,99}'
-      minLength: 2
-      maxLength: 100
-    PolicyRevision:
-      type: string
-      pattern: \S+
-      minLength: 1
-      maxLength: 100
     PutDomainPermissionsPolicyResult:
       type: object
       properties:
@@ -690,18 +1003,59 @@ components:
           allOf:
           - $ref: '#/components/schemas/ResourcePolicy'
           - description: ' The resource policy that was set after processing the request. '
+    DomainName:
+      type: string
+      pattern: '[a-z][a-z0-9\-]{0,48}[a-z0-9]'
+      minLength: 2
+      maxLength: 50
+    RepositorySummaryList:
+      type: array
+      items:
+        $ref: '#/components/schemas/RepositorySummary'
+    TagKey:
+      type: string
+      pattern: \P{C}+
+      minLength: 1
+      maxLength: 128
+    AccessDeniedException: {}
+    Integer:
+      type: integer
+    DomainStatus:
+      type: string
+      enum:
+      - Active
+      - Deleted
     ValidationException: {}
-    GetDomainPermissionsPolicyResult:
+    ThrottlingException: {}
+    CreateDomainResult:
       type: object
       properties:
-        policy:
+        domain:
           allOf:
-          - $ref: '#/components/schemas/ResourcePolicy'
-          - description: ' The returned resource policy. '
-    Description:
+          - $ref: '#/components/schemas/DomainDescription'
+          - description: ' Contains information about the created domain after processing the request. '
+    Timestamp:
       type: string
-      pattern: \P{C}*
-      maxLength: 1000
+      format: date-time
+    Long:
+      type: integer
+    ConflictException: {}
+    Tag:
+      type: object
+      required:
+      - key
+      - value
+      properties:
+        key:
+          allOf:
+          - $ref: '#/components/schemas/TagKey'
+          - description: The tag key.
+        value:
+          allOf:
+          - $ref: '#/components/schemas/TagValue'
+          - description: The tag value.
+      description: A tag is a key-value pair that can be used to manage, search for, or filter resources in CodeArtifact.
+    InternalServerException: {}
     ResourcePolicy:
       type: object
       properties:
@@ -750,19 +1104,110 @@ components:
           - $ref: '#/components/schemas/Timestamp'
           - description: A timestamp that represents the date and time the repository was created.
       description: ' Details about a repository, including its Amazon Resource Name (ARN), description, and domain information. The <a href="https://docs.aws.amazon.com/codeartifact/latest/APIReference/API_ListRepositories.html">ListRepositories</a> operation returns a list of <code>RepositorySummary</code> objects. '
+    DescribeDomainResult:
+      type: object
+      properties:
+        domain:
+          $ref: '#/components/schemas/DomainDescription'
+    GetDomainPermissionsPolicyResult:
+      type: object
+      properties:
+        policy:
+          allOf:
+          - $ref: '#/components/schemas/ResourcePolicy'
+          - description: ' The returned resource policy. '
+    AccountId:
+      type: string
+      pattern: '[0-9]{12}'
+      minLength: 12
+      maxLength: 12
+    Description:
+      type: string
+      pattern: \P{C}*
+      maxLength: 1000
+    ListRepositoriesInDomainResult:
+      type: object
+      properties:
+        repositories:
+          allOf:
+          - $ref: '#/components/schemas/RepositorySummaryList'
+          - description: ' The returned list of repositories. '
+        nextToken:
+          allOf:
+          - $ref: '#/components/schemas/PaginationToken'
+          - description: ' If there are additional results, this is the token for the next set of results. '
+    RepositoryName:
+      type: string
+      pattern: '[A-Za-z0-9][A-Za-z0-9._\-]{1,99}'
+      minLength: 2
+      maxLength: 100
+    ServiceQuotaExceededException: {}
+    Arn:
+      type: string
+      pattern: \S+
+      minLength: 1
+      maxLength: 1011
     ResourceNotFoundException: {}
     PaginationToken:
       type: string
       pattern: \S+
       minLength: 1
       maxLength: 2000
-    InternalServerException: {}
-    AccessDeniedException: {}
-    DomainName:
+    PolicyRevision:
       type: string
-      pattern: '[a-z][a-z0-9\-]{0,48}[a-z0-9]'
-      minLength: 2
-      maxLength: 50
+      pattern: \S+
+      minLength: 1
+      maxLength: 100
+    PolicyDocument:
+      type: string
+      pattern: '[\P{C}\s]+'
+      minLength: 1
+      maxLength: 7168
+    TagValue:
+      type: string
+      pattern: \P{C}*
+      minLength: 0
+      maxLength: 256
+    DomainDescription:
+      type: object
+      properties:
+        name:
+          allOf:
+          - $ref: '#/components/schemas/DomainName'
+          - description: ' The name of the domain. '
+        owner:
+          allOf:
+          - $ref: '#/components/schemas/AccountId'
+          - description: ' The Amazon Web Services account ID that owns the domain. '
+        arn:
+          allOf:
+          - $ref: '#/components/schemas/Arn'
+          - description: ' The Amazon Resource Name (ARN) of the domain. '
+        status:
+          allOf:
+          - $ref: '#/components/schemas/DomainStatus'
+          - description: ' The current status of a domain. '
+        createdTime:
+          allOf:
+          - $ref: '#/components/schemas/Timestamp'
+          - description: ' A timestamp that represents the date and time the domain was created. '
+        encryptionKey:
+          allOf:
+          - $ref: '#/components/schemas/Arn'
+          - description: ' The ARN of an Key Management Service (KMS) key associated with a domain. '
+        repositoryCount:
+          allOf:
+          - $ref: '#/components/schemas/Integer'
+          - description: ' The number of repositories in the domain. '
+        assetSizeBytes:
+          allOf:
+          - $ref: '#/components/schemas/Long'
+          - description: ' The total size of all assets in the domain. '
+        s3BucketArn:
+          allOf:
+          - $ref: '#/components/schemas/Arn'
+          - description: The Amazon Resource Name (ARN) of the Amazon S3 bucket that is used to store package assets in the domain.
+      description: ' Information about a domain. A domain is a container for repositories. When you create a domain, it is empty until you add one or more repositories. '
     DeleteDomainPermissionsPolicyResult:
       type: object
       properties:
@@ -770,21 +1215,28 @@ components:
           allOf:
           - $ref: '#/components/schemas/ResourcePolicy'
           - description: ' Information about the deleted resource policy after processing the request. '
-    Timestamp:
-      type: string
-      format: date-time
-    RepositorySummaryList:
-      type: array
-      items:
-        $ref: '#/components/schemas/RepositorySummary'
-    PolicyDocument:
-      type: string
-      pattern: '[\P{C}\s]+'
-      minLength: 1
-      maxLength: 7168
+    DeleteDomainResult:
+      type: object
+      properties:
+        domain:
+          allOf:
+          - $ref: '#/components/schemas/DomainDescription'
+          - description: ' Contains information about the deleted domain after processing the request. '
   parameters:
+    X-Amz-Signature:
+      name: X-Amz-Signature
+      in: header
+      schema:
+        type: string
+      required: false
     X-Amz-Date:
       name: X-Amz-Date
+      in: header
+      schema:
+        type: string
+      required: false
+    X-Amz-Credential:
+      name: X-Amz-Credential
       in: header
       schema:
         type: string
@@ -795,20 +1247,8 @@ components:
       schema:
         type: string
       required: false
-    X-Amz-Signature:
-      name: X-Amz-Signature
-      in: header
-      schema:
-        type: string
-      required: false
     X-Amz-Security-Token:
       name: X-Amz-Security-Token
-      in: header
-      schema:
-        type: string
-      required: false
-    X-Amz-Credential:
-      name: X-Amz-Credential
       in: header
       schema:
         type: string
