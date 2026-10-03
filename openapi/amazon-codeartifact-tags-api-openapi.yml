@@ -202,14 +202,18 @@ paths:
       - Tags
 components:
   schemas:
-    ValidationException: {}
+    TagKey:
+      type: string
+      pattern: \P{C}+
+      minLength: 1
+      maxLength: 128
     ResourceNotFoundException: {}
-    TagList:
-      type: array
-      items:
-        $ref: '#/components/schemas/Tag'
-      minItems: 0
-      maxItems: 200
+    TagValue:
+      type: string
+      pattern: \P{C}*
+      minLength: 0
+      maxLength: 256
+    AccessDeniedException: {}
     ThrottlingException: {}
     ListTagsForResourceResult:
       type: object
@@ -218,17 +222,7 @@ components:
           allOf:
           - $ref: '#/components/schemas/TagList'
           - description: A list of tag key and value pairs associated with the specified resource.
-    TagKey:
-      type: string
-      pattern: \P{C}+
-      minLength: 1
-      maxLength: 128
-    TagValue:
-      type: string
-      pattern: \P{C}*
-      minLength: 0
-      maxLength: 256
-    AccessDeniedException: {}
+    ValidationException: {}
     Tag:
       type: object
       required:
@@ -244,9 +238,15 @@ components:
           - $ref: '#/components/schemas/TagValue'
           - description: The tag value.
       description: A tag is a key-value pair that can be used to manage, search for, or filter resources in CodeArtifact.
+    TagList:
+      type: array
+      items:
+        $ref: '#/components/schemas/Tag'
+      minItems: 0
+      maxItems: 200
   parameters:
-    X-Amz-Algorithm:
-      name: X-Amz-Algorithm
+    X-Amz-Credential:
+      name: X-Amz-Credential
       in: header
       schema:
         type: string
@@ -257,14 +257,14 @@ components:
       schema:
         type: string
       required: false
-    X-Amz-Credential:
-      name: X-Amz-Credential
+    X-Amz-SignedHeaders:
+      name: X-Amz-SignedHeaders
       in: header
       schema:
         type: string
       required: false
-    X-Amz-SignedHeaders:
-      name: X-Amz-SignedHeaders
+    X-Amz-Content-Sha256:
+      name: X-Amz-Content-Sha256
       in: header
       schema:
         type: string
@@ -275,14 +275,14 @@ components:
       schema:
         type: string
       required: false
-    X-Amz-Security-Token:
-      name: X-Amz-Security-Token
+    X-Amz-Algorithm:
+      name: X-Amz-Algorithm
       in: header
       schema:
         type: string
       required: false
-    X-Amz-Content-Sha256:
-      name: X-Amz-Content-Sha256
+    X-Amz-Security-Token:
+      name: X-Amz-Security-Token
       in: header
       schema:
         type: string

@@ -236,20 +236,23 @@ paths:
       - Tag
 components:
   schemas:
-    ServiceQuotaExceededException: {}
-    ValidationException: {}
-    ResourceNotFoundException: {}
-    ThrottlingException: {}
     TagKey:
       type: string
       pattern: \P{C}+
       minLength: 1
       maxLength: 128
+    ResourceNotFoundException: {}
     TagValue:
       type: string
       pattern: \P{C}*
       minLength: 0
       maxLength: 256
+    TagResourceResult:
+      type: object
+      properties: {}
+    ServiceQuotaExceededException: {}
+    ThrottlingException: {}
+    ValidationException: {}
     AccessDeniedException: {}
     Tag:
       type: object
@@ -266,18 +269,9 @@ components:
           - $ref: '#/components/schemas/TagValue'
           - description: The tag value.
       description: A tag is a key-value pair that can be used to manage, search for, or filter resources in CodeArtifact.
-    TagResourceResult:
-      type: object
-      properties: {}
   parameters:
-    X-Amz-Algorithm:
-      name: X-Amz-Algorithm
-      in: header
-      schema:
-        type: string
-      required: false
-    X-Amz-Date:
-      name: X-Amz-Date
+    X-Amz-Credential:
+      name: X-Amz-Credential
       in: header
       schema:
         type: string
@@ -288,8 +282,20 @@ components:
       schema:
         type: string
       required: false
-    X-Amz-Credential:
-      name: X-Amz-Credential
+    X-Amz-SignedHeaders:
+      name: X-Amz-SignedHeaders
+      in: header
+      schema:
+        type: string
+      required: false
+    X-Amz-Date:
+      name: X-Amz-Date
+      in: header
+      schema:
+        type: string
+      required: false
+    X-Amz-Content-Sha256:
+      name: X-Amz-Content-Sha256
       in: header
       schema:
         type: string
@@ -300,14 +306,8 @@ components:
       schema:
         type: string
       required: false
-    X-Amz-SignedHeaders:
-      name: X-Amz-SignedHeaders
-      in: header
-      schema:
-        type: string
-      required: false
-    X-Amz-Content-Sha256:
-      name: X-Amz-Content-Sha256
+    X-Amz-Algorithm:
+      name: X-Amz-Algorithm
       in: header
       schema:
         type: string

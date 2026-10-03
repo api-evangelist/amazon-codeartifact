@@ -15,9 +15,7 @@
     "amazon-codeartifact-tags-api-openapi.yml",
     "amazon-codeartifact-untag-api-openapi.yml"
   ],
-  "archived": [
-    "deleted 8 superseded output(s) from the previous generation"
-  ],
+  "archived": [],
   "errors": [],
   "warnings": [],
   "notes": [
@@ -71,22 +69,18 @@
     "amazon-codeartifact-openapi-original.yaml: declared missing tag: Tag",
     "amazon-codeartifact-openapi-original.yaml: declared missing tag: Tags",
     "amazon-codeartifact-openapi-original.yaml: declared missing tag: Untag",
-    "superseded outputs removed: amazon-codeartifact-authorization-token-domain-api-openapi.yml, amazon-codeartifact-domain-domain-api-openapi.yml, amazon-codeartifact-package-domain-repository-format-package-api-openapi.yml, amazon-codeartifact-packages-domain-repository-api-openapi.yml, amazon-codeartifact-repository-domain-repository-api-openapi.yml \u2026",
-    "apis.yml register: written (+5 apis, 10 total)"
+    "apis.yml register: already-registered"
   ],
   "skipped": [
-    "amazon-codeartifact-authorization-token-domain-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "amazon-codeartifact-authorization-token-api-openapi.yml: previously refined output, superseded by openapi/_original/",
     "amazon-codeartifact-domain-api-openapi.yml: previously refined output, superseded by openapi/_original/",
-    "amazon-codeartifact-domain-domain-api-openapi.yml: previously refined output, superseded by openapi/_original/",
     "amazon-codeartifact-domains-api-openapi.yml: previously refined output, superseded by openapi/_original/",
     "amazon-codeartifact-package-api-openapi.yml: previously refined output, superseded by openapi/_original/",
-    "amazon-codeartifact-package-domain-repository-format-package-api-openapi.yml: previously refined output, superseded by openapi/_original/",
-    "amazon-codeartifact-packages-domain-repository-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "amazon-codeartifact-packages-api-openapi.yml: previously refined output, superseded by openapi/_original/",
     "amazon-codeartifact-repositories-api-openapi.yml: previously refined output, superseded by openapi/_original/",
     "amazon-codeartifact-repository-api-openapi.yml: previously refined output, superseded by openapi/_original/",
-    "amazon-codeartifact-repository-domain-repository-api-openapi.yml: previously refined output, superseded by openapi/_original/",
-    "amazon-codeartifact-tag-resourcearn-api-openapi.yml: previously refined output, superseded by openapi/_original/",
-    "amazon-codeartifact-tags-resourcearn-api-openapi.yml: previously refined output, superseded by openapi/_original/",
-    "amazon-codeartifact-untag-resourcearn-api-openapi.yml: previously refined output, superseded by openapi/_original/"
+    "amazon-codeartifact-tag-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "amazon-codeartifact-tags-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "amazon-codeartifact-untag-api-openapi.yml: previously refined output, superseded by openapi/_original/"
   ]
 }
