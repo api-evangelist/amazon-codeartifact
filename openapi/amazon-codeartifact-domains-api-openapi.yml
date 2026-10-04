@@ -231,22 +231,6 @@ paths:
       - Domains
 components:
   schemas:
-    DomainSummaryList:
-      type: array
-      items:
-        $ref: '#/components/schemas/DomainSummary'
-    DomainName:
-      type: string
-      pattern: '[a-z][a-z0-9\-]{0,48}[a-z0-9]'
-      minLength: 2
-      maxLength: 50
-    ThrottlingException: {}
-    InternalServerException: {}
-    PaginationToken:
-      type: string
-      pattern: \S+
-      minLength: 1
-      maxLength: 2000
     DomainStatus:
       type: string
       enum:
@@ -263,6 +247,37 @@ components:
           allOf:
           - $ref: '#/components/schemas/PaginationToken'
           - description: ' The token for the next set of results. Use the value returned in the previous response in the next request to retrieve the next set of results. '
+    DomainName:
+      type: string
+      pattern: '[a-z][a-z0-9\-]{0,48}[a-z0-9]'
+      minLength: 2
+      maxLength: 50
+    InternalServerException: {}
+    ValidationException: {}
+    ThrottlingException: {}
+    AccountId:
+      type: string
+      pattern: '[0-9]{12}'
+      minLength: 12
+      maxLength: 12
+    PaginationToken:
+      type: string
+      pattern: \S+
+      minLength: 1
+      maxLength: 2000
+    DomainSummaryList:
+      type: array
+      items:
+        $ref: '#/components/schemas/DomainSummary'
+    AccessDeniedException: {}
+    Timestamp:
+      type: string
+      format: date-time
+    Arn:
+      type: string
+      pattern: \S+
+      minLength: 1
+      maxLength: 1011
     DomainSummary:
       type: object
       properties:
@@ -291,30 +306,9 @@ components:
           - $ref: '#/components/schemas/Arn'
           - description: ' The key used to encrypt the domain. '
       description: ' Information about a domain, including its name, Amazon Resource Name (ARN), and status. The <a href="https://docs.aws.amazon.com/codeartifact/latest/APIReference/API_ListDomains.html">ListDomains</a> operation returns a list of <code>DomainSummary</code> objects. '
-    AccountId:
-      type: string
-      pattern: '[0-9]{12}'
-      minLength: 12
-      maxLength: 12
-    ValidationException: {}
-    AccessDeniedException: {}
-    Timestamp:
-      type: string
-      format: date-time
-    Arn:
-      type: string
-      pattern: \S+
-      minLength: 1
-      maxLength: 1011
   parameters:
-    X-Amz-Credential:
-      name: X-Amz-Credential
-      in: header
-      schema:
-        type: string
-      required: false
-    X-Amz-Algorithm:
-      name: X-Amz-Algorithm
+    X-Amz-Signature:
+      name: X-Amz-Signature
       in: header
       schema:
         type: string
@@ -325,8 +319,14 @@ components:
       schema:
         type: string
       required: false
-    X-Amz-Signature:
-      name: X-Amz-Signature
+    X-Amz-Algorithm:
+      name: X-Amz-Algorithm
+      in: header
+      schema:
+        type: string
+      required: false
+    X-Amz-Date:
+      name: X-Amz-Date
       in: header
       schema:
         type: string
@@ -337,14 +337,14 @@ components:
       schema:
         type: string
       required: false
-    X-Amz-Security-Token:
-      name: X-Amz-Security-Token
+    X-Amz-Credential:
+      name: X-Amz-Credential
       in: header
       schema:
         type: string
       required: false
-    X-Amz-Date:
-      name: X-Amz-Date
+    X-Amz-Security-Token:
+      name: X-Amz-Security-Token
       in: header
       schema:
         type: string

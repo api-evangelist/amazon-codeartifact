@@ -309,14 +309,8 @@ paths:
       - Packages
 components:
   parameters:
-    X-Amz-Credential:
-      name: X-Amz-Credential
-      in: header
-      schema:
-        type: string
-      required: false
-    X-Amz-Algorithm:
-      name: X-Amz-Algorithm
+    X-Amz-Signature:
+      name: X-Amz-Signature
       in: header
       schema:
         type: string
@@ -327,20 +321,8 @@ components:
       schema:
         type: string
       required: false
-    X-Amz-Signature:
-      name: X-Amz-Signature
-      in: header
-      schema:
-        type: string
-      required: false
-    X-Amz-SignedHeaders:
-      name: X-Amz-SignedHeaders
-      in: header
-      schema:
-        type: string
-      required: false
-    X-Amz-Security-Token:
-      name: X-Amz-Security-Token
+    X-Amz-Algorithm:
+      name: X-Amz-Algorithm
       in: header
       schema:
         type: string
@@ -351,33 +333,25 @@ components:
       schema:
         type: string
       required: false
+    X-Amz-SignedHeaders:
+      name: X-Amz-SignedHeaders
+      in: header
+      schema:
+        type: string
+      required: false
+    X-Amz-Credential:
+      name: X-Amz-Credential
+      in: header
+      schema:
+        type: string
+      required: false
+    X-Amz-Security-Token:
+      name: X-Amz-Security-Token
+      in: header
+      schema:
+        type: string
+      required: false
   schemas:
-    ThrottlingException: {}
-    InternalServerException: {}
-    ListPackagesResult:
-      type: object
-      properties:
-        packages:
-          allOf:
-          - $ref: '#/components/schemas/PackageSummaryList'
-          - description: ' The list of returned <a href="https://docs.aws.amazon.com/codeartifact/latest/APIReference/API_PackageSummary.html">PackageSummary</a> objects. '
-        nextToken:
-          allOf:
-          - $ref: '#/components/schemas/PaginationToken'
-          - description: ' If there are additional results, this is the token for the next set of results. '
-    PaginationToken:
-      type: string
-      pattern: \S+
-      minLength: 1
-      maxLength: 2000
-    PackageFormat:
-      type: string
-      enum:
-      - npm
-      - pypi
-      - maven
-      - nuget
-      - generic
     PackageSummary:
       type: object
       properties:
@@ -398,15 +372,8 @@ components:
           - $ref: '#/components/schemas/PackageOriginConfiguration'
           - description: A <a href="https://docs.aws.amazon.com/codeartifact/latest/APIReference/API_PackageOriginConfiguration.html">PackageOriginConfiguration</a> object that contains a <a href="https://docs.aws.amazon.com/codeartifact/latest/APIReference/API_PackageOriginRestrictions.html">PackageOriginRestrictions</a> object that contains information about the upstream and publish package origin restrictions.
       description: ' Details about a package, including its format, namespace, and name. '
-    AllowUpstream:
-      type: string
-      enum:
-      - ALLOW
-      - BLOCK
-    PackageSummaryList:
-      type: array
-      items:
-        $ref: '#/components/schemas/PackageSummary'
+    InternalServerException: {}
+    ValidationException: {}
     PackageOriginRestrictions:
       type: object
       required:
@@ -422,12 +389,47 @@ components:
           - $ref: '#/components/schemas/AllowUpstream'
           - description: The package origin configuration that determines if new versions of the package can be added to the repository from an external connection or upstream source.
       description: Details about the origin restrictions set on the package. The package origin restrictions determine how new versions of a package can be added to a specific repository.
-    ValidationException: {}
+    ThrottlingException: {}
+    ResourceNotFoundException: {}
+    PaginationToken:
+      type: string
+      pattern: \S+
+      minLength: 1
+      maxLength: 2000
+    PackageSummaryList:
+      type: array
+      items:
+        $ref: '#/components/schemas/PackageSummary'
+    ListPackagesResult:
+      type: object
+      properties:
+        packages:
+          allOf:
+          - $ref: '#/components/schemas/PackageSummaryList'
+          - description: ' The list of returned <a href="https://docs.aws.amazon.com/codeartifact/latest/APIReference/API_PackageSummary.html">PackageSummary</a> objects. '
+        nextToken:
+          allOf:
+          - $ref: '#/components/schemas/PaginationToken'
+          - description: ' If there are additional results, this is the token for the next set of results. '
+    AllowUpstream:
+      type: string
+      enum:
+      - ALLOW
+      - BLOCK
+    AccessDeniedException: {}
     PackageName:
       type: string
       pattern: '[^#/\s]+'
       minLength: 1
       maxLength: 255
+    PackageFormat:
+      type: string
+      enum:
+      - npm
+      - pypi
+      - maven
+      - nuget
+      - generic
     AllowPublish:
       type: string
       enum:
@@ -441,13 +443,11 @@ components:
           - $ref: '#/components/schemas/PackageOriginRestrictions'
           - description: A <code>PackageOriginRestrictions</code> object that contains information about the upstream and publish package origin configuration for the package.
       description: Details about the package origin configuration of a package.
-    AccessDeniedException: {}
     PackageNamespace:
       type: string
       pattern: '[^#/\s]+'
       minLength: 1
       maxLength: 255
-    ResourceNotFoundException: {}
   securitySchemes:
     hmac:
       type: apiKey

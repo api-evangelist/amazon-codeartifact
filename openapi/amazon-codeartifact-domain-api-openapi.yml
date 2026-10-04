@@ -996,53 +996,59 @@ paths:
       - Domain
 components:
   schemas:
-    TagKey:
-      type: string
-      pattern: \P{C}+
-      minLength: 1
-      maxLength: 128
-    DomainName:
-      type: string
-      pattern: '[a-z][a-z0-9\-]{0,48}[a-z0-9]'
-      minLength: 2
-      maxLength: 50
     TagValue:
       type: string
       pattern: \P{C}*
       minLength: 0
       maxLength: 256
-    RepositorySummaryList:
-      type: array
-      items:
-        $ref: '#/components/schemas/RepositorySummary'
-    ThrottlingException: {}
-    DescribeDomainResult:
-      type: object
-      properties:
-        domain:
-          $ref: '#/components/schemas/DomainDescription'
-    ListRepositoriesInDomainResult:
-      type: object
-      properties:
-        repositories:
-          allOf:
-          - $ref: '#/components/schemas/RepositorySummaryList'
-          - description: ' The returned list of repositories. '
-        nextToken:
-          allOf:
-          - $ref: '#/components/schemas/PaginationToken'
-          - description: ' If there are additional results, this is the token for the next set of results. '
-    InternalServerException: {}
-    PolicyDocument:
+    DomainStatus:
       type: string
-      pattern: '[\P{C}\s]+'
-      minLength: 1
-      maxLength: 7168
-    PaginationToken:
+      enum:
+      - Active
+      - Deleted
+    ConflictException: {}
+    PutDomainPermissionsPolicyResult:
+      type: object
+      properties:
+        policy:
+          allOf:
+          - $ref: '#/components/schemas/ResourcePolicy'
+          - description: ' The resource policy that was set after processing the request. '
+    DomainName:
+      type: string
+      pattern: '[a-z][a-z0-9\-]{0,48}[a-z0-9]'
+      minLength: 2
+      maxLength: 50
+    Description:
+      type: string
+      pattern: \P{C}*
+      maxLength: 1000
+    ServiceQuotaExceededException: {}
+    InternalServerException: {}
+    GetDomainPermissionsPolicyResult:
+      type: object
+      properties:
+        policy:
+          allOf:
+          - $ref: '#/components/schemas/ResourcePolicy'
+          - description: ' The returned resource policy. '
+    ValidationException: {}
+    ThrottlingException: {}
+    ResourceNotFoundException: {}
+    AccountId:
+      type: string
+      pattern: '[0-9]{12}'
+      minLength: 12
+      maxLength: 12
+    Long:
+      type: integer
+    PolicyRevision:
       type: string
       pattern: \S+
       minLength: 1
-      maxLength: 2000
+      maxLength: 100
+    Integer:
+      type: integer
     ResourcePolicy:
       type: object
       properties:
@@ -1059,19 +1065,18 @@ components:
           - $ref: '#/components/schemas/PolicyDocument'
           - description: ' The resource policy formatted in JSON. '
       description: ' An CodeArtifact resource policy that contains a resource ARN, document details, and a revision. '
-    GetDomainPermissionsPolicyResult:
+    PaginationToken:
+      type: string
+      pattern: \S+
+      minLength: 1
+      maxLength: 2000
+    DeleteDomainPermissionsPolicyResult:
       type: object
       properties:
         policy:
           allOf:
           - $ref: '#/components/schemas/ResourcePolicy'
-          - description: ' The returned resource policy. '
-    DomainStatus:
-      type: string
-      enum:
-      - Active
-      - Deleted
-    ResourceNotFoundException: {}
+          - description: ' Information about the deleted resource policy after processing the request. '
     RepositorySummary:
       type: object
       properties:
@@ -1104,20 +1109,52 @@ components:
           - $ref: '#/components/schemas/Timestamp'
           - description: A timestamp that represents the date and time the repository was created.
       description: ' Details about a repository, including its Amazon Resource Name (ARN), description, and domain information. The <a href="https://docs.aws.amazon.com/codeartifact/latest/APIReference/API_ListRepositories.html">ListRepositories</a> operation returns a list of <code>RepositorySummary</code> objects. '
-    PutDomainPermissionsPolicyResult:
+    DescribeDomainResult:
       type: object
       properties:
-        policy:
-          allOf:
-          - $ref: '#/components/schemas/ResourcePolicy'
-          - description: ' The resource policy that was set after processing the request. '
-    DeleteDomainPermissionsPolicyResult:
+        domain:
+          $ref: '#/components/schemas/DomainDescription'
+    ListRepositoriesInDomainResult:
       type: object
       properties:
-        policy:
+        repositories:
           allOf:
-          - $ref: '#/components/schemas/ResourcePolicy'
-          - description: ' Information about the deleted resource policy after processing the request. '
+          - $ref: '#/components/schemas/RepositorySummaryList'
+          - description: ' The returned list of repositories. '
+        nextToken:
+          allOf:
+          - $ref: '#/components/schemas/PaginationToken'
+          - description: ' If there are additional results, this is the token for the next set of results. '
+    AccessDeniedException: {}
+    CreateDomainResult:
+      type: object
+      properties:
+        domain:
+          allOf:
+          - $ref: '#/components/schemas/DomainDescription'
+          - description: ' Contains information about the created domain after processing the request. '
+    RepositorySummaryList:
+      type: array
+      items:
+        $ref: '#/components/schemas/RepositorySummary'
+    TagKey:
+      type: string
+      pattern: \P{C}+
+      minLength: 1
+      maxLength: 128
+    Timestamp:
+      type: string
+      format: date-time
+    PolicyDocument:
+      type: string
+      pattern: '[\P{C}\s]+'
+      minLength: 1
+      maxLength: 7168
+    RepositoryName:
+      type: string
+      pattern: '[A-Za-z0-9][A-Za-z0-9._\-]{1,99}'
+      minLength: 2
+      maxLength: 100
     Tag:
       type: object
       required:
@@ -1133,17 +1170,6 @@ components:
           - $ref: '#/components/schemas/TagValue'
           - description: The tag value.
       description: A tag is a key-value pair that can be used to manage, search for, or filter resources in CodeArtifact.
-    AccountId:
-      type: string
-      pattern: '[0-9]{12}'
-      minLength: 12
-      maxLength: 12
-    ValidationException: {}
-    PolicyRevision:
-      type: string
-      pattern: \S+
-      minLength: 1
-      maxLength: 100
     DomainDescription:
       type: object
       properties:
@@ -1184,21 +1210,11 @@ components:
           - $ref: '#/components/schemas/Arn'
           - description: The Amazon Resource Name (ARN) of the Amazon S3 bucket that is used to store package assets in the domain.
       description: ' Information about a domain. A domain is a container for repositories. When you create a domain, it is empty until you add one or more repositories. '
-    Integer:
-      type: integer
-    CreateDomainResult:
-      type: object
-      properties:
-        domain:
-          allOf:
-          - $ref: '#/components/schemas/DomainDescription'
-          - description: ' Contains information about the created domain after processing the request. '
-    AccessDeniedException: {}
-    ServiceQuotaExceededException: {}
-    Description:
+    Arn:
       type: string
-      pattern: \P{C}*
-      maxLength: 1000
+      pattern: \S+
+      minLength: 1
+      maxLength: 1011
     DeleteDomainResult:
       type: object
       properties:
@@ -1206,31 +1222,9 @@ components:
           allOf:
           - $ref: '#/components/schemas/DomainDescription'
           - description: ' Contains information about the deleted domain after processing the request. '
-    Long:
-      type: integer
-    Timestamp:
-      type: string
-      format: date-time
-    ConflictException: {}
-    RepositoryName:
-      type: string
-      pattern: '[A-Za-z0-9][A-Za-z0-9._\-]{1,99}'
-      minLength: 2
-      maxLength: 100
-    Arn:
-      type: string
-      pattern: \S+
-      minLength: 1
-      maxLength: 1011
   parameters:
-    X-Amz-Credential:
-      name: X-Amz-Credential
-      in: header
-      schema:
-        type: string
-      required: false
-    X-Amz-Algorithm:
-      name: X-Amz-Algorithm
+    X-Amz-Signature:
+      name: X-Amz-Signature
       in: header
       schema:
         type: string
@@ -1241,8 +1235,14 @@ components:
       schema:
         type: string
       required: false
-    X-Amz-Signature:
-      name: X-Amz-Signature
+    X-Amz-Algorithm:
+      name: X-Amz-Algorithm
+      in: header
+      schema:
+        type: string
+      required: false
+    X-Amz-Date:
+      name: X-Amz-Date
       in: header
       schema:
         type: string
@@ -1253,14 +1253,14 @@ components:
       schema:
         type: string
       required: false
-    X-Amz-Security-Token:
-      name: X-Amz-Security-Token
+    X-Amz-Credential:
+      name: X-Amz-Credential
       in: header
       schema:
         type: string
       required: false
-    X-Amz-Date:
-      name: X-Amz-Date
+    X-Amz-Security-Token:
+      name: X-Amz-Security-Token
       in: header
       schema:
         type: string

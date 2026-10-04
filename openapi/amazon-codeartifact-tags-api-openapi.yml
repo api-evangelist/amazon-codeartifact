@@ -202,27 +202,23 @@ paths:
       - Tags
 components:
   schemas:
-    TagKey:
-      type: string
-      pattern: \P{C}+
-      minLength: 1
-      maxLength: 128
-    ResourceNotFoundException: {}
     TagValue:
       type: string
       pattern: \P{C}*
       minLength: 0
       maxLength: 256
-    AccessDeniedException: {}
-    ThrottlingException: {}
-    ListTagsForResourceResult:
-      type: object
-      properties:
-        tags:
-          allOf:
-          - $ref: '#/components/schemas/TagList'
-          - description: A list of tag key and value pairs associated with the specified resource.
     ValidationException: {}
+    TagKey:
+      type: string
+      pattern: \P{C}+
+      minLength: 1
+      maxLength: 128
+    TagList:
+      type: array
+      items:
+        $ref: '#/components/schemas/Tag'
+      minItems: 0
+      maxItems: 200
     Tag:
       type: object
       required:
@@ -238,21 +234,19 @@ components:
           - $ref: '#/components/schemas/TagValue'
           - description: The tag value.
       description: A tag is a key-value pair that can be used to manage, search for, or filter resources in CodeArtifact.
-    TagList:
-      type: array
-      items:
-        $ref: '#/components/schemas/Tag'
-      minItems: 0
-      maxItems: 200
+    ThrottlingException: {}
+    ResourceNotFoundException: {}
+    ListTagsForResourceResult:
+      type: object
+      properties:
+        tags:
+          allOf:
+          - $ref: '#/components/schemas/TagList'
+          - description: A list of tag key and value pairs associated with the specified resource.
+    AccessDeniedException: {}
   parameters:
-    X-Amz-Credential:
-      name: X-Amz-Credential
-      in: header
-      schema:
-        type: string
-      required: false
-    X-Amz-Date:
-      name: X-Amz-Date
+    X-Amz-Signature:
+      name: X-Amz-Signature
       in: header
       schema:
         type: string
@@ -263,14 +257,14 @@ components:
       schema:
         type: string
       required: false
-    X-Amz-Content-Sha256:
-      name: X-Amz-Content-Sha256
+    X-Amz-Security-Token:
+      name: X-Amz-Security-Token
       in: header
       schema:
         type: string
       required: false
-    X-Amz-Signature:
-      name: X-Amz-Signature
+    X-Amz-Content-Sha256:
+      name: X-Amz-Content-Sha256
       in: header
       schema:
         type: string
@@ -281,8 +275,14 @@ components:
       schema:
         type: string
       required: false
-    X-Amz-Security-Token:
-      name: X-Amz-Security-Token
+    X-Amz-Date:
+      name: X-Amz-Date
+      in: header
+      schema:
+        type: string
+      required: false
+    X-Amz-Credential:
+      name: X-Amz-Credential
       in: header
       schema:
         type: string

@@ -223,40 +223,9 @@ paths:
       tags:
       - Untag
 components:
-  schemas:
-    TagKey:
-      type: string
-      pattern: \P{C}+
-      minLength: 1
-      maxLength: 128
-    ResourceNotFoundException: {}
-    UntagResourceResult:
-      type: object
-      properties: {}
-    AccessDeniedException: {}
-    ThrottlingException: {}
-    ValidationException: {}
   parameters:
-    X-Amz-Credential:
-      name: X-Amz-Credential
-      in: header
-      schema:
-        type: string
-      required: false
-    X-Amz-Date:
-      name: X-Amz-Date
-      in: header
-      schema:
-        type: string
-      required: false
     X-Amz-SignedHeaders:
       name: X-Amz-SignedHeaders
-      in: header
-      schema:
-        type: string
-      required: false
-    X-Amz-Content-Sha256:
-      name: X-Amz-Content-Sha256
       in: header
       schema:
         type: string
@@ -267,8 +236,8 @@ components:
       schema:
         type: string
       required: false
-    X-Amz-Algorithm:
-      name: X-Amz-Algorithm
+    X-Amz-Content-Sha256:
+      name: X-Amz-Content-Sha256
       in: header
       schema:
         type: string
@@ -279,6 +248,37 @@ components:
       schema:
         type: string
       required: false
+    X-Amz-Algorithm:
+      name: X-Amz-Algorithm
+      in: header
+      schema:
+        type: string
+      required: false
+    X-Amz-Date:
+      name: X-Amz-Date
+      in: header
+      schema:
+        type: string
+      required: false
+    X-Amz-Credential:
+      name: X-Amz-Credential
+      in: header
+      schema:
+        type: string
+      required: false
+  schemas:
+    ValidationException: {}
+    TagKey:
+      type: string
+      pattern: \P{C}+
+      minLength: 1
+      maxLength: 128
+    ThrottlingException: {}
+    ResourceNotFoundException: {}
+    UntagResourceResult:
+      type: object
+      properties: {}
+    AccessDeniedException: {}
   securitySchemes:
     hmac:
       type: apiKey
