@@ -236,20 +236,24 @@ paths:
       - Tag
 components:
   schemas:
+    TagResourceResult:
+      type: object
+      properties: {}
+    ThrottlingException: {}
+    ValidationException: {}
     TagValue:
       type: string
       pattern: \P{C}*
       minLength: 0
       maxLength: 256
-    ValidationException: {}
     TagKey:
       type: string
       pattern: \P{C}+
       minLength: 1
       maxLength: 128
-    TagResourceResult:
-      type: object
-      properties: {}
+    ResourceNotFoundException: {}
+    ServiceQuotaExceededException: {}
+    AccessDeniedException: {}
     Tag:
       type: object
       required:
@@ -265,31 +269,15 @@ components:
           - $ref: '#/components/schemas/TagValue'
           - description: The tag value.
       description: A tag is a key-value pair that can be used to manage, search for, or filter resources in CodeArtifact.
-    ThrottlingException: {}
-    ResourceNotFoundException: {}
-    ServiceQuotaExceededException: {}
-    AccessDeniedException: {}
   parameters:
-    X-Amz-Signature:
-      name: X-Amz-Signature
-      in: header
-      schema:
-        type: string
-      required: false
     X-Amz-SignedHeaders:
       name: X-Amz-SignedHeaders
       in: header
       schema:
         type: string
       required: false
-    X-Amz-Content-Sha256:
-      name: X-Amz-Content-Sha256
-      in: header
-      schema:
-        type: string
-      required: false
-    X-Amz-Security-Token:
-      name: X-Amz-Security-Token
+    X-Amz-Signature:
+      name: X-Amz-Signature
       in: header
       schema:
         type: string
@@ -302,6 +290,18 @@ components:
       required: false
     X-Amz-Date:
       name: X-Amz-Date
+      in: header
+      schema:
+        type: string
+      required: false
+    X-Amz-Content-Sha256:
+      name: X-Amz-Content-Sha256
+      in: header
+      schema:
+        type: string
+      required: false
+    X-Amz-Security-Token:
+      name: X-Amz-Security-Token
       in: header
       schema:
         type: string

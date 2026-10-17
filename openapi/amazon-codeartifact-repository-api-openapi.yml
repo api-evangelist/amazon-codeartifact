@@ -1492,40 +1492,7 @@ paths:
       - Repository
 components:
   schemas:
-    TagValue:
-      type: string
-      pattern: \P{C}*
-      minLength: 0
-      maxLength: 256
-    GetRepositoryEndpointResult:
-      type: object
-      properties:
-        repositoryEndpoint:
-          allOf:
-          - $ref: '#/components/schemas/String'
-          - description: ' A string that specifies the URL of the returned endpoint. '
-    ExternalConnectionName:
-      type: string
-      pattern: '[A-Za-z0-9][A-Za-z0-9._\-:]{1,99}'
-      minLength: 2
-      maxLength: 100
-    ConflictException: {}
-    Description:
-      type: string
-      pattern: \P{C}*
-      maxLength: 1000
-    DomainName:
-      type: string
-      pattern: '[a-z][a-z0-9\-]{0,48}[a-z0-9]'
-      minLength: 2
-      maxLength: 50
-    DeleteRepositoryPermissionsPolicyResult:
-      type: object
-      properties:
-        policy:
-          allOf:
-          - $ref: '#/components/schemas/ResourcePolicy'
-          - description: ' Information about the deleted policy after processing the request. '
+    ThrottlingException: {}
     UpstreamRepositoryInfo:
       type: object
       properties:
@@ -1534,21 +1501,64 @@ components:
           - $ref: '#/components/schemas/RepositoryName'
           - description: ' The name of an upstream repository. '
       description: ' Information about an upstream repository. '
-    DeleteRepositoryResult:
+    DomainName:
+      type: string
+      pattern: '[a-z][a-z0-9\-]{0,48}[a-z0-9]'
+      minLength: 2
+      maxLength: 50
+    RepositoryExternalConnectionInfo:
+      type: object
+      properties:
+        externalConnectionName:
+          allOf:
+          - $ref: '#/components/schemas/ExternalConnectionName'
+          - description: ' The name of the external connection associated with a repository. '
+        packageFormat:
+          allOf:
+          - $ref: '#/components/schemas/PackageFormat'
+          - description: '<p> The package format associated with a repository''s external connection. The valid package formats are: </p> <ul> <li> <p> <code>npm</code>: A Node Package Manager (npm) package. </p> </li> <li> <p> <code>pypi</code>: A Python Package Index (PyPI) package. </p> </li> <li> <p> <code>maven</code>: A Maven package that contains compiled code in a distributable format, such as a JAR file. </p> </li> <li> <p> <code>nuget</code>: A NuGet package. </p> </li> </ul>'
+        status:
+          allOf:
+          - $ref: '#/components/schemas/ExternalConnectionStatus'
+          - description: ' The status of the external connection of a repository. There is one valid value, <code>Available</code>. '
+      description: ' Contains information about the external connection of a repository. '
+    PolicyDocument:
+      type: string
+      pattern: '[\P{C}\s]+'
+      minLength: 1
+      maxLength: 7168
+    PolicyRevision:
+      type: string
+      pattern: \S+
+      minLength: 1
+      maxLength: 100
+    UpstreamRepositoryInfoList:
+      type: array
+      items:
+        $ref: '#/components/schemas/UpstreamRepositoryInfo'
+    UpdateRepositoryResult:
       type: object
       properties:
         repository:
           allOf:
           - $ref: '#/components/schemas/RepositoryDescription'
-          - description: ' Information about the deleted repository after processing the request. '
-    ServiceQuotaExceededException: {}
-    InternalServerException: {}
-    RepositoryExternalConnectionInfoList:
-      type: array
-      items:
-        $ref: '#/components/schemas/RepositoryExternalConnectionInfo'
+          - description: ' The updated repository. '
     ValidationException: {}
-    ThrottlingException: {}
+    PackageFormat:
+      type: string
+      enum:
+      - npm
+      - pypi
+      - maven
+      - nuget
+      - generic
+    AssociateExternalConnectionResult:
+      type: object
+      properties:
+        repository:
+          allOf:
+          - $ref: '#/components/schemas/RepositoryDescription'
+          - description: ' Information about the connected repository after processing the request. '
     RepositoryDescription:
       type: object
       properties:
@@ -1589,28 +1599,83 @@ components:
           - $ref: '#/components/schemas/Timestamp'
           - description: A timestamp that represents the date and time the repository was created.
       description: ' The details of a repository stored in CodeArtifact. A CodeArtifact repository contains a set of package versions, each of which maps to a set of assets. Repositories are polyglot—a single repository can contain packages of any supported type. Each repository exposes endpoints for fetching and publishing packages using tools like the <code>npm</code> CLI, the Maven CLI (<code>mvn</code>), and <code>pip</code>. You can create up to 100 repositories per Amazon Web Services account. '
-    ResourceNotFoundException: {}
-    CreateRepositoryResult:
-      type: object
-      properties:
-        repository:
-          allOf:
-          - $ref: '#/components/schemas/RepositoryDescription'
-          - description: ' Information about the created repository after processing the request. '
     ExternalConnectionStatus:
       type: string
       enum:
       - Available
+    DeleteRepositoryPermissionsPolicyResult:
+      type: object
+      properties:
+        policy:
+          allOf:
+          - $ref: '#/components/schemas/ResourcePolicy'
+          - description: ' Information about the deleted policy after processing the request. '
     AccountId:
       type: string
       pattern: '[0-9]{12}'
       minLength: 12
       maxLength: 12
-    PolicyRevision:
+    Timestamp:
       type: string
-      pattern: \S+
-      minLength: 1
+      format: date-time
+    GetRepositoryPermissionsPolicyResult:
+      type: object
+      properties:
+        policy:
+          allOf:
+          - $ref: '#/components/schemas/ResourcePolicy'
+          - description: ' The returned resource policy. '
+    ResourceNotFoundException: {}
+    InternalServerException: {}
+    GetRepositoryEndpointResult:
+      type: object
+      properties:
+        repositoryEndpoint:
+          allOf:
+          - $ref: '#/components/schemas/String'
+          - description: ' A string that specifies the URL of the returned endpoint. '
+    ExternalConnectionName:
+      type: string
+      pattern: '[A-Za-z0-9][A-Za-z0-9._\-:]{1,99}'
+      minLength: 2
       maxLength: 100
+    PutRepositoryPermissionsPolicyResult:
+      type: object
+      properties:
+        policy:
+          allOf:
+          - $ref: '#/components/schemas/ResourcePolicy'
+          - description: ' The resource policy that was set after processing the request. '
+    String:
+      type: string
+    DisassociateExternalConnectionResult:
+      type: object
+      properties:
+        repository:
+          allOf:
+          - $ref: '#/components/schemas/RepositoryDescription'
+          - description: ' The repository associated with the removed external connection. '
+    TagKey:
+      type: string
+      pattern: \P{C}+
+      minLength: 1
+      maxLength: 128
+    ServiceQuotaExceededException: {}
+    Tag:
+      type: object
+      required:
+      - key
+      - value
+      properties:
+        key:
+          allOf:
+          - $ref: '#/components/schemas/TagKey'
+          - description: The tag key.
+        value:
+          allOf:
+          - $ref: '#/components/schemas/TagValue'
+          - description: The tag value.
+      description: A tag is a key-value pair that can be used to manage, search for, or filter resources in CodeArtifact.
     ResourcePolicy:
       type: object
       properties:
@@ -1627,110 +1692,39 @@ components:
           - $ref: '#/components/schemas/PolicyDocument'
           - description: ' The resource policy formatted in JSON. '
       description: ' An CodeArtifact resource policy that contains a resource ARN, document details, and a revision. '
-    UpstreamRepositoryInfoList:
-      type: array
-      items:
-        $ref: '#/components/schemas/UpstreamRepositoryInfo'
-    AccessDeniedException: {}
-    DisassociateExternalConnectionResult:
-      type: object
-      properties:
-        repository:
-          allOf:
-          - $ref: '#/components/schemas/RepositoryDescription'
-          - description: ' The repository associated with the removed external connection. '
-    AssociateExternalConnectionResult:
-      type: object
-      properties:
-        repository:
-          allOf:
-          - $ref: '#/components/schemas/RepositoryDescription'
-          - description: ' Information about the connected repository after processing the request. '
-    PackageFormat:
-      type: string
-      enum:
-      - npm
-      - pypi
-      - maven
-      - nuget
-      - generic
-    TagKey:
-      type: string
-      pattern: \P{C}+
-      minLength: 1
-      maxLength: 128
-    PutRepositoryPermissionsPolicyResult:
-      type: object
-      properties:
-        policy:
-          allOf:
-          - $ref: '#/components/schemas/ResourcePolicy'
-          - description: ' The resource policy that was set after processing the request. '
-    Timestamp:
-      type: string
-      format: date-time
-    PolicyDocument:
-      type: string
-      pattern: '[\P{C}\s]+'
-      minLength: 1
-      maxLength: 7168
-    RepositoryName:
-      type: string
-      pattern: '[A-Za-z0-9][A-Za-z0-9._\-]{1,99}'
-      minLength: 2
-      maxLength: 100
-    Tag:
-      type: object
-      required:
-      - key
-      - value
-      properties:
-        key:
-          allOf:
-          - $ref: '#/components/schemas/TagKey'
-          - description: The tag key.
-        value:
-          allOf:
-          - $ref: '#/components/schemas/TagValue'
-          - description: The tag value.
-      description: A tag is a key-value pair that can be used to manage, search for, or filter resources in CodeArtifact.
     Arn:
       type: string
       pattern: \S+
       minLength: 1
       maxLength: 1011
-    GetRepositoryPermissionsPolicyResult:
-      type: object
-      properties:
-        policy:
-          allOf:
-          - $ref: '#/components/schemas/ResourcePolicy'
-          - description: ' The returned resource policy. '
-    String:
-      type: string
-    RepositoryExternalConnectionInfo:
-      type: object
-      properties:
-        externalConnectionName:
-          allOf:
-          - $ref: '#/components/schemas/ExternalConnectionName'
-          - description: ' The name of the external connection associated with a repository. '
-        packageFormat:
-          allOf:
-          - $ref: '#/components/schemas/PackageFormat'
-          - description: '<p> The package format associated with a repository''s external connection. The valid package formats are: </p> <ul> <li> <p> <code>npm</code>: A Node Package Manager (npm) package. </p> </li> <li> <p> <code>pypi</code>: A Python Package Index (PyPI) package. </p> </li> <li> <p> <code>maven</code>: A Maven package that contains compiled code in a distributable format, such as a JAR file. </p> </li> <li> <p> <code>nuget</code>: A NuGet package. </p> </li> </ul>'
-        status:
-          allOf:
-          - $ref: '#/components/schemas/ExternalConnectionStatus'
-          - description: ' The status of the external connection of a repository. There is one valid value, <code>Available</code>. '
-      description: ' Contains information about the external connection of a repository. '
-    UpdateRepositoryResult:
+    DescribeRepositoryResult:
       type: object
       properties:
         repository:
           allOf:
           - $ref: '#/components/schemas/RepositoryDescription'
-          - description: ' The updated repository. '
+          - description: ' A <code>RepositoryDescription</code> object that contains the requested repository information. '
+    RepositoryName:
+      type: string
+      pattern: '[A-Za-z0-9][A-Za-z0-9._\-]{1,99}'
+      minLength: 2
+      maxLength: 100
+    Description:
+      type: string
+      pattern: \P{C}*
+      maxLength: 1000
+    TagValue:
+      type: string
+      pattern: \P{C}*
+      minLength: 0
+      maxLength: 256
+    CreateRepositoryResult:
+      type: object
+      properties:
+        repository:
+          allOf:
+          - $ref: '#/components/schemas/RepositoryDescription'
+          - description: ' Information about the created repository after processing the request. '
     UpstreamRepository:
       type: object
       required:
@@ -1741,22 +1735,22 @@ components:
           - $ref: '#/components/schemas/RepositoryName'
           - description: ' The name of an upstream repository. '
       description: ' Information about an upstream repository. A list of <code>UpstreamRepository</code> objects is an input parameter to <a href="https://docs.aws.amazon.com/codeartifact/latest/APIReference/API_CreateRepository.html">CreateRepository</a> and <a href="https://docs.aws.amazon.com/codeartifact/latest/APIReference/API_UpdateRepository.html">UpdateRepository</a>. '
-    DescribeRepositoryResult:
+    ConflictException: {}
+    RepositoryExternalConnectionInfoList:
+      type: array
+      items:
+        $ref: '#/components/schemas/RepositoryExternalConnectionInfo'
+    AccessDeniedException: {}
+    DeleteRepositoryResult:
       type: object
       properties:
         repository:
           allOf:
           - $ref: '#/components/schemas/RepositoryDescription'
-          - description: ' A <code>RepositoryDescription</code> object that contains the requested repository information. '
+          - description: ' Information about the deleted repository after processing the request. '
   parameters:
-    X-Amz-Signature:
-      name: X-Amz-Signature
-      in: header
-      schema:
-        type: string
-      required: false
-    X-Amz-Content-Sha256:
-      name: X-Amz-Content-Sha256
+    X-Amz-Date:
+      name: X-Amz-Date
       in: header
       schema:
         type: string
@@ -1767,8 +1761,8 @@ components:
       schema:
         type: string
       required: false
-    X-Amz-Date:
-      name: X-Amz-Date
+    X-Amz-Credential:
+      name: X-Amz-Credential
       in: header
       schema:
         type: string
@@ -1779,8 +1773,14 @@ components:
       schema:
         type: string
       required: false
-    X-Amz-Credential:
-      name: X-Amz-Credential
+    X-Amz-Signature:
+      name: X-Amz-Signature
+      in: header
+      schema:
+        type: string
+      required: false
+    X-Amz-Content-Sha256:
+      name: X-Amz-Content-Sha256
       in: header
       schema:
         type: string

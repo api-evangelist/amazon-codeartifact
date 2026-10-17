@@ -231,53 +231,26 @@ paths:
       - Domains
 components:
   schemas:
-    DomainStatus:
-      type: string
-      enum:
-      - Active
-      - Deleted
-    ListDomainsResult:
-      type: object
-      properties:
-        domains:
-          allOf:
-          - $ref: '#/components/schemas/DomainSummaryList'
-          - description: ' The returned list of <a href="https://docs.aws.amazon.com/codeartifact/latest/APIReference/API_DomainSummary.html">DomainSummary</a> objects. '
-        nextToken:
-          allOf:
-          - $ref: '#/components/schemas/PaginationToken'
-          - description: ' The token for the next set of results. Use the value returned in the previous response in the next request to retrieve the next set of results. '
-    DomainName:
-      type: string
-      pattern: '[a-z][a-z0-9\-]{0,48}[a-z0-9]'
-      minLength: 2
-      maxLength: 50
-    InternalServerException: {}
-    ValidationException: {}
     ThrottlingException: {}
-    AccountId:
-      type: string
-      pattern: '[0-9]{12}'
-      minLength: 12
-      maxLength: 12
     PaginationToken:
       type: string
       pattern: \S+
       minLength: 1
       maxLength: 2000
+    ValidationException: {}
+    AccountId:
+      type: string
+      pattern: '[0-9]{12}'
+      minLength: 12
+      maxLength: 12
+    Timestamp:
+      type: string
+      format: date-time
+    InternalServerException: {}
     DomainSummaryList:
       type: array
       items:
         $ref: '#/components/schemas/DomainSummary'
-    AccessDeniedException: {}
-    Timestamp:
-      type: string
-      format: date-time
-    Arn:
-      type: string
-      pattern: \S+
-      minLength: 1
-      maxLength: 1011
     DomainSummary:
       type: object
       properties:
@@ -306,15 +279,36 @@ components:
           - $ref: '#/components/schemas/Arn'
           - description: ' The key used to encrypt the domain. '
       description: ' Information about a domain, including its name, Amazon Resource Name (ARN), and status. The <a href="https://docs.aws.amazon.com/codeartifact/latest/APIReference/API_ListDomains.html">ListDomains</a> operation returns a list of <code>DomainSummary</code> objects. '
+    ListDomainsResult:
+      type: object
+      properties:
+        domains:
+          allOf:
+          - $ref: '#/components/schemas/DomainSummaryList'
+          - description: ' The returned list of <a href="https://docs.aws.amazon.com/codeartifact/latest/APIReference/API_DomainSummary.html">DomainSummary</a> objects. '
+        nextToken:
+          allOf:
+          - $ref: '#/components/schemas/PaginationToken'
+          - description: ' The token for the next set of results. Use the value returned in the previous response in the next request to retrieve the next set of results. '
+    Arn:
+      type: string
+      pattern: \S+
+      minLength: 1
+      maxLength: 1011
+    DomainName:
+      type: string
+      pattern: '[a-z][a-z0-9\-]{0,48}[a-z0-9]'
+      minLength: 2
+      maxLength: 50
+    AccessDeniedException: {}
+    DomainStatus:
+      type: string
+      enum:
+      - Active
+      - Deleted
   parameters:
-    X-Amz-Signature:
-      name: X-Amz-Signature
-      in: header
-      schema:
-        type: string
-      required: false
-    X-Amz-Content-Sha256:
-      name: X-Amz-Content-Sha256
+    X-Amz-Date:
+      name: X-Amz-Date
       in: header
       schema:
         type: string
@@ -325,8 +319,8 @@ components:
       schema:
         type: string
       required: false
-    X-Amz-Date:
-      name: X-Amz-Date
+    X-Amz-Credential:
+      name: X-Amz-Credential
       in: header
       schema:
         type: string
@@ -337,8 +331,14 @@ components:
       schema:
         type: string
       required: false
-    X-Amz-Credential:
-      name: X-Amz-Credential
+    X-Amz-Signature:
+      name: X-Amz-Signature
+      in: header
+      schema:
+        type: string
+      required: false
+    X-Amz-Content-Sha256:
+      name: X-Amz-Content-Sha256
       in: header
       schema:
         type: string
