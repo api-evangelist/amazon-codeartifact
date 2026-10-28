@@ -66,156 +66,267 @@
 
 Amazon CodeArtifact is a fully managed, secure artifact repository service that helps organizations store, publish, and share software packages used in their software development process. CodeArtifact works with popular build tools and package managers including npm, yarn, pip, twine, Maven, Gradle, NuGet, and more. It supports Cargo, generic, Maven, npm, NuGet, PyPI, Ruby, and Swift package formats and integrates natively with AWS IAM, AWS KMS, AWS CloudTrail, and Amazon EventBridge.
 
-**URL:** [Visit APIs.json](https://raw.githubusercontent.com/api-evangelist/amazon-codeartifact/refs/heads/main/apis.yml)
+**Areas:** Amazon · AWS · Artifact Repository · Package Management · DevOps · Software Supply Chain · npm · Maven · PyPI · NuGet · Developer Tools
 
-**Run:** [Capabilities Using Naftiko](https://github.com/naftiko/fleet?utm_source=api-evangelist&utm_medium=readme&utm_campaign=company-api-evangelist&utm_content=repo)
+## Amazon CodeArtifact on APIs.io
 
-## Tags:
+Everything profiled for Amazon CodeArtifact is published on APIs.io rather than in this repository. Start at the provider page — **[apis.io/providers/amazon-codeartifact/](https://apis.io/providers/amazon-codeartifact/)** — or go straight to one of the APIs or properties below.
 
- - Amazon, AWS, Artifact Repository, Package Management, DevOps, Software Supply Chain, npm, Maven, PyPI, NuGet
+### APIs (12)
 
-## Timestamps
+- [Amazon CodeArtifact Domain API](https://apis.io/apis/amazon-codeartifact/amazon-codeartifact-domain-api/) — The Domain API from Amazon CodeArtifact — 3 operation(s) for domain.
+- [Amazon CodeArtifact Domains API](https://apis.io/apis/amazon-codeartifact/amazon-codeartifact-domains-api/) — The Domains API from Amazon CodeArtifact — 1 operation(s) for domains.
+- [Amazon CodeArtifact Package API](https://apis.io/apis/amazon-codeartifact/amazon-codeartifact-package-api/) — The Package API from Amazon CodeArtifact — 11 operation(s) for package.
+- [Amazon CodeArtifact Repositories API](https://apis.io/apis/amazon-codeartifact/amazon-codeartifact-repositories-api/) — The Repositories API from Amazon CodeArtifact — 1 operation(s) for repositories.
+- [Amazon CodeArtifact Repository API](https://apis.io/apis/amazon-codeartifact/amazon-codeartifact-repository-api/) — The Repository API from Amazon CodeArtifact — 4 operation(s) for repository.
+- [Amazon CodeArtifact Authorization Token API](https://apis.io/apis/amazon-codeartifact/amazon-codeartifact-authorization-token-api/) — The Authorization Token API from Amazon CodeArtifact — 1 operation(s) for authorization token.
+- [Amazon CodeArtifact Packages API](https://apis.io/apis/amazon-codeartifact/amazon-codeartifact-packages-api/) — The Packages API from Amazon CodeArtifact — 1 operation(s) for packages.
+- [Amazon CodeArtifact Tag API](https://apis.io/apis/amazon-codeartifact/amazon-codeartifact-tag-api/) — The Tag API from Amazon CodeArtifact — 1 operation(s) for tag.
+- [Amazon CodeArtifact Tags API](https://apis.io/apis/amazon-codeartifact/amazon-codeartifact-tags-api/) — The Tags API from Amazon CodeArtifact — 1 operation(s) for tags.
+- [Amazon CodeArtifact Untag API](https://apis.io/apis/amazon-codeartifact/amazon-codeartifact-untag-api/) — The Untag API from Amazon CodeArtifact — 1 operation(s) for untag.
+- [Amazon CodeArtifact Codeartifact Operations API](https://apis.io/apis/amazon-codeartifact/amazon-codeartifact-operations-api/) — The Codeartifact Operations API from Amazon CodeArtifact — 6 operation(s) for codeartifact operations.
+- [Amazon CodeArtifact Codeartifact Package Group API](https://apis.io/apis/amazon-codeartifact/amazon-codeartifact-package-group-api/) — The Codeartifact Package Group API from Amazon CodeArtifact — 1 operation(s) for codeartifact package group.
 
-- **Created:** 2026-03-16
-- **Modified:** 2026-04-19
+### Published properties
 
-## APIs
+Each property below is a page on APIs.io carrying the machine-readable artifact and what it says.
 
-### Amazon CodeArtifact API
+#### MCP servers (1)
 
-The Amazon CodeArtifact REST API enables programmatic management of artifact repositories, domains, packages, and package versions. Manage domains and repositories, control permissions policies, publish and copy package versions, retrieve authorization tokens, and manage external connections to public package registries such as npmjs, PyPI, Maven Central, NuGet Gallery, and RubyGems.
+Model Context Protocol servers that expose the API to agents.
 
-**Human URL:** [https://docs.aws.amazon.com/codeartifact/latest/APIReference/Welcome.html](https://docs.aws.amazon.com/codeartifact/latest/APIReference/Welcome.html)
+- [amazon-codeartifact](https://apis.io/servers/amazon-codeartifact/amazon-codeartifact/)
 
-#### Tags:
+#### Agentic access (1)
 
- - Amazon, AWS, Artifact Repository, Package Management, REST API
+Which operations an agent can call, which act, and which need a human in the loop.
 
-#### Properties
+- [Amazon Codeartifact Agentic Access](https://apis.io/agentic-access/amazon-codeartifact/amazon-codeartifact-agentic-access/)
 
-- [Documentation](https://docs.aws.amazon.com/codeartifact/latest/ug/welcome.html)
-- [APIReference](https://docs.aws.amazon.com/codeartifact/latest/APIReference/Welcome.html)
-- [OpenAPI](openapi/amazon-codeartifact-openapi-original.yaml)
-- [JSONSchema](json-schema/codeartifact-domain-description-schema.json)
-- [JSONSchema](json-schema/codeartifact-repository-description-schema.json)
-- [JSONSchema](json-schema/codeartifact-package-version-description-schema.json)
+#### JSON Schema (159)
 
-## Common Properties
+The data models the API reads and writes.
 
-- [GettingStarted](https://docs.aws.amazon.com/codeartifact/latest/ug/getting-started.html)
-- [Authentication](https://docs.aws.amazon.com/codeartifact/latest/ug/tokens-authentication.html)
-- [Pricing](https://aws.amazon.com/codeartifact/pricing/)
-- [Console](https://console.aws.amazon.com/codesuite/codeartifact/start)
-- [Portal](https://aws.amazon.com/codeartifact/)
+- [AccountId](https://apis.io/schemas/amazon-codeartifact/codeartifact-account-id/)
+- [AllowPublish](https://apis.io/schemas/amazon-codeartifact/codeartifact-allow-publish/)
+- [AllowUpstream](https://apis.io/schemas/amazon-codeartifact/codeartifact-allow-upstream/)
+- [Arn](https://apis.io/schemas/amazon-codeartifact/codeartifact-arn/)
+- [Asset](https://apis.io/schemas/amazon-codeartifact/codeartifact-asset/)
+- [AssetHashes](https://apis.io/schemas/amazon-codeartifact/codeartifact-asset-hashes/)
+- [AssetName](https://apis.io/schemas/amazon-codeartifact/codeartifact-asset-name/)
+- [AssetSummary](https://apis.io/schemas/amazon-codeartifact/codeartifact-asset-summary/)
+- [AssetSummaryList](https://apis.io/schemas/amazon-codeartifact/codeartifact-asset-summary-list/)
+- [AssociateExternalConnectionRequest](https://apis.io/schemas/amazon-codeartifact/codeartifact-associate-external-connection-request/)
+- [AssociateExternalConnectionResult](https://apis.io/schemas/amazon-codeartifact/codeartifact-associate-external-connection-result/)
+- [AuthorizationTokenDurationSeconds](https://apis.io/schemas/amazon-codeartifact/codeartifact-authorization-token-duration-seconds/)
+- [BooleanOptional](https://apis.io/schemas/amazon-codeartifact/codeartifact-boolean-optional/)
+- [CopyPackageVersionsRequest](https://apis.io/schemas/amazon-codeartifact/codeartifact-copy-package-versions-request/)
+- [CopyPackageVersionsResult](https://apis.io/schemas/amazon-codeartifact/codeartifact-copy-package-versions-result/)
+- [CreateDomainRequest](https://apis.io/schemas/amazon-codeartifact/codeartifact-create-domain-request/)
+- [CreateDomainResult](https://apis.io/schemas/amazon-codeartifact/codeartifact-create-domain-result/)
+- [CreateRepositoryRequest](https://apis.io/schemas/amazon-codeartifact/codeartifact-create-repository-request/)
+- [CreateRepositoryResult](https://apis.io/schemas/amazon-codeartifact/codeartifact-create-repository-result/)
+- [DeleteDomainPermissionsPolicyRequest](https://apis.io/schemas/amazon-codeartifact/codeartifact-delete-domain-permissions-policy-request/)
+- [DeleteDomainPermissionsPolicyResult](https://apis.io/schemas/amazon-codeartifact/codeartifact-delete-domain-permissions-policy-result/)
+- [DeleteDomainRequest](https://apis.io/schemas/amazon-codeartifact/codeartifact-delete-domain-request/)
+- [DeleteDomainResult](https://apis.io/schemas/amazon-codeartifact/codeartifact-delete-domain-result/)
+- [DeletePackageRequest](https://apis.io/schemas/amazon-codeartifact/codeartifact-delete-package-request/)
+- [DeletePackageResult](https://apis.io/schemas/amazon-codeartifact/codeartifact-delete-package-result/)
+- …and 134 more published on APIs.io
+
+#### JSON Structure (159)
+
+Data models expressed in JSON Structure.
+
+- [Codeartifact Account Id Structure](https://apis.io/json-structure/amazon-codeartifact/codeartifact-account-id-structure/)
+- [Codeartifact Allow Publish Structure](https://apis.io/json-structure/amazon-codeartifact/codeartifact-allow-publish-structure/)
+- [Codeartifact Allow Upstream Structure](https://apis.io/json-structure/amazon-codeartifact/codeartifact-allow-upstream-structure/)
+- [Codeartifact Arn Structure](https://apis.io/json-structure/amazon-codeartifact/codeartifact-arn-structure/)
+- [Codeartifact Asset Hashes Structure](https://apis.io/json-structure/amazon-codeartifact/codeartifact-asset-hashes-structure/)
+- [Codeartifact Asset Name Structure](https://apis.io/json-structure/amazon-codeartifact/codeartifact-asset-name-structure/)
+- [Codeartifact Asset Structure](https://apis.io/json-structure/amazon-codeartifact/codeartifact-asset-structure/)
+- [Codeartifact Asset Summary List Structure](https://apis.io/json-structure/amazon-codeartifact/codeartifact-asset-summary-list-structure/)
+- [Codeartifact Asset Summary Structure](https://apis.io/json-structure/amazon-codeartifact/codeartifact-asset-summary-structure/)
+- [Codeartifact Associate External Connection Request Structure](https://apis.io/json-structure/amazon-codeartifact/codeartifact-associate-external-connection-request-structure/)
+- [Codeartifact Associate External Connection Result Structure](https://apis.io/json-structure/amazon-codeartifact/codeartifact-associate-external-connection-result-structure/)
+- [Codeartifact Authorization Token Duration Seconds Structure](https://apis.io/json-structure/amazon-codeartifact/codeartifact-authorization-token-duration-seconds-structure/)
+- [Codeartifact Boolean Optional Structure](https://apis.io/json-structure/amazon-codeartifact/codeartifact-boolean-optional-structure/)
+- [Codeartifact Copy Package Versions Request Structure](https://apis.io/json-structure/amazon-codeartifact/codeartifact-copy-package-versions-request-structure/)
+- [Codeartifact Copy Package Versions Result Structure](https://apis.io/json-structure/amazon-codeartifact/codeartifact-copy-package-versions-result-structure/)
+- [Codeartifact Create Domain Request Structure](https://apis.io/json-structure/amazon-codeartifact/codeartifact-create-domain-request-structure/)
+- [Codeartifact Create Domain Result Structure](https://apis.io/json-structure/amazon-codeartifact/codeartifact-create-domain-result-structure/)
+- [Codeartifact Create Repository Request Structure](https://apis.io/json-structure/amazon-codeartifact/codeartifact-create-repository-request-structure/)
+- [Codeartifact Create Repository Result Structure](https://apis.io/json-structure/amazon-codeartifact/codeartifact-create-repository-result-structure/)
+- [Codeartifact Delete Domain Permissions Policy Request Structure](https://apis.io/json-structure/amazon-codeartifact/codeartifact-delete-domain-permissions-policy-request-structure/)
+- [Codeartifact Delete Domain Permissions Policy Result Structure](https://apis.io/json-structure/amazon-codeartifact/codeartifact-delete-domain-permissions-policy-result-structure/)
+- [Codeartifact Delete Domain Request Structure](https://apis.io/json-structure/amazon-codeartifact/codeartifact-delete-domain-request-structure/)
+- [Codeartifact Delete Domain Result Structure](https://apis.io/json-structure/amazon-codeartifact/codeartifact-delete-domain-result-structure/)
+- [Codeartifact Delete Package Request Structure](https://apis.io/json-structure/amazon-codeartifact/codeartifact-delete-package-request-structure/)
+- [Codeartifact Delete Package Result Structure](https://apis.io/json-structure/amazon-codeartifact/codeartifact-delete-package-result-structure/)
+- …and 134 more published on APIs.io
+
+#### JSON-LD (1)
+
+Linked-data contexts for the provider's vocabulary.
+
+- [Amazon Codeartifact Context](https://apis.io/jsonld/amazon-codeartifact/amazon-codeartifact-context/)
+
+#### Vocabulary (1)
+
+The provider's domain terms, defined.
+
+- [Amazon Codeartifact Vocabulary](https://apis.io/vocabularies/amazon-codeartifact/amazon-codeartifact-vocabulary/)
+
+#### Examples (102)
+
+Example requests and responses.
+
+- [Codeartifact Asset Hashes Example](https://apis.io/examples/amazon-codeartifact/codeartifact-asset-hashes-example/)
+- [Codeartifact Asset Summary Example](https://apis.io/examples/amazon-codeartifact/codeartifact-asset-summary-example/)
+- [Codeartifact Associate External Connection Request Example](https://apis.io/examples/amazon-codeartifact/codeartifact-associate-external-connection-request-example/)
+- [Codeartifact Associate External Connection Result Example](https://apis.io/examples/amazon-codeartifact/codeartifact-associate-external-connection-result-example/)
+- [Codeartifact Copy Package Versions Request Example](https://apis.io/examples/amazon-codeartifact/codeartifact-copy-package-versions-request-example/)
+- [Codeartifact Copy Package Versions Result Example](https://apis.io/examples/amazon-codeartifact/codeartifact-copy-package-versions-result-example/)
+- [Codeartifact Create Domain Request Example](https://apis.io/examples/amazon-codeartifact/codeartifact-create-domain-request-example/)
+- [Codeartifact Create Domain Result Example](https://apis.io/examples/amazon-codeartifact/codeartifact-create-domain-result-example/)
+- [Codeartifact Create Repository Request Example](https://apis.io/examples/amazon-codeartifact/codeartifact-create-repository-request-example/)
+- [Codeartifact Create Repository Result Example](https://apis.io/examples/amazon-codeartifact/codeartifact-create-repository-result-example/)
+- [Codeartifact Delete Domain Permissions Policy Request Example](https://apis.io/examples/amazon-codeartifact/codeartifact-delete-domain-permissions-policy-request-example/)
+- [Codeartifact Delete Domain Permissions Policy Result Example](https://apis.io/examples/amazon-codeartifact/codeartifact-delete-domain-permissions-policy-result-example/)
+- [Codeartifact Delete Domain Request Example](https://apis.io/examples/amazon-codeartifact/codeartifact-delete-domain-request-example/)
+- [Codeartifact Delete Domain Result Example](https://apis.io/examples/amazon-codeartifact/codeartifact-delete-domain-result-example/)
+- [Codeartifact Delete Package Request Example](https://apis.io/examples/amazon-codeartifact/codeartifact-delete-package-request-example/)
+- [Codeartifact Delete Package Result Example](https://apis.io/examples/amazon-codeartifact/codeartifact-delete-package-result-example/)
+- [Codeartifact Delete Package Versions Request Example](https://apis.io/examples/amazon-codeartifact/codeartifact-delete-package-versions-request-example/)
+- [Codeartifact Delete Package Versions Result Example](https://apis.io/examples/amazon-codeartifact/codeartifact-delete-package-versions-result-example/)
+- [Codeartifact Delete Repository Permissions Policy Request Example](https://apis.io/examples/amazon-codeartifact/codeartifact-delete-repository-permissions-policy-request-example/)
+- [Codeartifact Delete Repository Permissions Policy Result Example](https://apis.io/examples/amazon-codeartifact/codeartifact-delete-repository-permissions-policy-result-example/)
+- [Codeartifact Delete Repository Request Example](https://apis.io/examples/amazon-codeartifact/codeartifact-delete-repository-request-example/)
+- [Codeartifact Delete Repository Result Example](https://apis.io/examples/amazon-codeartifact/codeartifact-delete-repository-result-example/)
+- [Codeartifact Describe Domain Request Example](https://apis.io/examples/amazon-codeartifact/codeartifact-describe-domain-request-example/)
+- [Codeartifact Describe Domain Result Example](https://apis.io/examples/amazon-codeartifact/codeartifact-describe-domain-result-example/)
+- [Codeartifact Describe Package Request Example](https://apis.io/examples/amazon-codeartifact/codeartifact-describe-package-request-example/)
+- …and 77 more published on APIs.io
+
+#### Collections (26)
+
+Postman and Open Collection request collections.
+
+- [CodeArtifact Authorization Token#domain API](https://apis.io/collections/amazon-codeartifact/open-amazon-codeartifact-authorization-token-domain-api/)
+- [CodeArtifact Authorization Token# Domain API](https://apis.io/collections/amazon-codeartifact/open-amazon-codeartifact-domain-api/)
+- [CodeArtifact Authorization Token#domain Domain#domain API](https://apis.io/collections/amazon-codeartifact/open-amazon-codeartifact-domain-domain-api/)
+- [CodeArtifact Authorization Token#domain Domains API](https://apis.io/collections/amazon-codeartifact/open-amazon-codeartifact-domains-api/)
+- [CodeArtifact Authorization Token#domain Package API](https://apis.io/collections/amazon-codeartifact/open-amazon-codeartifact-package-api/)
+- [CodeArtifact Authorization Token#domain Package#domain&repository&format&package API](https://apis.io/collections/amazon-codeartifact/open-amazon-codeartifact-package-domain-repository-format-package-api/)
+- [CodeArtifact Authorization Token#domain Packages#domain&repository API](https://apis.io/collections/amazon-codeartifact/open-amazon-codeartifact-packages-domain-repository-api/)
+- [CodeArtifact Authorization Token#domain Repositories API](https://apis.io/collections/amazon-codeartifact/open-amazon-codeartifact-repositories-api/)
+- [CodeArtifact Authorization Token#domain Repository API](https://apis.io/collections/amazon-codeartifact/open-amazon-codeartifact-repository-api/)
+- [CodeArtifact Authorization Token#domain Repository#domain&repository API](https://apis.io/collections/amazon-codeartifact/open-amazon-codeartifact-repository-domain-repository-api/)
+- [CodeArtifact Authorization Token#domain Tag#resourceArn API](https://apis.io/collections/amazon-codeartifact/open-amazon-codeartifact-tag-resourcearn-api/)
+- [CodeArtifact Authorization Token#domain Tags#resourceArn API](https://apis.io/collections/amazon-codeartifact/open-amazon-codeartifact-tags-resourcearn-api/)
+- [CodeArtifact Authorization Token#domain Untag#resourceArn API](https://apis.io/collections/amazon-codeartifact/open-amazon-codeartifact-untag-resourcearn-api/)
+- [CodeArtifact Authorization Token#domain API](https://apis.io/collections/amazon-codeartifact/postman-amazon-codeartifact-authorization-token-domain-api/)
+- [CodeArtifact Authorization Token# Domain API](https://apis.io/collections/amazon-codeartifact/postman-amazon-codeartifact-domain-api/)
+- [CodeArtifact Authorization Token#domain Domain#domain API](https://apis.io/collections/amazon-codeartifact/postman-amazon-codeartifact-domain-domain-api/)
+- [CodeArtifact Authorization Token#domain Domains API](https://apis.io/collections/amazon-codeartifact/postman-amazon-codeartifact-domains-api/)
+- [CodeArtifact Authorization Token#domain Package API](https://apis.io/collections/amazon-codeartifact/postman-amazon-codeartifact-package-api/)
+- [CodeArtifact Authorization Token#domain Package#domain&repository&format&package API](https://apis.io/collections/amazon-codeartifact/postman-amazon-codeartifact-package-domain-repository-format-package-api/)
+- [CodeArtifact Authorization Token#domain Packages#domain&repository API](https://apis.io/collections/amazon-codeartifact/postman-amazon-codeartifact-packages-domain-repository-api/)
+- [CodeArtifact Authorization Token#domain Repositories API](https://apis.io/collections/amazon-codeartifact/postman-amazon-codeartifact-repositories-api/)
+- [CodeArtifact Authorization Token#domain Repository API](https://apis.io/collections/amazon-codeartifact/postman-amazon-codeartifact-repository-api/)
+- [CodeArtifact Authorization Token#domain Repository#domain&repository API](https://apis.io/collections/amazon-codeartifact/postman-amazon-codeartifact-repository-domain-repository-api/)
+- [CodeArtifact Authorization Token#domain Tag#resourceArn API](https://apis.io/collections/amazon-codeartifact/postman-amazon-codeartifact-tag-resourcearn-api/)
+- [CodeArtifact Authorization Token#domain Tags#resourceArn API](https://apis.io/collections/amazon-codeartifact/postman-amazon-codeartifact-tags-resourcearn-api/)
+- …and 1 more published on APIs.io
+
+#### Overlays (1)
+
+OpenAPI overlays, including conversational phrasing for each operation.
+
+- [Amazon Codeartifact Api Overlay](https://apis.io/overlays/amazon-codeartifact/amazon-codeartifact-api-overlay/)
+
+#### Governance rules (2)
+
+Spectral rulesets for the provider's contracts.
+
+- [Amazon CodeArtifact — jsonschema rules](https://apis.io/rules/amazon-codeartifact/amazon-codeartifact-jsonschema-spectral-rules/)
+- [Amazon CodeArtifact API Rules](https://apis.io/rules/amazon-codeartifact/amazon-codeartifact-spectral-rules/)
+
+#### Security (4)
+
+Authentication, trust centre, and vulnerability disclosure.
+
+- [Amazon Codeartifact Authentication](https://apis.io/security/amazon-codeartifact/amazon-codeartifact-authentication/)
+- [Amazon Codeartifact Domain Security](https://apis.io/security/amazon-codeartifact/amazon-codeartifact-domain-security/)
+- [Amazon Codeartifact Trust Center](https://apis.io/security/amazon-codeartifact/amazon-codeartifact-trust-center/)
+- [Amazon Codeartifact Vulnerability Disclosure](https://apis.io/security/amazon-codeartifact/amazon-codeartifact-vulnerability-disclosure/)
+
+## Where to find this API
+
+Links to the company's own pages. This repository publishes no copy of their specifications — the canonical document is theirs and lives at the URLs below.
+
+- [Website](https://aws.amazon.com/codeartifact/)
 - [Documentation](https://docs.aws.amazon.com/codeartifact/latest/ug/)
-- [TermsOfService](https://aws.amazon.com/service-terms/)
-- [PrivacyPolicy](https://aws.amazon.com/privacy/)
-- [StatusPage](https://health.aws.amazon.com/health/status)
+- [Getting started](https://docs.aws.amazon.com/codeartifact/latest/ug/getting-started.html)
+- [Pricing](https://aws.amazon.com/codeartifact/pricing/)
+- [Sign up](https://portal.aws.amazon.com/gp/aws/developer/registration/index.html)
 - [Blog](https://aws.amazon.com/blogs/devops/category/developer-tools/amazon-codeartifact/)
-- [SignUp](https://portal.aws.amazon.com/gp/aws/developer/registration/index.html)
-- [GitHubOrganization](https://github.com/aws)
+- [Terms of service](https://aws.amazon.com/service-terms/)
+- [Privacy policy](https://aws.amazon.com/privacy/)
+- [GitHub](https://github.com/aws)
+- [Status](https://health.aws.amazon.com/health/status)
 
-## Features
+## API Evangelist rating
 
-| Name | Description |
-|------|-------------|
-| Multi-Format Package Support | Supports Cargo, generic, Maven, npm, NuGet, PyPI, Ruby, and Swift package formats in polyglot repositories that can hold |
-| Public Repository Integration | Connect repositories to public sources including npmjs, PyPI, Maven Central, NuGet Gallery, and RubyGems.org to proxy an |
-| Domain-Based Organization | Aggregate multiple repositories into a domain to apply organizational policies, manage encryption, and share packages ac |
-| Upstream Repositories | Create upstream relationships between repositories so downstream repositories can transparently access packages from ups |
-| Package Groups and Origin Controls | Apply configuration to multiple packages using package groups with pattern matching. Use origin controls to block or all |
-| Authorization Token Generation | Generate temporary authorization tokens (up to 12 hours) for secure authentication with package managers without long-li |
-| AWS IAM Integration | Control access to domains and repositories using AWS Identity and Access Management for fine-grained permissions policie |
-| AWS KMS Encryption | All assets and metadata in a domain are encrypted with the same AWS KMS key, supporting both AWS managed and customer ma |
-| AWS CloudTrail Integration | Track package usage and access across your organization with full audit logging via AWS CloudTrail. |
-| Amazon EventBridge Integration | Automate package governance workflows and trigger actions on package events using Amazon EventBridge. |
-| AWS PrivateLink Support | Access CodeArtifact repositories from within a VPC without exposing traffic to the public internet using AWS PrivateLink |
-| High Availability Storage | Multi-Availability Zone operation with redundant package asset storage across Amazon S3 and DynamoDB, fully managed with |
+**Kin Score 57.0** — strong · rubric 0.25.0 · scored 2026-10-23
 
-## Use Cases
+| Facet | Score |
+|---|---|
+| Discoverability | 73.2 |
+| Contract quality | 68.6 |
+| Contract governance | 31.8 |
+| Operational transparency | 28.9 |
+| Developer ergonomics | 60.7 |
+| Access clarity | 52.6 |
 
-| Name | Description |
-|------|-------------|
-| Internal Package Distribution | Share proprietary software components and internal libraries between multiple applications and development teams within  |
-| Open-Source Dependency Caching | Proxy and cache open-source packages from public registries to ensure build reproducibility and availability even when u |
-| Software Supply Chain Security | Control which packages developers can use with package origin controls to protect against dependency confusion and subst |
-| Multi-Team Package Governance | Apply organizational policies across multiple repositories in a domain and audit package consumption across development  |
-| CI/CD Pipeline Integration | Integrate with CI/CD systems using native package manager support (npm, Maven, pip, NuGet) to fetch and publish packages |
+**Agent readiness 29.6** — agent-ready
 
-## Integrations
+| Agent-readiness dimension | Result |
+|---|---|
+| Spec Presence | yes |
+| Agentic Access | derived (partial credit) |
+| Reversibility Documented | — |
+| MCP Server | — |
+| Auth Clarity | bearer (partial credit) |
+| Idempotency | — |
+| Error Semantics | verified |
+| OpenAPI Examples | verified |
+| Rate Limit Signal | — |
+| Event Surface Described | — |
+| Agent Skills | — |
+| Well Known Catalog | — |
+| Consent Identity | — |
+| Agent Card | — |
+| Dry Run Mode | — |
+| Delegated Identity | — |
+| Protected Resource Metadata | — |
+| Dynamic Client Registration | — |
+| Agentic Commerce | — |
+| Pagination Ratio | na |
+| Operation Distinctiveness | distinct |
 
-| Name | Description |
-|------|-------------|
-| AWS IAM | Fine-grained access control for domains, repositories, and package operations. |
-| AWS KMS | Encryption key management for all package assets and metadata stored in a domain. |
-| AWS CloudTrail | Audit logging for all CodeArtifact API calls and package access events. |
-| Amazon EventBridge | Event-driven automation for package governance workflows and notifications. |
-| AWS PrivateLink | Private network connectivity to CodeArtifact from within a VPC. |
-| npm Registry (npmjs.com) | Public upstream connection for npm package proxying and caching. |
-| PyPI (pypi.org) | Public upstream connection for Python package proxying and caching. |
-| Maven Central | Public upstream connection for Java/Maven package proxying and caching. |
-| NuGet Gallery (nuget.org) | Public upstream connection for .NET package proxying and caching. |
-| RubyGems.org | Public upstream connection for Ruby gem proxying and caching. |
-| crates.io | Public upstream connection for Rust/Cargo package proxying and caching. |
-| GitHub Actions | Integrate CodeArtifact with GitHub Actions CI/CD workflows for package management. |
-| AWS CodeBuild | Use CodeArtifact as the package source in AWS CodeBuild build projects. |
-| AWS CodePipeline | Incorporate package publishing and consumption into AWS CodePipeline deployment pipelines. |
+**Regulatory alignment 35.3** — Horizontal (data, software, accessibility, platform)
 
-## Artifacts
+The rubric is published at [github.com/api-evangelist/kin-score](https://github.com/api-evangelist/kin-score). The per-check breakdown behind these numbers — which checks were earned, partial or missed — along with score history and how this provider compares to its peers, is available at [apis.io/providers/amazon-codeartifact/](https://apis.io/providers/amazon-codeartifact/).
 
-Machine-readable API specifications organized by format.
+## How this profile is made
 
-### OpenAPI
+API Evangelist profiles a company's public API surface the way a developer would find it: the website, developer portal and documentation, the specifications it publishes, its public repositories, and its pricing, status and changelog pages. From that it derives the properties above — contracts split per API, workflows, schemas, collections, governance rules, plans and rate limits — and scores them against the published [Kin Score rubric](https://github.com/api-evangelist/kin-score).
 
-- [amazon-codeartifact-openapi-original](openapi/amazon-codeartifact-openapi-original.yaml)
+The artifacts are published on [APIs.io](https://apis.io), not in this repository. This repository is the public record for Amazon CodeArtifact: the place to say something is wrong, missing or out of date, and to ask for a re-score or a removal.
 
-### JSON Schema
+## Open an issue
 
-159 JSON Schema files generated from the OpenAPI specification.
-
-- [codeartifact-account-id-schema](json-schema/codeartifact-account-id-schema.json)
-- [codeartifact-allow-publish-schema](json-schema/codeartifact-allow-publish-schema.json)
-- [codeartifact-allow-upstream-schema](json-schema/codeartifact-allow-upstream-schema.json)
-- [codeartifact-arn-schema](json-schema/codeartifact-arn-schema.json)
-- [codeartifact-asset-hashes-schema](json-schema/codeartifact-asset-hashes-schema.json)
-- ...and 154 more in [json-schema/](json-schema/)
-
-### JSON Structure
-
-159 JSON Structure files converted from JSON Schema, available in [json-structure/](json-structure/).
-
-### JSON-LD
-
-- [amazon-codeartifact-context](json-ld/amazon-codeartifact-context.jsonld)
-
-### Examples
-
-159 example JSON files generated from JSON Schema, available in [examples/](examples/).
-
-## Capabilities
-
-Naftiko capabilities organized as shared per-API definitions composed into customer-facing workflows.
-
-### Shared Per-API Definitions
-
-- [codeartifact](capabilities/shared/codeartifact.yaml) — 38 operations for Amazon CodeArtifact management
-
-### Workflow Capabilities
-
-| Workflow | APIs Combined | Tools | Persona |
-|----------|--------------|-------|---------|
-| [Amazon CodeArtifact Package Management](capabilities/amazon-codeartifact-package-management.yaml) | codeartifact | 15 | DevOps Engineer |
-
-## Vocabulary
-
-- [amazon-codeartifact-vocabulary](vocabulary/amazon-codeartifact-vocabulary.yaml) — Unified taxonomy mapping 10 resources, 7 actions, 1 workflows, and 3 personas
-
-## Rules
-
-- [amazon-codeartifact-spectral-rules](rules/amazon-codeartifact-spectral-rules.yml) — 23 rules enforcing Amazon CodeArtifact API conventions
-
-## Maintainers
-
-**FN:** Kin Lane
-
-**Email:** kin@apievangelist.com
+- **Something about this listing** — a wrong description, a missing API, a stale artifact or a question about the rating: [open an issue on this repository](https://github.com/api-evangelist/amazon-codeartifact/issues/new).
+- **A new API, or one that is not in the catalog yet** — [submit it on APIs.io](https://apis.io/add/).
+- **Anything else** — [the APIs.io inbox](https://github.com/api-search/inbox/issues/new) or [info@apievangelist.com](mailto:info@apievangelist.com).
